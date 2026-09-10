@@ -193,7 +193,7 @@
 
     .comparison-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       gap: 20px;
       margin-top: 16px;
     }
@@ -209,6 +209,8 @@
       border-radius: var(--radius-sm);
       padding: 20px;
       background: var(--bg-subtle);
+      min-width: 0;
+      overflow: hidden;
     }
 
     .track-card.track-a {
@@ -276,6 +278,7 @@
       padding: 16px;
       border-radius: var(--radius-sm);
       overflow-x: auto;
+      max-width: 100%;
       font-size: 13px;
       line-height: 1.5;
       margin: 12px 0;
@@ -304,13 +307,24 @@
       width: 100%;
       border-collapse: collapse;
       margin: 16px 0;
-      font-size: 14px;
+      font-size: 13px;
+      table-layout: fixed;
     }
 
     table.gotcha-table th, table.gotcha-table td {
       border: 1px solid var(--border);
-      padding: 12px 14px;
+      padding: 10px 12px;
       text-align: left;
+      word-break: break-word;
+      overflow-wrap: break-word;
+    }
+
+    table.gotcha-table th:first-child, table.gotcha-table td:first-child {
+      width: 36%;
+    }
+
+    table.gotcha-table th:last-child, table.gotcha-table td:last-child {
+      width: 64%;
     }
 
     table.gotcha-table th {
@@ -434,7 +448,7 @@
   "name": "WebMCP AI Agent",
   "version": "1.0",
   "permissions": ["sidePanel", "tabs", "scripting"],
-  "host_permissions": ["<all_urls>"],
+  "host_permissions": ["&lt;all_urls&gt;"],
   "background": { "service_worker": "sw.js" },
   "side_panel": { "default_path": "sidepanel.html" },
   "action": { "default_title": "Open Agent" }
