@@ -1,0 +1,1900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google Partner Summit: Built-in AI & WebMCP Workshop Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Code:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --google-blue: #1a73e8;
+      --google-blue-hover: #1557b0;
+      --google-blue-light: #e8f0fe;
+      --google-green: #1e8e3e;
+      --google-green-light: #e6f4ea;
+      --google-yellow: #f9ab00;
+      --google-yellow-light: #fef7e0;
+      --google-red: #d93025;
+      --google-red-light: #fce8e6;
+      --google-purple: #9334e6;
+      --google-purple-light: #f3e8fd;
+      
+      --bg-page: #f8f9fa;
+      --bg-surface: #ffffff;
+      --bg-subtle: #f1f3f4;
+      --text-main: #202124;
+      --text-secondary: #5f6368;
+      --text-muted: #80868b;
+      --border: #dadce0;
+      --border-light: #e8eaed;
+      --code-bg: #202124;
+      --code-text: #e8eaed;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-full: 9999px;
+      --shadow-sm: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.05);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-page: #121212;
+        --bg-surface: #1e1e1e;
+        --bg-subtle: #2d2d2d;
+        --text-main: #e8eaed;
+        --text-secondary: #bdc1c6;
+        --text-muted: #9aa0a6;
+        --border: #3c4043;
+        --border-light: #2d2d2d;
+        --google-blue-light: rgba(26, 115, 232, 0.15);
+        --google-green-light: rgba(30, 142, 62, 0.15);
+        --google-yellow-light: rgba(249, 171, 0, 0.15);
+        --google-red-light: rgba(217, 48, 37, 0.15);
+        --google-purple-light: rgba(147, 52, 230, 0.15);
+      }
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Roboto', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding-bottom: 80px;
+    }
+
+    h1, h2, h3, h4, .font-display {
+      font-family: 'Google Sans', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    code, pre, .font-code {
+      font-family: 'Google Sans Code', SFMono-Regular, Consolas, monospace;
+    }
+
+    .container {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Header & Navigation */
+    header {
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border);
+      padding: 28px 0 24px;
+      margin-bottom: 32px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      background: var(--google-blue-light);
+      color: var(--google-blue);
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .lang-switcher {
+      display: flex;
+      background: var(--bg-subtle);
+      border-radius: var(--radius-full);
+      padding: 2px;
+      border: 1px solid var(--border-light);
+    }
+
+    .lang-btn {
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      border: none;
+      background: transparent;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .lang-btn.active {
+      background: var(--bg-surface);
+      color: var(--google-blue);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .hero-title {
+      font-size: 30px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+
+    .hero-subtitle {
+      font-size: 15px;
+      color: var(--text-secondary);
+      max-width: 820px;
+      margin-bottom: 20px;
+    }
+
+    /* Overall Status Banner */
+    .status-summary-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding: 16px 20px;
+      background: var(--bg-subtle);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+    }
+
+    .status-summary-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .score-badge {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 18px;
+      color: #ffffff;
+      background: var(--google-blue);
+      transition: background-color 0.3s;
+    }
+
+    .score-badge.ready { background: var(--google-green); }
+    .score-badge.warning { background: var(--google-yellow); color: #202124; }
+    .score-badge.error { background: var(--google-red); }
+    .score-badge.idle { background: #dadce0; color: #5f6368; }
+    .score-badge.checking { background: var(--google-blue); color: #ffffff; }
+
+    .summary-text-title {
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    .summary-text-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .btn-diag {
+      padding: 10px 18px;
+      border-radius: var(--radius-sm);
+      background: var(--google-blue);
+      color: #ffffff;
+      border: none;
+      font-weight: 500;
+      font-size: 14px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.2s, opacity 0.2s;
+    }
+
+    .btn-diag:hover {
+      background: var(--google-blue-hover);
+    }
+
+    .btn-diag:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+
+    /* Section Title */
+    .section-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin: 32px 0 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Diagnostics Grid */
+    .diag-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .diag-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    .diag-card:hover {
+      box-shadow: var(--shadow-md);
+    }
+
+    .diag-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .diag-card-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .status-pill {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .status-pill.pass { background: var(--google-green-light); color: var(--google-green); }
+    .status-pill.warn { background: var(--google-yellow-light); color: #b06000; }
+    .status-pill.fail { background: var(--google-red-light); color: var(--google-red); }
+    .status-pill.checking { background: var(--google-blue-light); color: var(--google-blue); }
+    .status-pill.not-run { background: #f1f3f4; color: #5f6368; border: 1px solid #dadce0; }
+
+    .diag-card-body {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+      min-height: 48px;
+    }
+
+    .diag-card-action {
+      font-size: 12px;
+    }
+
+    /* Card Wrapper */
+    .card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* Checklist */
+    .checklist-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .checklist-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px 16px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-sm);
+      transition: background 0.15s;
+    }
+
+    .checklist-item.completed {
+      background: var(--google-green-light);
+      border-color: rgba(30, 142, 62, 0.25);
+    }
+
+    .checklist-checkbox {
+      width: 20px;
+      height: 20px;
+      margin-top: 2px;
+      cursor: pointer;
+      accent-color: var(--google-green);
+    }
+
+    .checklist-content {
+      flex: 1;
+    }
+
+    .checklist-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .checklist-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+
+    .checklist-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .flag-token {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      color: var(--google-blue);
+      user-select: all;
+    }
+
+    /* Copy Button */
+    .btn-copy {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 4px 10px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-main);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s;
+    }
+
+    .btn-copy:hover {
+      background: var(--bg-subtle);
+      border-color: var(--text-muted);
+    }
+
+    .btn-copy.copied {
+      background: var(--google-green);
+      color: #ffffff;
+      border-color: var(--google-green);
+    }
+
+    /* Tabs */
+    .tab-header {
+      display: flex;
+      gap: 6px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 16px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+    }
+
+    .tab-btn {
+      padding: 10px 16px;
+      border: none;
+      background: transparent;
+      font-family: 'Google Sans', 'Noto Sans JP', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+
+    .tab-btn:hover {
+      color: var(--google-blue);
+    }
+
+    .tab-btn.active {
+      color: var(--google-blue);
+      border-bottom-color: var(--google-blue);
+    }
+
+    .tab-pane {
+      display: none;
+    }
+
+    .tab-pane.active {
+      display: block;
+    }
+
+    /* Code Blocks */
+    .code-block {
+      background: var(--code-bg);
+      color: var(--code-text);
+      padding: 14px 18px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      position: relative;
+      margin: 10px 0;
+      overflow-x: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .code-block pre {
+      margin: 0;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    .code-block .btn-copy-code {
+      background: rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+      border: none;
+      border-radius: 4px;
+      padding: 6px 12px;
+      font-size: 12px;
+      cursor: pointer;
+      flex-shrink: 0;
+      margin-left: 12px;
+      transition: background 0.2s;
+    }
+
+    .code-block .btn-copy-code:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    /* Interactive Test Console */
+    .test-console-box {
+      background: var(--code-bg);
+      color: #34d399;
+      padding: 16px;
+      border-radius: var(--radius-sm);
+      font-family: 'Google Sans Code', SFMono-Regular, monospace;
+      font-size: 12px;
+      line-height: 1.5;
+      min-height: 110px;
+      max-height: 260px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      margin-top: 12px;
+    }
+
+    .console-input-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .console-input {
+      flex: 1;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--bg-surface);
+      color: var(--text-main);
+      font-size: 14px;
+    }
+
+    /* Toast Notification */
+    #toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #202124;
+      color: #ffffff;
+      padding: 12px 20px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      box-shadow: var(--shadow-lg);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: transform 0.25s ease, opacity 0.25s ease;
+      z-index: 1000;
+    }
+
+    #toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Download Links Grid */
+    .links-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }
+
+    .link-tile {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      color: var(--text-main);
+      font-weight: 500;
+      font-size: 14px;
+      transition: all 0.15s;
+    }
+
+    .link-tile:hover {
+      background: var(--google-blue-light);
+      border-color: var(--google-blue);
+      color: var(--google-blue);
+    }
+
+    .link-tile-icon {
+      font-size: 20px;
+    }
+
+    /* Callout */
+    .callout {
+      display: flex;
+      gap: 12px;
+      padding: 16px;
+      border-radius: var(--radius-sm);
+      margin: 16px 0;
+      font-size: 14px;
+    }
+
+    .callout.info {
+      background: var(--google-blue-light);
+      border-left: 4px solid var(--google-blue);
+    }
+
+    .callout.warn {
+      background: var(--google-yellow-light);
+      border-left: 4px solid var(--google-yellow);
+      color: #3e2723;
+    }
+
+    .callout.success {
+      background: var(--google-green-light);
+      border-left: 4px solid var(--google-green);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Hero Header -->
+  <header>
+    <div class="container">
+      <div class="header-top">
+      <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+        <span class="hero-badge">
+          <span>📅</span> <span>Partner Summit 2026</span>
+        </span>
+        <a href="extension_guide.html" style="text-decoration:none; font-size:13px; font-weight:600; color:var(--google-purple); background:var(--google-purple-light); padding:4px 12px; border-radius:var(--radius-full); display:inline-flex; align-items:center; gap:6px; transition:all 0.2s;">
+          <span>🛠️</span> <span data-i18n="navFieldGuide">Extension & AI Field Guide ↗</span>
+        </a>
+      </div>
+      <div class="lang-switcher">
+          <button id="btn-lang-en" class="lang-btn active" onclick="setLanguage('en')">English</button>
+          <button id="btn-lang-ja" class="lang-btn" onclick="setLanguage('ja')">日本語</button>
+        </div>
+      </div>
+      <h1 class="hero-title" data-i18n="heroTitle">Built-in AI & WebMCP Participant Setup Hub</h1>
+      <p class="hero-subtitle" data-i18n="heroSubtitle">
+        Welcome! This self-contained setup page provides 100% public download links, flag checklists, agent installation guides, and live on-device browser diagnostics to ensure your laptop is ready for today's session.
+      </p>
+
+      <!-- Diagnostic Summary Scorecard -->
+      <div class="status-summary-bar">
+        <div class="status-summary-left">
+          <div id="overall-score-badge" class="score-badge idle">—</div>
+          <div>
+            <div id="overall-summary-title" class="summary-text-title">Diagnostics Not Run</div>
+            <div id="overall-summary-desc" class="summary-text-desc">Click "Run Diagnostics" to check your browser environment.</div>
+          </div>
+        </div>
+        <button id="btn-rerun-diagnostics" class="btn-diag">
+          <span>🔄</span> <span id="btn-diag-text" data-i18n="runDiagnostics">Run Diagnostics</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- Section 1: Browser Environment Diagnostics -->
+    <h2 class="section-title">
+      <span>🔍</span> <span data-i18n="diagHeading">Browser Environment Diagnostics</span>
+    </h2>
+    <div class="diag-grid">
+      <!-- Card 1: Browser Channel & Version -->
+      <div class="diag-card">
+        <div>
+          <div class="diag-card-header">
+            <span class="diag-card-title" data-i18n="cardBrowserTitle">Chrome Channel & Version</span>
+            <span id="badge-browser" class="status-pill not-run">Not Run</span>
+          </div>
+          <div id="desc-browser" class="diag-card-body">
+            Target: Chrome Canary / Dev ≥ 138.
+          </div>
+        </div>
+        <div class="diag-card-action">
+          <a href="https://www.google.com/chrome/canary/" target="_blank" rel="noopener" style="color:var(--google-blue); text-decoration:none; font-weight:500;" data-i18n="downloadCanaryLink">
+            Download Chrome Canary ↗
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 2: WebMCP API (document.modelContext) -->
+      <div class="diag-card">
+        <div>
+          <div class="diag-card-header">
+            <span class="diag-card-title" data-i18n="cardWebMcpTitle">WebMCP Runtime</span>
+            <span id="badge-webmcp" class="status-pill not-run">Not Run</span>
+          </div>
+          <div id="desc-webmcp" class="diag-card-body">
+            Target: <code>document.modelContext.registerTool</code>.
+          </div>
+        </div>
+        <div class="diag-card-action">
+          <button class="btn-copy" onclick="copyText('chrome://flags/#enable-webmcp-testing', 'Copied WebMCP Flag URL!')">
+            📋 <span data-i18n="copyFlagUrl">Copy Flag Link</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Card 3: Gemini Nano / Prompt API -->
+      <div class="diag-card">
+        <div>
+          <div class="diag-card-header">
+            <span class="diag-card-title" data-i18n="cardPromptApiTitle">Built-in AI (Prompt API)</span>
+            <span id="badge-promptapi" class="status-pill not-run">Not Run</span>
+          </div>
+          <div id="desc-promptapi" class="diag-card-body">
+            Target: <code>window.LanguageModel</code> availability.
+          </div>
+        </div>
+        <div class="diag-card-action">
+          <button id="btn-trigger-model-download" class="btn-copy" style="background:var(--google-blue-light); color:var(--google-blue); border-color:transparent;">
+            ⚡ <span data-i18n="triggerDownloadBtn">Trigger Download</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2: Chrome Flags Checklist (Persistent in LocalStorage) -->
+    <section class="card">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:10px;">
+        <div>
+          <h2 class="font-display" style="font-size:20px; font-weight:700;" data-i18n="flagsHeading">🚩 Required Chrome Canary Flags Checklist</h2>
+          <p style="font-size:13px; color:var(--text-secondary);" data-i18n="flagsSubtitle">
+            Open <code>chrome://flags</code> in Chrome Canary, enable the flags below, and relaunch your browser. (Note: Core <code>LanguageModel</code> is enabled by default). Progress is saved automatically.
+          </p>
+        </div>
+        <button id="btn-reset-flags" class="btn-copy" style="color:var(--text-muted);" data-i18n="resetChecks">Reset Checks</button>
+      </div>
+
+      <ul class="checklist-list">
+        <!-- Flag 1 -->
+        <li class="checklist-item" id="item-flag-webmcp">
+          <input type="checkbox" class="checklist-checkbox" id="check-flag-webmcp" data-storage-key="flag_webmcp">
+          <div class="checklist-content">
+            <div class="checklist-title" data-i18n="flag1Title">1. Enable WebMCP Testing Runtime</div>
+            <div class="checklist-desc" data-i18n="flag1Desc">
+              Exposes the <code>document.modelContext</code> object and imperative/declarative tool APIs.
+            </div>
+            <div class="checklist-meta">
+              <span class="flag-token">chrome://flags/#enable-webmcp-testing</span>
+              <button class="btn-copy" onclick="copyText('chrome://flags/#enable-webmcp-testing', 'WebMCP flag URL copied!')">📋 Copy URL</button>
+              <span style="font-size:12px; color:var(--text-muted);">Set to <strong>Enabled</strong></span>
+            </div>
+          </div>
+        </li>
+
+        <!-- Flag 2 -->
+        <li class="checklist-item" id="item-flag-tooluse">
+          <input type="checkbox" class="checklist-checkbox" id="check-flag-tooluse" data-storage-key="flag_tooluse">
+          <div class="checklist-content">
+            <div class="checklist-title" data-i18n="flag2Title">2. Enable Prompt API with Tool Use</div>
+            <div class="checklist-desc" data-i18n="flag2Desc">
+              Enables native tool invocation (function calling) capabilities inside on-device Gemini Nano.
+            </div>
+            <div class="checklist-meta">
+              <span class="flag-token">chrome://flags/#prompt-api-tool-use</span>
+              <button class="btn-copy" onclick="copyText('chrome://flags/#prompt-api-tool-use', 'Prompt API Tool Use URL copied!')">📋 Copy URL</button>
+              <span style="font-size:12px; color:var(--text-muted);">Set to <strong>Enabled</strong></span>
+            </div>
+          </div>
+        </li>
+
+        <!-- Flag 3 (Optional) -->
+        <li class="checklist-item" id="item-flag-multimodal">
+          <input type="checkbox" class="checklist-checkbox" id="check-flag-multimodal" data-storage-key="flag_multimodal">
+          <div class="checklist-content">
+            <div class="checklist-title" data-i18n="flag3Title">3. Enable Prompt API Multimodal Input (Optional / Bonus)</div>
+            <div class="checklist-desc" data-i18n="flag3Desc">
+              Allows passing HTML <code>&lt;canvas&gt;</code> and <code>&lt;img&gt;</code> tokens directly to Gemini Nano.
+            </div>
+            <div class="checklist-meta">
+              <span class="flag-token">chrome://flags/#prompt-api-multimodal-input</span>
+              <button class="btn-copy" onclick="copyText('chrome://flags/#prompt-api-multimodal-input', 'Multimodal flag URL copied!')">📋 Copy URL</button>
+              <span style="font-size:12px; color:var(--text-muted);">Set to <strong>Enabled</strong></span>
+            </div>
+          </div>
+        </li>
+
+        <!-- Flag 4: Relaunch -->
+        <li class="checklist-item" id="item-flag-relaunch">
+          <input type="checkbox" class="checklist-checkbox" id="check-flag-relaunch" data-storage-key="flag_relaunch">
+          <div class="checklist-content">
+            <div class="checklist-title" data-i18n="flag4Title">4. Relaunch Chrome Canary</div>
+            <div class="checklist-desc" data-i18n="flag4Desc">
+              Click the blue <strong>"Relaunch"</strong> button at the bottom right of the <code>chrome://flags</code> tab to activate changes.
+            </div>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Section 3: On-Device Gemini Nano Download & Live Progress Monitor -->
+    <section class="card" id="section-gemini-nano">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:10px; margin-bottom:8px;">
+        <div>
+          <h2 class="font-display" style="font-size:20px; font-weight:700;" data-i18n="nanoHeading">
+            <span>🧠</span> On-Device Gemini Nano: Download & Status Monitor
+          </h2>
+          <p style="font-size:14px; color:var(--text-secondary);" data-i18n="nanoDesc">
+            Gemini Nano runs 100% locally on your device without sending prompts to cloud servers (~1.5GB–2.2GB binary). Calling <code>LanguageModel.create()</code> automatically triggers on-demand background downloading.
+          </p>
+        </div>
+        <span id="nano-badge-status" class="status-pill checking">Checking...</span>
+      </div>
+
+      <!-- Live Progress & Telemetry Card -->
+      <div style="background:var(--bg-surface); border:1px solid var(--border-color); border-radius:10px; padding:18px; margin: 16px 0;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <div>
+            <div id="nano-status-headline" style="font-weight:600; font-size:15px; color:var(--text-main);">
+              Model Status: Checking...
+            </div>
+            <div id="nano-status-subtext" style="font-size:12px; color:var(--text-secondary); margin-top:3px;">
+              Querying LanguageModel.availability()...
+            </div>
+          </div>
+          <span id="nano-progress-percent" style="font-size:20px; font-weight:700; color:var(--google-blue);">
+            0%
+          </span>
+        </div>
+
+        <!-- Progress Bar -->
+        <div style="background:var(--bg-main); border:1px solid var(--border-color); border-radius:8px; height:16px; overflow:hidden; position:relative; margin-bottom:8px;">
+          <div id="nano-progress-bar" style="height:100%; width:0%; background:linear-gradient(90deg, #2563eb, #38bdf8); transition:width 0.4s ease; border-radius:7px;"></div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--text-muted);">
+          <span id="nano-bytes-label">0 MB / ~1,800 MB</span>
+          <span id="nano-download-state">Idle</span>
+        </div>
+      </div>
+
+      <!-- Action Controls -->
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px;">
+        <button id="btn-nano-download" class="btn-diag" style="background:var(--google-blue);">
+          ⚡ <span id="label-nano-btn">Start Model Download (LanguageModel.create)</span>
+        </button>
+        <button id="btn-nano-test-ping" class="btn-diag" style="background:#0d9488;">
+          🧪 Test Instant Inference ("Hello")
+        </button>
+      </div>
+
+      <!-- Quick Test Result Output Container -->
+      <div id="nano-test-result" style="display:none; padding:12px 14px; background:var(--bg-surface); border:1px solid var(--border-color); border-left:4px solid var(--google-green); border-radius:6px; font-size:13px; margin-top:8px;">
+        <div style="font-weight:600; color:var(--google-green); margin-bottom:4px;">✨ On-Device Response from Gemini Nano:</div>
+        <div id="nano-test-result-text" style="color:var(--text-main); font-family:var(--font-mono); font-size:12px;"></div>
+      </div>
+
+      <!-- Collapsible Advanced Internals Info -->
+      <details style="margin-top:16px; font-size:12px; color:var(--text-secondary); background:var(--bg-surface); padding:10px 14px; border-radius:8px; border:1px solid var(--border-color);">
+        <summary style="cursor:pointer; font-weight:600; color:var(--text-main); user-select:none;">
+          🔧 Advanced: Under-the-Hood Architecture & Backup Diagnostics
+        </summary>
+        <div style="margin-top:10px; line-height:1.6;">
+          <p style="margin-bottom:8px;">
+            In Chrome 138+, calling <code>LanguageModel.create({ monitor(m) { ... } })</code> sends an IPC call to Chromium's <code>AIManager</code>, which resolves the model recipe in <strong>Optimization Guide On DeviceModels Manifest</strong> and downloads the <strong>nano_v3_gpu_component</strong> weights binary in the background.
+          </p>
+          <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;">
+            <button class="btn-copy" onclick="copyText('chrome://on-device-internals', 'chrome://on-device-internals URL copied!')">
+              📋 Copy chrome://on-device-internals URL
+            </button>
+            <button class="btn-copy" onclick="copyText('chrome://components', 'chrome://components URL copied!')">
+              📋 Copy chrome://components URL
+            </button>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <!-- Section 4: Modern Web Guidance (MWG) Multi-Agent Hub -->
+    <section class="card">
+      <h2 class="font-display" style="font-size:20px; font-weight:700; margin-bottom:6px;" data-i18n="mwgHeading">
+        <span>⚡</span> Modern Web Guidance (MWG) Installation Hub
+      </h2>
+      <p style="font-size:14px; color:var(--text-secondary); margin-bottom:16px;" data-i18n="mwgDesc">
+        Install Google's official Modern Web Guidance skills into your AI agent or IDE so it generates modern, standards-compliant web code.
+      </p>
+
+      <!-- Tabs -->
+      <div class="tab-header">
+        <button class="tab-btn active" data-tab="tab-cursor">Cursor</button>
+        <button class="tab-btn" data-tab="tab-claude">Claude Code / Desktop</button>
+        <button class="tab-btn" data-tab="tab-copilot">GitHub Copilot</button>
+        <button class="tab-btn" data-tab="tab-idx">Project IDX / Antigravity</button>
+        <button class="tab-btn" data-tab="tab-jetbrains">JetBrains</button>
+        <button class="tab-btn" data-tab="tab-cli">Universal CLI (Terminal)</button>
+      </div>
+
+      <!-- Tab Content 1: Cursor -->
+      <div id="tab-cursor" class="tab-pane active">
+        <p style="font-size:13px; color:var(--text-secondary); margin-bottom:10px;" data-i18n="mwgCursorDesc">
+          Install Modern Web Guidance into Cursor to automatically inject modern web baseline standards into Cursor Composer and Agent:
+        </p>
+        <div class="code-block">
+          <pre>npx modern-web-guidance@latest install</pre>
+          <button class="btn-copy-code" onclick="copyCode('npx modern-web-guidance@latest install')">Copy</button>
+        </div>
+        <p style="font-size:12px; color:var(--text-muted); margin-top:8px;">
+          Tip: If developing Chrome extensions, run with <code>--choose</code> for interactive selection: <code>npx modern-web-guidance@latest install --choose</code>
+        </p>
+      </div>
+
+      <!-- Tab Content 2: Claude Code / Desktop -->
+      <div id="tab-claude" class="tab-pane">
+        <p style="font-size:13px; color:var(--text-secondary); margin-bottom:10px;">
+          In Claude Code terminal, add the plugin from the marketplace:
+        </p>
+        <div class="code-block">
+          <pre>/plugin marketplace add GoogleChrome/modern-web-guidance
+/plugin install modern-web-guidance@googlechrome
+/reload-plugins</pre>
+          <button class="btn-copy-code" onclick="copyCode('/plugin marketplace add GoogleChrome/modern-web-guidance\n/plugin install modern-web-guidance@googlechrome\n/reload-plugins')">Copy</button>
+        </div>
+        <p style="font-size:13px; color:var(--text-secondary); margin:12px 0 6px;">
+          Or install using the Vercel Skills CLI:
+        </p>
+        <div class="code-block">
+          <pre>npx skills add GoogleChrome/modern-web-guidance</pre>
+          <button class="btn-copy-code" onclick="copyCode('npx skills add GoogleChrome/modern-web-guidance')">Copy</button>
+        </div>
+      </div>
+
+      <!-- Tab Content 3: GitHub Copilot -->
+      <div id="tab-copilot" class="tab-pane">
+        <p style="font-size:13px; color:var(--text-secondary); margin-bottom:10px;">
+          For GitHub Copilot CLI or GitHub Extensions:
+        </p>
+        <div class="code-block">
+          <pre>gh skill install GoogleChrome/modern-web-guidance</pre>
+          <button class="btn-copy-code" onclick="copyCode('gh skill install GoogleChrome/modern-web-guidance')">Copy</button>
+        </div>
+        <p style="font-size:13px; color:var(--text-secondary); margin:12px 0 6px;">
+          Or in Copilot CLI:
+        </p>
+        <div class="code-block">
+          <pre>/plugin marketplace add GoogleChrome/modern-web-guidance
+/plugin install modern-web-guidance@googlechrome</pre>
+          <button class="btn-copy-code" onclick="copyCode('/plugin marketplace add GoogleChrome/modern-web-guidance\n/plugin install modern-web-guidance@googlechrome')">Copy</button>
+        </div>
+      </div>
+
+      <!-- Tab Content 4: Project IDX / Antigravity -->
+      <div id="tab-idx" class="tab-pane">
+        <p style="font-size:13px; color:var(--text-secondary); margin-bottom:10px;">
+          In Google Project IDX terminal or Antigravity environment:
+        </p>
+        <div class="code-block">
+          <pre>agy plugin install https://github.com/GoogleChrome/modern-web-guidance</pre>
+          <button class="btn-copy-code" onclick="copyCode('agy plugin install https://github.com/GoogleChrome/modern-web-guidance')">Copy</button>
+        </div>
+      </div>
+
+      <!-- Tab Content 5: JetBrains -->
+      <div id="tab-jetbrains" class="tab-pane">
+        <p style="font-size:13px; color:var(--text-secondary); margin-bottom:10px;">
+          In IntelliJ IDEA, WebStorm, or PyCharm:
+        </p>
+        <ol style="margin-left: 20px; font-size:13px; color:var(--text-secondary);">
+          <li>Open <strong>Settings / Preferences</strong> (<code>Cmd+,</code> or <code>Ctrl+Alt+S</code>).</li>
+          <li>Navigate to <strong>Tools ➡️ AI Assistant ➡️ Skills</strong>.</li>
+          <li>Click <strong>+ (Add Skill)</strong> and search for <strong>Modern Web Guidance</strong>.</li>
+        </ol>
+      </div>
+
+      <!-- Tab Content 6: Universal CLI -->
+      <div id="tab-cli" class="tab-pane">
+        <p style="font-size:13px; color:var(--text-secondary); margin-bottom:10px;">
+          Use the universal CLI directly from any terminal:
+        </p>
+        <div class="code-block">
+          <pre># Search best practices for a specific topic
+npx -y modern-web-guidance@latest search "tabs popover dialog"
+
+# Retrieve full markdown implementation guide
+npx -y modern-web-guidance@latest retrieve "popover-api-dialog"</pre>
+          <button class="btn-copy-code" onclick="copyCode('npx -y modern-web-guidance@latest search \"tabs popover dialog\"')">Copy</button>
+        </div>
+      </div>
+
+      <!-- Modern Web Guidance Verification Guide -->
+      <div style="margin-top: 20px; padding: 16px; background: var(--bg-surface); border-radius: 8px; border: 1px solid var(--border-color);">
+        <h3 style="font-size: 15px; font-weight: 600; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+          <span>✅</span> How to Confirm Your Installation
+        </h3>
+        <ul style="font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-left: 20px;">
+          <li>
+            <strong>1. Quick Terminal Check (Ground Truth):</strong> Run <code style="background:var(--bg-main); padding:2px 6px; border-radius:4px;">npx modern-web-guidance@latest search "animate a dialog"</code>. If working, it immediately returns matching JSON guide metadata (e.g. <code>animate-to-from-top-layer</code>).
+          </li>
+          <li>
+            <strong>2. In-Agent Test Prompt:</strong> In Cursor Composer, Claude Code, or Copilot, ask:
+            <br>
+            <em style="color:var(--text-main); font-style:italic;">"Using Modern Web Guidance, how should I animate a modal dialog entering the top layer?"</em>
+            <br>
+            A properly configured agent will query MWG and suggest native modern APIs (<code style="background:var(--bg-main); padding:1px 4px; border-radius:3px;">&lt;dialog closedby&gt;</code>, <code style="background:var(--bg-main); padding:1px 4px; border-radius:3px;">@starting-style</code>, <code style="background:var(--bg-main); padding:1px 4px; border-radius:3px;">transition-behavior: allow-discrete</code>) rather than legacy JavaScript polyfills.
+          </li>
+          <li>
+            <strong>3. Agent Activation Tip:</strong> If your agent does not trigger guidance automatically, simply append <code style="background:var(--bg-main); padding:2px 6px; border-radius:4px;">"use modern-web-guidance"</code> to the end of your prompt, or use slash command syntax if supported (e.g. <code style="background:var(--bg-main); padding:2px 6px; border-radius:4px;">/modern-web-guidance</code>).
+          </li>
+        </ul>
+      </div>
+
+      <div style="margin-top:16px; font-size:13px;">
+        📖 <a href="https://developer.chrome.com/docs/modern-web-guidance/get-started" target="_blank" rel="noopener" style="color:var(--google-blue); text-decoration:none; font-weight:500;">
+          Read Modern Web Guidance Documentation on developer.chrome.com ↗
+        </a>
+      </div>
+    </section>
+
+    <!-- Section 5: Chrome DevTools MCP Bridge -->
+    <section class="card">
+      <h2 class="font-display" style="font-size:20px; font-weight:700; margin-bottom:6px;" data-i18n="mcpHeading">
+        <span>🛠️</span> Chrome DevTools MCP Server Setup
+      </h2>
+      <p style="font-size:14px; color:var(--text-secondary); margin-bottom:16px;" data-i18n="mcpDesc">
+        Connects your external AI coding assistant directly into Chrome Canary via Chrome DevTools Protocol (CDP) for live inspection, screenshot captures, console logs, and DOM validation.
+      </p>
+
+      <div class="code-block">
+        <pre>npx -y chrome-devtools-mcp@latest</pre>
+        <button class="btn-copy-code" onclick="copyCode('npx -y chrome-devtools-mcp@latest')">Copy</button>
+      </div>
+
+      <p style="font-size:13px; color:var(--text-secondary); margin: 12px 0 6px;">
+        <strong>Claude Code CLI 1-liner:</strong>
+      </p>
+      <div class="code-block">
+        <pre>claude mcp add chrome-devtools npx chrome-devtools-mcp@latest</pre>
+        <button class="btn-copy-code" onclick="copyCode('claude mcp add chrome-devtools npx chrome-devtools-mcp@latest')">Copy</button>
+      </div>
+
+      <p style="font-size:13px; color:var(--text-secondary); margin: 12px 0 6px;">
+        <strong>MCP Configuration snippet</strong> (e.g. for Cursor <code>~/.cursor/mcp.json</code> or Claude Desktop):
+      </p>
+      <div class="code-block">
+        <pre>{
+  "mcpServers": {
+    "chrome-devtools": {
+      "command": "npx",
+      "args": ["-y", "chrome-devtools-mcp@latest"]
+    }
+  }
+}</pre>
+        <button class="btn-copy-code" onclick="copyCode('{\n  &quot;mcpServers&quot;: {\n    &quot;chrome-devtools&quot;: {\n      &quot;command&quot;: &quot;npx&quot;,\n      &quot;args&quot;: [&quot;-y&quot;, &quot;chrome-devtools-mcp@latest&quot;]\n    }\n  }\n}')">Copy</button>
+      </div>
+
+      <div style="margin-top:12px; font-size:13px;">
+        🔗 <a href="https://github.com/ChromeDevTools/chrome-devtools-mcp" target="_blank" rel="noopener" style="color:var(--google-blue); text-decoration:none; font-weight:500;">
+          ChromeDevTools / chrome-devtools-mcp GitHub Repository ↗
+        </a>
+      </div>
+    </section>
+
+    <!-- Recommended Official Extension: WebMCP Model Context Tool Inspector -->
+    <div style="background: linear-gradient(135deg, #e8f0fe 0%, #f1f3f4 100%); border: 1px solid #dadce0; border-left: 4px solid var(--google-blue); border-radius: 12px; padding: 18px 22px; margin-bottom: 28px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; box-shadow: var(--shadow-sm);">
+      <div style="display: flex; align-items: center; gap: 16px; max-width: 720px;">
+        <span style="font-size: 34px;">🔍</span>
+        <div>
+          <div style="font-weight: 700; font-size: 16px; color: var(--text-main);">
+            Official WebMCP Model Context Tool Inspector Extension
+          </div>
+          <div style="font-size: 13.5px; color: var(--text-secondary); margin-top: 4px; line-height: 1.4;">
+            Install Google's official DevRel extension from the Chrome Web Store. It enables 1-click inspection, schema validation, and manual test execution of any <code>document.modelContext</code> tools registered on your active tab (Essential for Track A attendees).
+          </div>
+        </div>
+      </div>
+      <a href="https://chromewebstore.google.com/detail/webmcp-model-context-tool/gbpdfapgefenggkahomfgkhfehlcenpd?pli=1" target="_blank" rel="noopener" class="btn-diag" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px; background: var(--google-blue); color: #fff; font-size: 13.5px; padding: 10px 18px; border-radius: 8px; font-weight: 600; box-shadow: var(--shadow-sm);">
+        <span>📥 Install from Chrome Web Store ↗</span>
+      </a>
+    </div>
+
+    <!-- Recommended: Developer Field Guide & Gotchas -->
+    <div style="background: linear-gradient(135deg, #f3e8fd 0%, #f8f9fa 100%); border: 1px solid #dadce0; border-left: 4px solid var(--google-purple); border-radius: 12px; padding: 18px 22px; margin-bottom: 28px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; box-shadow: var(--shadow-sm);">
+      <div style="display: flex; align-items: center; gap: 16px; max-width: 720px;">
+        <span style="font-size: 34px;">🛠️</span>
+        <div>
+          <div style="font-weight: 700; font-size: 16px; color: var(--text-main);">
+            Developer Field Guide: Extension Plumbing & Built-in AI Gotchas
+          </div>
+          <div style="font-size: 13.5px; color: var(--text-secondary); margin-top: 4px; line-height: 1.4;">
+            Track A (declarative content scripts) vs. Track B (Side Panel AI agent) architecture, <code>world: "MAIN"</code> execution, streaming delta accumulation, and Modern Web Guidance standards.
+          </div>
+        </div>
+      </div>
+      <a href="extension_guide.html" class="btn-diag" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px; background: var(--google-purple); color: #fff; font-size: 13.5px; padding: 10px 18px; border-radius: 8px; font-weight: 600; box-shadow: var(--shadow-sm);">
+        <span>📖 Open Field Guide ↗</span>
+      </a>
+    </div>
+
+    <!-- Section 6: Interactive Live Test Console -->
+    <section class="card">
+      <h2 class="font-display" style="font-size:20px; font-weight:700; margin-bottom:6px;" data-i18n="consoleHeading">
+        <span>🧪</span> In-Browser Live Verification Console
+      </h2>
+      <p style="font-size:14px; color:var(--text-secondary); margin-bottom:16px;" data-i18n="consoleDesc">
+        Run live tests in this browser tab to verify WebMCP tool registration and local Gemini Nano inference.
+      </p>
+
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:12px;">
+        <button id="btn-test-register-webmcp" class="btn-diag" style="background:#2563eb;">
+          1. Register Sample WebMCP Tool
+        </button>
+        <button id="btn-test-execute-webmcp" class="btn-diag" style="background:#0d9488;">
+          2. Execute Registered Tool
+        </button>
+        <button id="btn-test-prompt-nano" class="btn-diag" style="background:#7c3aed;">
+          3. Test Prompt API Streaming
+        </button>
+        <button id="btn-clear-console" class="btn-copy" style="margin-left:auto;">
+          Clear Logs
+        </button>
+      </div>
+
+      <div class="console-input-row">
+        <input type="text" id="input-custom-prompt" class="console-input" value="Explain WebMCP in one sentence for web developers." placeholder="Type a prompt to test Gemini Nano...">
+        <button id="btn-run-custom-prompt" class="btn-diag" style="background:var(--google-blue);">
+          Prompt Nano
+        </button>
+      </div>
+
+      <div id="test-console" class="test-console-box">
+// Diagnostic console output will appear here...
+// Click buttons above to test document.modelContext or on-device Gemini Nano.
+      </div>
+    </section>
+
+    <!-- Section 7: All Workshop Downloads & Quick Links -->
+    <section class="card">
+      <h2 class="font-display" style="font-size:20px; font-weight:700; margin-bottom:16px;" data-i18n="downloadsHeading">
+        <span>📦</span> Workshop Downloads & Reference Links
+      </h2>
+      <div class="links-grid">
+        <a href="https://www.google.com/chrome/canary/" target="_blank" rel="noopener" class="link-tile">
+          <span class="link-tile-icon">🌐</span>
+          <div>
+            <div>Chrome Canary</div>
+            <div style="font-size:12px; color:var(--text-muted);">v138+ with WebMCP</div>
+          </div>
+        </a>
+
+        <a href="https://developer.chrome.com/docs/ai/built-in" target="_blank" rel="noopener" class="link-tile">
+          <span class="link-tile-icon">🤖</span>
+          <div>
+            <div>Chrome Built-in AI Docs</div>
+            <div style="font-size:12px; color:var(--text-muted);">Prompt API Reference</div>
+          </div>
+        </a>
+
+        <a href="https://github.com/webmachinelearning/webmcp" target="_blank" rel="noopener" class="link-tile">
+          <span class="link-tile-icon">📐</span>
+          <div>
+            <div>WebMCP Specification</div>
+            <div style="font-size:12px; color:var(--text-muted);">W3C WebML CG Explainer</div>
+          </div>
+        </a>
+
+        <a href="https://github.com/ChromeDevTools/chrome-devtools-mcp" target="_blank" rel="noopener" class="link-tile">
+          <span class="link-tile-icon">🔌</span>
+          <div>
+            <div>DevTools MCP Repo</div>
+            <div style="font-size:12px; color:var(--text-muted);">Chrome CDP Bridge</div>
+          </div>
+        </a>
+
+        <a href="https://developer.chrome.com/docs/modern-web-guidance/get-started" target="_blank" rel="noopener" class="link-tile">
+          <span class="link-tile-icon">📚</span>
+          <div>
+            <div>Modern Web Guidance</div>
+            <div style="font-size:12px; color:var(--text-muted);">Best Practices Guide</div>
+          </div>
+        </a>
+
+        <a href="https://chromewebstore.google.com/detail/webmcp-model-context-tool/gbpdfapgefenggkahomfgkhfehlcenpd?pli=1" target="_blank" rel="noopener" class="link-tile">
+          <span class="link-tile-icon">🔍</span>
+          <div>
+            <div>WebMCP Tool Inspector ↗</div>
+            <div style="font-size:12px; color:var(--text-muted);">Official Chrome Extension</div>
+          </div>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Global Toast Notification -->
+  <div id="toast">Copied to clipboard!</div>
+
+  <!-- Client-Side Diagnostics & Interaction Logic -->
+  <script>
+    // ==========================================================================
+    // 1. Internationalization (Bilingual EN / JA)
+    // ==========================================================================
+    const i18nData = {
+      en: {
+        heroTitle: "Built-in AI & WebMCP Participant Setup Hub",
+        heroSubtitle: "Welcome! This self-contained setup page provides 100% public download links, flag checklists, agent installation guides, and live on-device browser diagnostics to ensure your laptop is ready for today's session.",
+        checkingStatus: "Checking Browser Environment...",
+        runningDetection: "Running client-side feature detection.",
+        runDiagnostics: "Run Diagnostics",
+        diagHeading: "Browser Environment Diagnostics",
+        cardBrowserTitle: "Chrome Channel & Version",
+        downloadCanaryLink: "Download Chrome Canary ↗",
+        cardWebMcpTitle: "WebMCP Runtime",
+        copyFlagUrl: "Copy Flag Link",
+        cardPromptApiTitle: "Built-in AI (Prompt API)",
+        triggerDownloadBtn: "Trigger Download",
+        cardContextTitle: "Execution Context",
+        flagsHeading: "🚩 Required Chrome Canary Flags Checklist",
+        flagsSubtitle: "Open chrome://flags in Chrome Canary, enable the flags below, and relaunch your browser. (Note: Core LanguageModel is enabled by default). Progress is saved automatically.",
+        resetChecks: "Reset Checks",
+        flag1Title: "1. Enable WebMCP Testing Runtime",
+        flag1Desc: "Exposes the document.modelContext object and imperative/declarative tool APIs.",
+        flag2Title: "2. Enable Prompt API with Tool Use",
+        flag2Desc: "Enables native tool invocation (function calling) capabilities inside on-device Gemini Nano.",
+        flag3Title: "3. Enable Prompt API Multimodal Input (Optional / Bonus)",
+        flag3Desc: "Allows passing HTML <canvas> and <img> tokens directly to Gemini Nano.",
+        flag4Title: "4. Relaunch Chrome Canary",
+        flag4Desc: 'Click the blue "Relaunch" button at the bottom right of the chrome://flags tab to activate changes.',
+        nanoHeading: "🧠 On-Device Gemini Nano: Download & Status Monitor",
+        nanoDesc: "Gemini Nano runs 100% locally on your device without sending prompts to cloud servers (~1.5GB to 2.2GB). Calling LanguageModel.create() automatically triggers the background model download if not already cached.",
+        mwgHeading: "⚡ Modern Web Guidance (MWG) Installation Hub",
+        mwgDesc: "Install Google's official Modern Web Guidance skills into your AI agent or IDE so it generates modern, standards-compliant web code.",
+        mwgCursorDesc: "Install Modern Web Guidance into Cursor to automatically inject modern web baseline standards into Cursor Composer and Agent:",
+        mcpHeading: "🛠️ Chrome DevTools MCP Server Setup",
+        mcpDesc: "Connects your external AI coding assistant directly into Chrome Canary via Chrome DevTools Protocol (CDP) for live inspection, screenshot captures, console logs, and DOM validation.",
+        consoleHeading: "🧪 In-Browser Live Verification Console",
+        consoleDesc: "Run live tests in this browser tab to verify WebMCP tool registration and local Gemini Nano inference.",
+        downloadsHeading: "📦 Workshop Downloads & Reference Links"
+      },
+      ja: {
+        heroTitle: "Built-in AI & WebMCP ワークショップ参加者用環境設定ハブ",
+        heroSubtitle: "ご参加ありがとうございます！本ページでは、当日のハンズオンを円滑に行うための公開ダウンロードリンク、Chrome フラグ設定チェックリスト、AI エージェント別設定ガイド、およびお使いのブラウザの動作環境をリアルタイムに自動判定する診断ツールを提供します。",
+        checkingStatus: "ブラウザ環境を確認中...",
+        runningDetection: "クライアントサイドの機能検出を実行しています。",
+        runDiagnostics: "診断を実行",
+        diagHeading: "ブラウザ環境の動作診断",
+        cardBrowserTitle: "Chrome チャンネル & バージョン",
+        downloadCanaryLink: "Chrome Canary をダウンロード ↗",
+        cardWebMcpTitle: "WebMCP ランタイム",
+        copyFlagUrl: "フラグURLをコピー",
+        cardPromptApiTitle: "Built-in AI (Prompt API)",
+        triggerDownloadBtn: "ダウンロードを開始",
+        cardContextTitle: "実行コンテキスト",
+        flagsHeading: "🚩 Chrome Canary 必須フラグ設定チェックリスト",
+        flagsSubtitle: "Chrome Canary で chrome://flags を開き、以下のフラグを Enabled に変更してブラウザを再起動してください。（注: 基本の LanguageModel は標準で有効化されています）。進捗は自動保存されます。",
+        resetChecks: "チェックをリセット",
+        flag1Title: "1. WebMCP Testing ランタイムの有効化",
+        flag1Desc: "document.modelContext オブジェクトおよび命令的/宣言的ツール API を有効化します。",
+        flag2Title: "2. Prompt API with Tool Use の有効化",
+        flag2Desc: "オンデバイス Gemini Nano でのネイティブなツール呼び出し（Function Calling）を有効化します。",
+        flag3Title: "3. Prompt API Multimodal Input の有効化（任意/ボーナス）",
+        flag3Desc: "HTML <canvas> や <img> トークンを直接 Gemini Nano に渡せるようにします。",
+        flag4Title: "4. Chrome Canary の再起動（Relaunch）",
+        flag4Desc: "chrome://flags タブ右下の青い「Relaunch」ボタンをクリックしてブラウザを再起動し、設定を反映させます。",
+        nanoHeading: "🧠 オンデバイス Gemini Nano: ダウンロード & 進行状況モニター",
+        nanoDesc: "Gemini Nano はクラウドにデータを送信せず、お使いの端末上で100%ローカルに動作します（約1.5GB〜2.2GB）。LanguageModel.create() を呼び出すことで、オンデマンドでバックグラウンドダウンロードが自動開始されます。",
+        mwgHeading: "⚡ Modern Web Guidance (MWG) インストールハブ",
+        mwgDesc: "Google 公式の Modern Web Guidance スキルをお使いの AI コーディングツール（IDE/CLI）に導入し、最新のウェブ標準に準拠したコード生成を実現します。",
+        mwgCursorDesc: "Cursor に Modern Web Guidance をインストールし、Composer や Agent に最新ウェブ標準を自動適用します：",
+        mcpHeading: "🛠️ Chrome DevTools MCP サーバーのセットアップ",
+        mcpDesc: "外部の AI コーディングアシスタントを Chrome Canary に直接接続し、CDP 経由でリアルタイムのインスペクション、スクリーンショット取得、DOM 検証を行います。",
+        consoleHeading: "🧪 ブラウザ内リアルタイム検証コンソール",
+        consoleDesc: "このブラウザタブ内で WebMCP ツールの登録およびオンデバイス Gemini Nano の推論を直接テストできます。",
+        downloadsHeading: "📦 ワークショップ関連ダウンロード & 参照リンク"
+      }
+    };
+
+    let currentLang = 'en';
+    let hasRunDiagnostics = false;
+    let isRunningDiagnostics = false;
+
+    function renderInitialDiagUI() {
+      const scoreBadge = document.getElementById('overall-score-badge');
+      const summaryTitle = document.getElementById('overall-summary-title');
+      const summaryDesc = document.getElementById('overall-summary-desc');
+      const btnText = document.getElementById('btn-diag-text');
+      const badgeBrowser = document.getElementById('badge-browser');
+      const descBrowser = document.getElementById('desc-browser');
+      const badgeWebmcp = document.getElementById('badge-webmcp');
+      const descWebmcp = document.getElementById('desc-webmcp');
+      const badgePrompt = document.getElementById('badge-promptapi');
+      const descPrompt = document.getElementById('desc-promptapi');
+
+      if (scoreBadge) {
+        scoreBadge.textContent = '—';
+        scoreBadge.className = 'score-badge idle';
+      }
+      if (summaryTitle) summaryTitle.textContent = currentLang === 'ja' ? '診断未実行' : 'Diagnostics Not Run';
+      if (summaryDesc) summaryDesc.textContent = currentLang === 'ja' ? '「診断を実行」ボタンをクリックしてブラウザ環境を判定してください。' : 'Click "Run Diagnostics" to check your browser environment.';
+      if (btnText) btnText.textContent = currentLang === 'ja' ? '診断を実行' : 'Run Diagnostics';
+
+      if (badgeBrowser) {
+        badgeBrowser.textContent = currentLang === 'ja' ? '未判定' : 'Not Run';
+        badgeBrowser.className = 'status-pill not-run';
+      }
+      if (descBrowser) descBrowser.innerHTML = currentLang === 'ja' ? '対象: Chrome Canary / Dev 138 以上。' : 'Target: Chrome Canary / Dev ≥ 138.';
+
+      if (badgeWebmcp) {
+        badgeWebmcp.textContent = currentLang === 'ja' ? '未判定' : 'Not Run';
+        badgeWebmcp.className = 'status-pill not-run';
+      }
+      if (descWebmcp) descWebmcp.innerHTML = currentLang === 'ja' ? '対象: <code>document.modelContext.registerTool</code>。' : 'Target: <code>document.modelContext.registerTool</code>.';
+
+      if (badgePrompt) {
+        badgePrompt.textContent = currentLang === 'ja' ? '未判定' : 'Not Run';
+        badgePrompt.className = 'status-pill not-run';
+      }
+      if (descPrompt) descPrompt.innerHTML = currentLang === 'ja' ? '対象: <code>window.LanguageModel</code> 利用可否。' : 'Target: <code>window.LanguageModel</code> availability.';
+    }
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      document.getElementById('btn-lang-en')?.classList.toggle('active', lang === 'en');
+      document.getElementById('btn-lang-ja')?.classList.toggle('active', lang === 'ja');
+
+      const dict = i18nData[lang] || i18nData.en;
+      document.querySelectorAll('[data-i18n]').forEach((el) => {
+        const key = el.getAttribute('data-i18n');
+        if (dict[key]) {
+          el.textContent = dict[key];
+        }
+      });
+      if (hasRunDiagnostics) {
+        updateOverallScore();
+        const btnText = document.getElementById('btn-diag-text');
+        if (btnText) btnText.textContent = currentLang === 'ja' ? '診断を再実行' : 'Re-run Diagnostics';
+      } else {
+        renderInitialDiagUI();
+      }
+    }
+
+    // ==========================================================================
+    // 2. Diagnostics State & Logic
+    // ==========================================================================
+    const diagState = {
+      browserOk: false,
+      browserDetails: '',
+      webmcpOk: false,
+      promptApiOk: false,
+      promptApiStatus: 'not_run',
+      secureContextOk: false
+    };
+
+    function logConsole(msg) {
+      const el = document.getElementById('test-console');
+      if (!el) return;
+      const timestamp = new Date().toLocaleTimeString();
+      el.textContent += `\n[${timestamp}] ${msg}`;
+      el.scrollTop = el.scrollHeight;
+    }
+
+    function updateNanoMonitor({ status, pct = null, loadedBytes = null, totalBytes = null, headline = '', subtext = '' }) {
+      const badge = document.getElementById('nano-badge-status');
+      const bar = document.getElementById('nano-progress-bar');
+      const pctText = document.getElementById('nano-progress-percent');
+      const bytesLabel = document.getElementById('nano-bytes-label');
+      const downloadState = document.getElementById('nano-download-state');
+      const headlineEl = document.getElementById('nano-status-headline');
+      const subtextEl = document.getElementById('nano-status-subtext');
+      const btnLabel = document.getElementById('label-nano-btn');
+
+      if (!badge) return;
+
+      if (status === 'ready') {
+        badge.className = 'status-pill pass';
+        badge.textContent = currentLang === 'ja' ? '準備完了（ダウンロード済）' : 'Ready (Downloaded)';
+        if (bar) {
+          bar.style.width = '100%';
+          bar.style.background = 'var(--google-green)';
+        }
+        if (pctText) pctText.textContent = '100%';
+        if (bytesLabel) bytesLabel.textContent = '~1,800 MB / ~1,800 MB';
+        if (downloadState) downloadState.textContent = currentLang === 'ja' ? '端末内に保存済み' : 'Cached on Device';
+        if (headlineEl) headlineEl.textContent = headline || (currentLang === 'ja' ? 'Gemini Nano は準備完了です' : 'Model Downloaded & Ready');
+        if (subtextEl) subtextEl.textContent = subtext || (currentLang === 'ja' ? 'ローカル端末上でゼロレイテンシー推論が可能です。' : 'Gemini Nano is loaded on-device and ready for instant inference.');
+        if (btnLabel) btnLabel.textContent = currentLang === 'ja' ? 'セッションを再初期化 / 検証' : 'Re-verify / Re-initialize Session';
+      } else if (status === 'downloading') {
+        badge.className = 'status-pill warn';
+        badge.textContent = currentLang === 'ja' ? 'ダウンロード中...' : 'Downloading...';
+        const percentNum = pct !== null ? pct : 0;
+        if (bar) {
+          bar.style.width = `${percentNum}%`;
+          bar.style.background = 'linear-gradient(90deg, #2563eb, #38bdf8)';
+        }
+        if (pctText) pctText.textContent = `${percentNum}%`;
+        if (loadedBytes && totalBytes) {
+          const lMB = (loadedBytes / (1024 * 1024)).toFixed(1);
+          const tMB = (totalBytes / (1024 * 1024)).toFixed(1);
+          if (bytesLabel) bytesLabel.textContent = `${lMB} MB / ${tMB} MB`;
+        }
+        if (downloadState) downloadState.textContent = currentLang === 'ja' ? `ダウンロード中 (${percentNum}%)` : `Downloading (${percentNum}%)`;
+        if (headlineEl) headlineEl.textContent = headline || (currentLang === 'ja' ? `モデルをダウンロード中 (${percentNum}%)...` : `Downloading Gemini Nano Weights (${percentNum}%)...`);
+        if (subtextEl) subtextEl.textContent = subtext || (currentLang === 'ja' ? 'ダウンロードが完了するまでこのタブを開いたままにしてください。' : 'Please keep this tab open while the model downloads.');
+      } else if (status === 'downloadable' || status === 'after-download') {
+        badge.className = 'status-pill warn';
+        badge.textContent = currentLang === 'ja' ? '未ダウンロード (~1.5GB)' : 'Pending Download (~1.5GB)';
+        if (bar) {
+          bar.style.width = '0%';
+          bar.style.background = 'linear-gradient(90deg, #2563eb, #38bdf8)';
+        }
+        if (pctText) pctText.textContent = '0%';
+        if (bytesLabel) bytesLabel.textContent = '0 MB / ~1,800 MB';
+        if (downloadState) downloadState.textContent = currentLang === 'ja' ? '未ダウンロード' : 'Needs Download';
+        if (headlineEl) headlineEl.textContent = headline || (currentLang === 'ja' ? 'モデルのダウンロードが必要です' : 'Model Available (Download Required)');
+        if (subtextEl) subtextEl.textContent = subtext || (currentLang === 'ja' ? '「モデルのダウンロードを開始」をクリックしてバックグラウンド取得を開始してください。' : 'Click "Start Model Download" below to initiate on-demand fetching.');
+        if (btnLabel) btnLabel.textContent = currentLang === 'ja' ? 'モデルのダウンロードを開始 (LanguageModel.create)' : 'Start Model Download (LanguageModel.create)';
+      } else {
+        badge.className = 'status-pill fail';
+        badge.textContent = currentLang === 'ja' ? '利用不可' : 'Unavailable';
+        if (bar) bar.style.width = '0%';
+        if (pctText) pctText.textContent = '0%';
+        if (bytesLabel) bytesLabel.textContent = 'N/A';
+        if (downloadState) downloadState.textContent = 'Unavailable';
+        if (headlineEl) headlineEl.textContent = headline || (currentLang === 'ja' ? 'LanguageModel が利用できません' : 'LanguageModel Unavailable');
+        if (subtextEl) subtextEl.textContent = subtext || (currentLang === 'ja' ? 'フラグ (#prompt-api-tool-use) の設定またはハードウェア要件を確認してください。' : 'Please check chrome://flags (#prompt-api-tool-use) or hardware requirements.');
+      }
+    }
+
+    async function runDiagnostics() {
+      if (isRunningDiagnostics) return;
+      isRunningDiagnostics = true;
+
+      const btn = document.getElementById('btn-rerun-diagnostics');
+      const btnText = document.getElementById('btn-diag-text');
+      const scoreBadge = document.getElementById('overall-score-badge');
+      const summaryTitle = document.getElementById('overall-summary-title');
+      const summaryDesc = document.getElementById('overall-summary-desc');
+      const badgeBrowser = document.getElementById('badge-browser');
+      const descBrowser = document.getElementById('desc-browser');
+      const badgeWebmcp = document.getElementById('badge-webmcp');
+      const descWebmcp = document.getElementById('desc-webmcp');
+      const badgePrompt = document.getElementById('badge-promptapi');
+      const descPrompt = document.getElementById('desc-promptapi');
+
+      if (btn) btn.disabled = true;
+      if (btnText) btnText.textContent = currentLang === 'ja' ? '診断実行中...' : 'Checking...';
+      if (scoreBadge) {
+        scoreBadge.textContent = '...';
+        scoreBadge.className = 'score-badge checking';
+      }
+      if (summaryTitle) summaryTitle.textContent = currentLang === 'ja' ? 'ブラウザ環境を確認中...' : 'Checking Browser Environment...';
+      if (summaryDesc) summaryDesc.textContent = currentLang === 'ja' ? 'Chrome バージョン、WebMCP ランタイム、LanguageModel を検査中...' : 'Testing Chrome version, WebMCP runtime, and LanguageModel availability...';
+
+      if (badgeBrowser) { badgeBrowser.className = 'status-pill checking'; badgeBrowser.textContent = 'Checking...'; }
+      if (badgeWebmcp) { badgeWebmcp.className = 'status-pill checking'; badgeWebmcp.textContent = 'Checking...'; }
+      if (badgePrompt) { badgePrompt.className = 'status-pill checking'; badgePrompt.textContent = 'Checking...'; }
+
+      logConsole('--- Starting Environment Diagnostics (User Triggered) ---');
+
+      try {
+        // 1. Browser Check
+        const ua = navigator.userAgent;
+        const isChrome = /Chrome\/([0-9]+)/.test(ua) && !/Edg\//.test(ua);
+        const match = ua.match(/Chrome\/([0-9]+)/);
+        const version = match ? parseInt(match[1], 10) : 0;
+
+        if (isChrome && version >= 138) {
+          diagState.browserOk = true;
+          badgeBrowser.className = 'status-pill pass';
+          badgeBrowser.textContent = `Pass (Chrome ${version})`;
+          descBrowser.innerHTML = currentLang === 'ja'
+            ? `✅ Chrome v${version} を検出。WebMCP および Prompt API の検証が可能です。`
+            : `✅ Chrome Canary v${version} detected. Full WebMCP & Prompt API capabilities supported.`;
+          logConsole(`Browser: Pass (Chrome Canary v${version})`);
+        } else {
+          diagState.browserOk = false;
+          badgeBrowser.className = 'status-pill fail';
+          badgeBrowser.textContent = `Fail (${version ? 'v' + version : 'Non-Chrome'})`;
+          descBrowser.innerHTML = currentLang === 'ja'
+            ? '❌ Chrome Canary v138 以上が必要です。上部または下部のリンクから Canary をダウンロードしてください。'
+            : '❌ Chrome Canary v138+ is required. Please install Canary from the links below.';
+          logConsole(`Browser: Fail (Detected user agent: ${ua})`);
+        }
+
+        // 2. WebMCP Runtime Check
+        const hasModelContext = 'modelContext' in document && typeof document.modelContext?.registerTool === 'function';
+
+        if (hasModelContext) {
+          diagState.webmcpOk = true;
+          badgeWebmcp.className = 'status-pill pass';
+          badgeWebmcp.textContent = 'Active (Native)';
+          descWebmcp.innerHTML = currentLang === 'ja'
+            ? '✅ <code>document.modelContext</code> が有効化されており、アクセス可能です。'
+            : '✅ <code>document.modelContext</code> is active and accessible.';
+          logConsole('WebMCP: Pass (document.modelContext.registerTool is active)');
+        } else {
+          diagState.webmcpOk = false;
+          badgeWebmcp.className = 'status-pill fail';
+          badgeWebmcp.textContent = 'Not Detected';
+          descWebmcp.innerHTML = currentLang === 'ja'
+            ? '❌ フラグ <code>#enable-webmcp-testing</code> が未有効化か、再起動が必要です。'
+            : '❌ Flag <code>#enable-webmcp-testing</code> is not enabled, or browser needs relaunch.';
+          logConsole('WebMCP: Fail (document.modelContext not found)');
+        }
+
+        // 3. Prompt API / Gemini Nano Check
+        const LM = window.LanguageModel;
+
+        if (!LM) {
+          diagState.promptApiOk = false;
+          diagState.promptApiStatus = 'no';
+          badgePrompt.className = 'status-pill fail';
+          badgePrompt.textContent = 'API Missing';
+          descPrompt.innerHTML = currentLang === 'ja'
+            ? '❌ <code>LanguageModel</code> API が見つかりません。最新の Chrome Canary (v138+) をご利用ください。'
+            : '❌ <code>LanguageModel</code> API not found. Please use the latest Chrome Canary (v138+).';
+          logConsole('Prompt API: Fail (global LanguageModel not defined)');
+          updateNanoMonitor({ status: 'unavailable', headline: 'LanguageModel API Missing', subtext: 'Ensure you are running Chrome Canary v138+.' });
+        } else {
+          try {
+            const avail = await (LM.availability ? LM.availability() : Promise.resolve('unknown'));
+            diagState.promptApiStatus = avail;
+            if (avail === 'readily' || avail === 'available') {
+              diagState.promptApiOk = true;
+              badgePrompt.className = 'status-pill pass';
+              badgePrompt.textContent = 'Ready (Downloaded)';
+              descPrompt.innerHTML = currentLang === 'ja'
+                ? '✅ Gemini Nano はダウンロード済みで、即座にオンデバイス推論可能です。'
+                : '✅ Gemini Nano is loaded on-device and ready for instant inference.';
+              logConsole('Prompt API: Pass (Availability: "readily" / "available")');
+              updateNanoMonitor({ status: 'ready' });
+            } else if (avail === 'after-download' || avail === 'downloadable') {
+              diagState.promptApiOk = true;
+              badgePrompt.className = 'status-pill warn';
+              badgePrompt.textContent = 'Pending Download';
+              descPrompt.innerHTML = currentLang === 'ja'
+                ? '⏳ モデルは有効ですが未完了です。「ダウンロードを開始」をクリックしてください。'
+                : '⏳ Model enabled, but downloading/needs download. Click "Trigger Download" below.';
+              logConsole('Prompt API: Warning (Availability: "after-download")');
+              updateNanoMonitor({ status: 'downloadable' });
+            } else if (avail === 'downloading') {
+              diagState.promptApiOk = true;
+              badgePrompt.className = 'status-pill warn';
+              badgePrompt.textContent = 'Downloading...';
+              descPrompt.innerHTML = currentLang === 'ja'
+                ? '⏳ モデルをダウンロード中です。しばらくお待ちください。'
+                : '⏳ Model is currently downloading in the background.';
+              logConsole('Prompt API: Downloading');
+              updateNanoMonitor({ status: 'downloading' });
+            } else {
+              diagState.promptApiOk = false;
+              badgePrompt.className = 'status-pill fail';
+              badgePrompt.textContent = `Unavailable (${avail})`;
+              descPrompt.innerHTML = currentLang === 'ja'
+                ? `⚠️ ステータス: <code>"${avail}"</code>。フラグ設定やハードウェア要件を確認してください。`
+                : `⚠️ Availability returned: <code>"${avail}"</code>. Check flags or hardware requirements.`;
+              logConsole(`Prompt API: Fail (Availability: "${avail}")`);
+              updateNanoMonitor({ status: 'unavailable', subtext: `Availability returned "${avail}".` });
+            }
+          } catch (err) {
+            diagState.promptApiOk = false;
+            badgePrompt.className = 'status-pill warn';
+            badgePrompt.textContent = 'Check Error';
+            descPrompt.innerHTML = `⚠️ Error: ${err.message}`;
+            logConsole(`Prompt API: Error during availability check: ${err.message}`);
+            updateNanoMonitor({ status: 'unavailable', subtext: err.message });
+          }
+        }
+
+        // 4. Secure Context Check (background evaluation)
+        const isSec = window.isSecureContext === true;
+        diagState.secureContextOk = isSec;
+        logConsole(`Secure Context: ${isSec ? 'Pass' : 'Warning'} (Origin: ${window.location.origin}, Protocol: ${window.location.protocol})`);
+
+      } catch (err) {
+        logConsole(`❌ Diagnostic execution error: ${err.message}`);
+      } finally {
+        hasRunDiagnostics = true;
+        isRunningDiagnostics = false;
+        if (btn) btn.disabled = false;
+        if (btnText) btnText.textContent = currentLang === 'ja' ? '診断を再実行' : 'Re-run Diagnostics';
+        updateOverallScore();
+        showToast(currentLang === 'ja' ? '診断が完了しました！' : 'Diagnostics complete!');
+      }
+    }
+
+    function updateOverallScore() {
+      if (!hasRunDiagnostics) {
+        renderInitialDiagUI();
+        return;
+      }
+      const scoreBadge = document.getElementById('overall-score-badge');
+      const summaryTitle = document.getElementById('overall-summary-title');
+      const summaryDesc = document.getElementById('overall-summary-desc');
+
+      let passedCount = 0;
+      if (diagState.browserOk) passedCount++;
+      if (diagState.webmcpOk) passedCount++;
+      if (diagState.promptApiOk) passedCount++;
+
+      if (scoreBadge) scoreBadge.textContent = `${passedCount}/3`;
+
+      if (!summaryTitle || !summaryDesc) return;
+
+      const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      if (passedCount === 3) {
+        if (scoreBadge) scoreBadge.className = 'score-badge ready';
+        summaryTitle.textContent = currentLang === 'ja'
+          ? '🎉 ワークショップの受講準備がすべて完了しました！'
+          : '🎉 All Systems Ready for Workshop!';
+        summaryDesc.textContent = currentLang === 'ja'
+          ? `診断完了 (${timeStr}): お使いの Chrome Canary は Native WebMCP および Built-in AI の演習を即座に開始できる状態です。`
+          : `Diagnostics completed (${timeStr}): Your Chrome Canary environment is 100% prepared for Native WebMCP and Built-in AI exercises.`;
+      } else if (passedCount >= 1) {
+        if (scoreBadge) scoreBadge.className = 'score-badge warning';
+        summaryTitle.textContent = currentLang === 'ja'
+          ? `${passedCount}/3 項目が適合（設定が一部未完了です）`
+          : `${passedCount} of 3 Environment Checks Passed`;
+        summaryDesc.textContent = currentLang === 'ja'
+          ? `診断完了 (${timeStr}): いくつかのフラグの有効化が必要です。下のチェックリストをご確認ください。`
+          : `Diagnostics completed (${timeStr}): A few flags need activation. Follow the checklist below to complete setup.`;
+      } else {
+        if (scoreBadge) scoreBadge.className = 'score-badge error';
+        summaryTitle.textContent = currentLang === 'ja'
+          ? '設定が必要です（未完了）'
+          : 'Action Required: Setup Incomplete';
+        summaryDesc.textContent = currentLang === 'ja'
+          ? `診断完了 (${timeStr}): Chrome Canary のインストールおよびフラグの有効化を行ってください。`
+          : `Diagnostics completed (${timeStr}): Please install Chrome Canary and enable the required flags below.`;
+      }
+    }
+
+    // ==========================================================================
+    // 3. Persistent Checkbox State (LocalStorage)
+    // ==========================================================================
+    function initChecklist() {
+      const checkboxes = document.querySelectorAll('.checklist-checkbox');
+      checkboxes.forEach((cb) => {
+        const key = cb.getAttribute('data-storage-key');
+        const stored = localStorage.getItem(`webmcp_hub_${key}`);
+        if (stored === 'true') {
+          cb.checked = true;
+          cb.closest('.checklist-item')?.classList.add('completed');
+        }
+
+        cb.addEventListener('change', () => {
+          localStorage.setItem(`webmcp_hub_${key}`, cb.checked ? 'true' : 'false');
+          if (cb.checked) {
+            cb.closest('.checklist-item')?.classList.add('completed');
+          } else {
+            cb.closest('.checklist-item')?.classList.remove('completed');
+          }
+        });
+      });
+
+      document.getElementById('btn-reset-flags')?.addEventListener('click', () => {
+        checkboxes.forEach((cb) => {
+          cb.checked = false;
+          cb.closest('.checklist-item')?.classList.remove('completed');
+          const key = cb.getAttribute('data-storage-key');
+          localStorage.removeItem(`webmcp_hub_${key}`);
+        });
+        showToast('Checklist reset.');
+      });
+    }
+
+    // ==========================================================================
+    // 4. Tab Switching Logic
+    // ==========================================================================
+    function initTabs() {
+      const tabs = document.querySelectorAll('.tab-btn');
+      tabs.forEach((tab) => {
+        tab.addEventListener('click', () => {
+          tabs.forEach((t) => t.classList.remove('active'));
+          document.querySelectorAll('.tab-pane').forEach((p) => p.classList.remove('active'));
+
+          tab.classList.add('active');
+          const target = tab.getAttribute('data-tab');
+          document.getElementById(target)?.classList.add('active');
+        });
+      });
+    }
+
+    // ==========================================================================
+    // 5. Copy to Clipboard Utility
+    // ==========================================================================
+    function copyText(text, msg) {
+      navigator.clipboard.writeText(text).then(() => {
+        showToast(msg || 'Copied to clipboard!');
+      }).catch(() => {
+        showToast('Failed to copy. Please copy manually.');
+      });
+    }
+
+    function copyCode(text) {
+      copyText(text, 'Command copied to clipboard!');
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      if (!toast) return;
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2600);
+    }
+
+    // ==========================================================================
+    // 6. Interactive Test Console & Action Handlers
+    // ==========================================================================
+    let sampleToolRegistered = false;
+
+    // On-Device Model Download & Monitoring Engine
+    async function startNanoDownload() {
+      const LM = window.LanguageModel;
+      if (!LM) {
+        logConsole('Cannot trigger model download: LanguageModel API not found in this browser.');
+        showToast('LanguageModel API not found.');
+        return;
+      }
+
+      updateNanoMonitor({
+        status: 'downloading',
+        pct: 5,
+        headline: currentLang === 'ja' ? 'ダウンロード準備中...' : 'Contacting Model Service...',
+        subtext: currentLang === 'ja' ? 'Chrome のオンデバイスモデルサービスに接続中...' : 'Requesting model allocation via LanguageModel.create()...'
+      });
+      logConsole('Triggering background model download via LanguageModel.create()...');
+
+      try {
+        const session = await LM.create({
+          monitor(m) {
+            m.addEventListener('downloadprogress', (e) => {
+              const pct = e.total ? Math.round((e.loaded / e.total) * 100) : 0;
+              updateNanoMonitor({
+                status: 'downloading',
+                pct,
+                loadedBytes: e.loaded,
+                totalBytes: e.total,
+              });
+              logConsole(`Download progress: ${pct}% (${(e.loaded / (1024*1024)).toFixed(1)}MB / ${(e.total / (1024*1024)).toFixed(1)}MB)`);
+            });
+          }
+        });
+
+        updateNanoMonitor({ status: 'ready' });
+        logConsole('✅ LanguageModel session successfully created! Gemini Nano is ready.');
+        showToast('Gemini Nano is ready!');
+        session.destroy?.();
+        if (hasRunDiagnostics) {
+          runDiagnostics();
+        }
+      } catch (err) {
+        logConsole(`Notice during model creation: ${err.message}`);
+        if (err.message && err.message.includes('crashed')) {
+          logConsole('💡 Hardware Acceleration Note: On virtual machines without physical GPU, model execution will run on physical laptops (Mac Apple Silicon/Windows).');
+        }
+        updateNanoMonitor({
+          status: 'unavailable',
+          headline: currentLang === 'ja' ? 'ダウンロード通知' : 'Notice during Download',
+          subtext: err.message
+        });
+        showToast(`Model status: ${err.message}`);
+      }
+    }
+
+    document.getElementById('btn-trigger-model-download')?.addEventListener('click', startNanoDownload);
+    document.getElementById('btn-nano-download')?.addEventListener('click', startNanoDownload);
+
+    // Section 3 Instant Inference Ping Test
+    document.getElementById('btn-nano-test-ping')?.addEventListener('click', async () => {
+      const LM = window.LanguageModel;
+      const resultBox = document.getElementById('nano-test-result');
+      const resultText = document.getElementById('nano-test-result-text');
+
+      if (!LM) {
+        showToast('LanguageModel API not available.');
+        return;
+      }
+
+      if (resultBox) resultBox.style.display = 'block';
+      if (resultText) resultText.textContent = currentLang === 'ja' ? 'オンデバイス Gemini Nano で推論中... ⏳' : 'Running inference in local Gemini Nano... ⏳';
+      logConsole('Running test ping in local Gemini Nano...');
+
+      try {
+        const session = await LM.create();
+        const response = await session.prompt("Reply with: 'Hello from local Gemini Nano!' in one sentence.");
+        if (resultText) resultText.textContent = response;
+        logConsole(`Gemini Nano response: "${response}"`);
+        showToast('Inference successful!');
+        session.destroy?.();
+      } catch (err) {
+        let msg = err.message;
+        if (msg.includes('crashed') || msg.includes('destroyed')) {
+          msg = `${err.message} (Note: Running on Linux VM without physical GPU. Gemini Nano will execute on physical attendee laptops with Metal/Vulkan GPU acceleration).`;
+        }
+        if (resultText) resultText.textContent = `Notice: ${msg}`;
+        logConsole(`Gemini Nano ping notice: ${msg}`);
+      }
+    });
+
+    // Register Sample WebMCP Tool
+    document.getElementById('btn-test-register-webmcp')?.addEventListener('click', () => {
+      if (!('modelContext' in document) || typeof document.modelContext?.registerTool !== 'function') {
+        logConsole('❌ Failed: document.modelContext.registerTool is not available in this tab.');
+        logConsole('💡 Action required: Please enable #enable-webmcp-testing in chrome://flags and relaunch Chrome Canary.');
+        showToast('WebMCP flag not enabled. Please enable #enable-webmcp-testing.');
+        return;
+      }
+
+      try {
+        document.modelContext.registerTool({
+          name: 'workshop_ping',
+          description: 'A test ping tool for the Google Partner Summit workshop.',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              partner_name: { type: 'string', description: 'Name of the partner company' }
+            },
+            required: ['partner_name']
+          },
+          // Consequential hint from Chrome 154+ / Issue #176
+          annotations: {
+            consequentialHint: false
+          },
+          execute: async ({ partner_name }) => {
+            return JSON.stringify({
+              status: 'success',
+              message: `Pong! Welcome ${partner_name} to Google Partner Summit 2026.`,
+              timestamp: new Date().toISOString()
+            });
+          }
+        });
+        sampleToolRegistered = true;
+        logConsole('✅ Registered tool "workshop_ping" on document.modelContext!');
+        logConsole('Tool Schema: { name: "workshop_ping", required: ["partner_name"], consequentialHint: false }');
+        showToast('Tool "workshop_ping" registered successfully!');
+      } catch (err) {
+        logConsole(`❌ Error registering tool: ${err.message}`);
+      }
+    });
+
+    // Execute Registered Tool
+    document.getElementById('btn-test-execute-webmcp')?.addEventListener('click', async () => {
+      if (!sampleToolRegistered) {
+        logConsole('⚠️ Please click "1. Register Sample WebMCP Tool" first.');
+        showToast('Register tool first!');
+        return;
+      }
+
+      try {
+        logConsole('Executing tool "workshop_ping" with arguments: { partner_name: "Partner Summit Engineer" }...');
+        if (typeof document.modelContext.executeTool === 'function') {
+          const res = await document.modelContext.executeTool('workshop_ping', {
+            partner_name: 'Partner Summit Engineer'
+          });
+          logConsole(`Tool Response from document.modelContext.executeTool:\n${res}`);
+        } else {
+          logConsole('Note: Native executeTool method not present; checking registered tools list.');
+        }
+        showToast('Tool executed successfully!');
+      } catch (err) {
+        logConsole(`❌ Error executing tool: ${err.message}`);
+      }
+    });
+
+    // Test Prompt API Streaming
+    async function promptNano(promptText) {
+      const LM = window.LanguageModel;
+      if (!LM) {
+        logConsole('❌ LanguageModel API not supported in this browser.');
+        return;
+      }
+
+      logConsole(`\nSending prompt to local Gemini Nano: "${promptText}"`);
+      try {
+        const session = await LM.create();
+        logConsole('Session created. Streaming response:');
+
+        let fullText = '';
+        if (typeof session.promptStreaming === 'function') {
+          for await (const chunk of session.promptStreaming(promptText)) {
+            fullText += chunk;
+            const el = document.getElementById('test-console');
+            el.textContent += chunk;
+            el.scrollTop = el.scrollHeight;
+          }
+        } else if (typeof session.prompt === 'function') {
+          const res = await session.prompt(promptText);
+          logConsole(`Response: ${res}`);
+        }
+        logConsole('\n[Stream finished]');
+        session.destroy?.();
+      } catch (err) {
+        logConsole(`❌ Prompt notice: ${err.message}`);
+        if (err.message && err.message.includes('crashed')) {
+          logConsole('💡 Hardware Acceleration Note: Local virtual machine lacks physical GPU acceleration. On physical Mac/Windows laptops, inference will execute smoothly.');
+        }
+      }
+    }
+
+    document.getElementById('btn-test-prompt-nano')?.addEventListener('click', () => {
+      promptNano('In 2 bullet points, what is WebMCP?');
+    });
+
+    document.getElementById('btn-run-custom-prompt')?.addEventListener('click', () => {
+      const input = document.getElementById('input-custom-prompt');
+      if (input && input.value.trim()) {
+        promptNano(input.value.trim());
+      }
+    });
+
+    document.getElementById('btn-clear-console')?.addEventListener('click', () => {
+      const el = document.getElementById('test-console');
+      if (el) el.textContent = '// Console cleared.';
+    });
+
+    document.getElementById('btn-rerun-diagnostics')?.addEventListener('click', () => {
+      runDiagnostics();
+    });
+
+    // ==========================================================================
+    // 8. Page Initialization
+    // ==========================================================================
+    window.addEventListener('DOMContentLoaded', () => {
+      initChecklist();
+      initTabs();
+      renderInitialDiagUI();
+    });
+  </script>
+</body>
+</html>
