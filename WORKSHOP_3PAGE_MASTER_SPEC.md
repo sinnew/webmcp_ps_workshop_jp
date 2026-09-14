@@ -8,9 +8,14 @@
 
 ---
 
-## ⚠️ 1. Mandatory Browser & API Baseline: Chrome Canary 154+
+## ⚠️ 1. Mandatory Browser & API Baseline: Chrome 154+ (Incorporating Melissa Mitchell's Review)
 
-Recent breaking changes in the WebMCP specification make **Chrome Canary 154+** a hard requirement for all participants:
+Per WebMCP expert feedback (**Melissa Mitchell** on Presentation Draft `1qplx8aM6fO7vMkGWN_0R-nnulZELQsk8PM-KYUomyL4`):
+* **Chrome 154+ Baseline**: Stable is now on Chrome 154, and recent breaking changes to WebMCP require **Chrome 154+**.
+* **Origin Trial Timeline**: The WebMCP Origin Trial runs through the end of the year (**Chrome 154 – Chrome 156**), replacing older `Chrome 149+ / 152` references.
+* **Case Study Publication Target**: Because WebMCP is not yet widely available across non-Chromium browsers, official enterprise partner case studies are published on **`developers.google.com` / `developer.chrome.com`** rather than `web.dev`.
+
+### Technical Breaking Changes in Chrome 154+:
 
 1. **Asynchronous Registration (`Promise` Return)**:
    * Starting in Chrome 151+ and stabilized in **Chrome 154+**, `document.modelContext.registerTool()` returns a `Promise` and rejects asynchronously. Synchronous `try/catch` blocks without `await` fail silently.
