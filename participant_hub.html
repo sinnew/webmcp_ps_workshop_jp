@@ -647,7 +647,7 @@
             <span id="badge-browser" class="status-pill not-run">Not Run</span>
           </div>
           <div id="desc-browser" class="diag-card-body">
-            Target: Chrome Canary / Dev ≥ 138.
+            Target: Chrome Canary / Dev ≥ 154.
           </div>
         </div>
         <div class="diag-card-action">
@@ -832,7 +832,7 @@
         </summary>
         <div style="margin-top:10px; line-height:1.6;">
           <p style="margin-bottom:8px;">
-            In Chrome 138+, calling <code>LanguageModel.create({ monitor(m) { ... } })</code> sends an IPC call to Chromium's <code>AIManager</code>, which resolves the model recipe in <strong>Optimization Guide On DeviceModels Manifest</strong> and downloads the <strong>nano_v3_gpu_component</strong> weights binary in the background.
+            In Chrome 154+, calling <code>LanguageModel.create({ monitor(m) { ... } })</code> sends an IPC call to Chromium's <code>AIManager</code>, which resolves the model recipe in <strong>Optimization Guide On DeviceModels Manifest</strong> and downloads the <strong>nano_v3_gpu_component</strong> weights binary in the background.
           </p>
           <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;">
             <button class="btn-copy" onclick="copyText('chrome://on-device-internals', 'chrome://on-device-internals URL copied!')">
@@ -1112,7 +1112,7 @@ npx -y modern-web-guidance@latest retrieve "popover-api-dialog"</pre>
           <span class="link-tile-icon">🌐</span>
           <div>
             <div>Chrome Canary</div>
-            <div style="font-size:12px; color:var(--text-muted);">v138+ with WebMCP</div>
+            <div style="font-size:12px; color:var(--text-muted);">v154+ with WebMCP</div>
           </div>
         </a>
 
@@ -1271,7 +1271,7 @@ npx -y modern-web-guidance@latest retrieve "popover-api-dialog"</pre>
         badgeBrowser.textContent = currentLang === 'ja' ? '未判定' : 'Not Run';
         badgeBrowser.className = 'status-pill not-run';
       }
-      if (descBrowser) descBrowser.innerHTML = currentLang === 'ja' ? '対象: Chrome Canary / Dev 138 以上。' : 'Target: Chrome Canary / Dev ≥ 138.';
+      if (descBrowser) descBrowser.innerHTML = currentLang === 'ja' ? '対象: Chrome Canary / Dev 154 以上。' : 'Target: Chrome Canary / Dev ≥ 154.';
 
       if (badgeWebmcp) {
         badgeWebmcp.textContent = currentLang === 'ja' ? '未判定' : 'Not Run';
@@ -1432,7 +1432,7 @@ npx -y modern-web-guidance@latest retrieve "popover-api-dialog"</pre>
         const match = ua.match(/Chrome\/([0-9]+)/);
         const version = match ? parseInt(match[1], 10) : 0;
 
-        if (isChrome && version >= 138) {
+        if (isChrome && version >= 154) {
           diagState.browserOk = true;
           badgeBrowser.className = 'status-pill pass';
           badgeBrowser.textContent = `Pass (Chrome ${version})`;
@@ -1445,8 +1445,8 @@ npx -y modern-web-guidance@latest retrieve "popover-api-dialog"</pre>
           badgeBrowser.className = 'status-pill fail';
           badgeBrowser.textContent = `Fail (${version ? 'v' + version : 'Non-Chrome'})`;
           descBrowser.innerHTML = currentLang === 'ja'
-            ? '❌ Chrome Canary v138 以上が必要です。上部または下部のリンクから Canary をダウンロードしてください。'
-            : '❌ Chrome Canary v138+ is required. Please install Canary from the links below.';
+            ? '❌ Chrome Canary v154 以上が必要です。上部または下部のリンクから Canary をダウンロードしてください。'
+            : '❌ Chrome Canary v154+ is required. Please install Canary from the links below.';
           logConsole(`Browser: Fail (Detected user agent: ${ua})`);
         }
 
@@ -1480,10 +1480,10 @@ npx -y modern-web-guidance@latest retrieve "popover-api-dialog"</pre>
           badgePrompt.className = 'status-pill fail';
           badgePrompt.textContent = 'API Missing';
           descPrompt.innerHTML = currentLang === 'ja'
-            ? '❌ <code>LanguageModel</code> API が見つかりません。最新の Chrome Canary (v138+) をご利用ください。'
-            : '❌ <code>LanguageModel</code> API not found. Please use the latest Chrome Canary (v138+).';
+            ? '❌ <code>LanguageModel</code> API が見つかりません。最新の Chrome Canary (v154+) をご利用ください。'
+            : '❌ <code>LanguageModel</code> API not found. Please use the latest Chrome Canary (v154+).';
           logConsole('Prompt API: Fail (global LanguageModel not defined)');
-          updateNanoMonitor({ status: 'unavailable', headline: 'LanguageModel API Missing', subtext: 'Ensure you are running Chrome Canary v138+.' });
+          updateNanoMonitor({ status: 'unavailable', headline: 'LanguageModel API Missing', subtext: 'Ensure you are running Chrome Canary v154+.' });
         } else {
           try {
             const avail = await (LM.availability ? LM.availability() : Promise.resolve('unknown'));

@@ -474,17 +474,19 @@
 
       <!-- Gotcha 1: Namespace -->
       <div style="margin-bottom:20px;">
-        <h3 style="font-size:16px; font-weight:700; margin-bottom:6px;">1. Deprecated `window.ai` Namespace</h3>
+        <h3 style="font-size:16px; font-weight:700; margin-bottom:6px;">1. Chrome 154+ Requirement &amp; Breaking API Changes</h3>
         <p style="font-size:14px; color:var(--text-secondary); margin-bottom:8px;">
-          Chrome 138+ standardized the API onto the top-level <code>LanguageModel</code> global. Do not use older tutorials referencing <code>window.ai</code>:
+          Recent WebMCP specification breaking changes require <strong>Chrome Canary 154+</strong> (e.g., <code>registerTool()</code> returning a Promise, unstringified <code>inputSchema</code> object serialization in <code>getTools()</code>, and the native <code>DevTools &gt; Application &gt; WebMCP</code> inspector panel). Also ensure you use the top-level <code>LanguageModel</code> global rather than legacy <code>window.ai</code>:
         </p>
-        <pre><code>// ❌ DEPRECATED (will fail in newer Chrome Canary):
+        <pre><code>// ❌ DEPRECATED (will fail in Chrome Canary 154+):
 const session = await window.ai.languageModel.create();
+document.modelContext.registerTool({ ... }); // Sync call without await
 
-// ✅ MODERN STANDARD (Chrome 138+):
+// ✅ MODERN STANDARD (Chrome 154+):
 const session = await LanguageModel.create({
   initialPrompts: [{ role: 'system', content: 'You are an agent.' }]
-});<button class="copy-btn" onclick="copyCode(this)">Copy</button></code></pre>
+});
+await document.modelContext.registerTool({ ... }); // Async Promise in Chrome 151+/154+<button class="copy-btn" onclick="copyCode(this)">Copy</button></code></pre>
       </div>
 
       <!-- Gotcha 2: Streaming Accumulation -->

@@ -24,7 +24,7 @@ Welcome to the **Built-in AI & WebMCP Practical Workshop** developer portal. Thi
 ## 🚀 Getting Started
 
 ### 1. Prerequisites
-1. **Google Chrome Canary** (v138 or later recommended): [Download Chrome Canary](https://www.google.com/chrome/canary/)
+1. **Google Chrome Canary** (v154 or later required due to WebMCP API breaking changes): [Download Chrome Canary](https://www.google.com/chrome/canary/)
 2. Open `chrome://flags` and configure the following flags:
    * `#enable-webmcp-testing` ➡️ **Enabled**
    * `#prompt-api-tool-use` ➡️ **Enabled**
