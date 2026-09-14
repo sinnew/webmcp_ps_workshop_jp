@@ -111,7 +111,6 @@ All three pages must share a cohesive, responsive Google Material Design 3 / Tok
      * **Trajectory Logging**: Open `chrome://actor-internals` and click **"Start Trace Logging"** to record full agent traces to disk.
      * **DevTools Inspection**: `DevTools (F12) > Application > WebMCP`.
      * **Extensions & Links**:
-       * [Google WebMCP Model Context Tool Inspector Extension](https://chromewebstore.google.com/detail/webmcp-model-context-tool/...)
-       * [Nekuda WebMCP Workbench Extension](https://chromewebstore.google.com/detail/nekuda-webmcp-workbench/amochnnbmnkjjlblolhpddkokhnalkjp)
+       * [Google WebMCP Model Context Tool Inspector Extension](https://chromewebstore.google.com/detail/webmcp-model-context-tool/gbpdfapgefenggkahomfgkhfehlcenpd) *(Official Google extension ONLY — strictly exclude any 3rd-party extensions like Nekuda from external HTML)*
        * [W3C WebMCP Specification & Explainer (GitHub)](https://github.com/webmachinelearning/webmcp)
        * [Chrome WebMCP Official Documentation](https://developer.chrome.com/docs/ai/webmcp/build-tools)
