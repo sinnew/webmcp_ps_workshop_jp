@@ -483,24 +483,24 @@
         <div class="card-header-left">
           <div class="card-icon" style="background: var(--google-purple-light); color: var(--google-purple);">⚡</div>
           <div>
-            <h2 class="card-title" data-i18n="secBreakingTitle">CRITICAL: Chrome 155.0.8052.0+ Breaking Change (`executeTool()` Input Arguments)</h2>
-            <div style="font-size: 13px; color: var(--text-secondary);">
+            <h2 class="card-title" data-i18n="secBreakingTitle">CRITICAL: Chrome 155.0.8052.0+ Breaking Change (executeTool() Input Arguments)</h2>
+            <div style="font-size: 13px; color: var(--text-secondary);" data-i18n-html="secBreakingSub">
               W3C WebMCP PRs <a href="https://github.com/webmachinelearning/webmcp/pull/246" target="_blank" rel="noopener" style="color:var(--google-blue); font-weight:600;">#246</a> &amp; <a href="https://github.com/webmachinelearning/webmcp/pull/251" target="_blank" rel="noopener" style="color:var(--google-blue); font-weight:600;">#251</a> • Landed in <a href="https://chromiumdash.appspot.com/commit/23cad65d6e6613d62542b27651c28925acfaffb2" target="_blank" rel="noopener" style="color:var(--google-blue); font-weight:600;">Chromium 155.0.8052.0</a>
             </div>
           </div>
         </div>
-        <span class="hero-badge badge-purple">Chrome 155.0.8052.0+ Spec</span>
+        <span class="hero-badge badge-purple" data-i18n="secBreakingBadge">Chrome 155.0.8052.0+ Spec</span>
       </div>
 
-      <p style="font-size: 14.5px; color: var(--text-secondary); margin-bottom: 16px;" data-i18n="secBreakingDesc">
+      <p style="font-size: 14.5px; color: var(--text-secondary); margin-bottom: 16px;" data-i18n-html="secBreakingDesc">
         Following W3C WebMCP pull requests <strong>#246</strong> and <strong>#251</strong>, the input arguments parameter for <code>navigator.modelContextTesting.executeTool(toolName, inputArgs)</code> has changed from a serialized <code>DOMString</code> (JSON string) to an <strong>optional JavaScript object (<code>object</code>)</strong> starting in Chrome 155.0.8052.0.
       </p>
 
       <div class="comparison-grid">
         <div class="track-card" style="border-top: 4px solid var(--google-red);">
-          <span class="track-badge" style="background: var(--google-red-light); color: var(--google-red);">❌ Legacy (Chrome ≤ 154) • DOMString Input</span>
-          <h3 style="font-size: 16px; margin-bottom: 6px;">Serialized JSON String Required</h3>
-          <p style="font-size: 13.5px; color: var(--text-secondary);">
+          <span class="track-badge" style="background: var(--google-red-light); color: var(--google-red);" data-i18n="secBreakLegacyBadge">❌ Legacy (Chrome ≤ 154) • DOMString Input</span>
+          <h3 style="font-size: 16px; margin-bottom: 6px;" data-i18n="secBreakLegacyTitle">Serialized JSON String Required</h3>
+          <p style="font-size: 13.5px; color: var(--text-secondary);" data-i18n-html="secBreakLegacyDesc">
             Previously, callers had to manually <code>JSON.stringify()</code> arguments before calling <code>executeTool()</code>, and tool handlers had to <code>JSON.parse()</code> the incoming string:
           </p>
           <pre><code>// ❌ Legacy Chrome 154 Caller (DOMString)
@@ -511,9 +511,9 @@ const res = await navigator.modelContextTesting.executeTool(
         </div>
 
         <div class="track-card" style="border-top: 4px solid var(--google-green);">
-          <span class="track-badge" style="background: var(--google-green-light); color: var(--google-green);">✅ Modern (Chrome 155.0.8052.0+) • JS Object Input</span>
-          <h3 style="font-size: 16px; margin-bottom: 6px;">Native JavaScript Object Argument</h3>
-          <p style="font-size: 13.5px; color: var(--text-secondary);">
+          <span class="track-badge" style="background: var(--google-green-light); color: var(--google-green);" data-i18n="secBreakModernBadge">✅ Modern (Chrome 155.0.8052.0+) • JS Object Input</span>
+          <h3 style="font-size: 16px; margin-bottom: 6px;" data-i18n="secBreakModernTitle">Native JavaScript Object Argument</h3>
+          <p style="font-size: 13.5px; color: var(--text-secondary);" data-i18n-html="secBreakModernDesc">
             Starting in Chrome 155.0.8052.0, pass a native JavaScript object directly as the second argument (or omit it if the tool takes no parameters):
           </p>
           <pre><code>// ✅ Chrome 155.0.8052.0+ Caller (PRs #246 &amp; #251)
@@ -525,8 +525,8 @@ const res = await navigator.modelContextTesting.executeTool(
       </div>
 
       <div class="callout-box callout-purple" style="margin-top: 18px;">
-        <div class="callout-title">🛡️ Universal Defensive Pattern (Supports Both Chrome 154 &amp; Chrome 155.0.8052.0+)</div>
-        <p style="font-size: 13.5px; margin-bottom: 8px;">
+        <div class="callout-title" data-i18n="secBreakDefensiveTitle">🛡️ Universal Defensive Pattern (Supports Both Chrome 154 &amp; Chrome 155.0.8052.0+)</div>
+        <p style="font-size: 13.5px; margin-bottom: 8px;" data-i18n-html="secBreakDefensiveDesc">
           During the Chrome 154–155 version transition window, use this defensive normalization helper inside every tool's <code>execute(args, options)</code> handler and extension invoker so your code works seamlessly across both Chrome 154 and Chrome 155+:
         </p>
         <pre><code>// Inside your navigator.modelContext.registerTool({ execute: async (args, options) =&gt; { ... } })
@@ -720,17 +720,17 @@ await document.modelContext.registerTool({
 
       <div class="comparison-grid">
         <div class="track-card" style="border-top: 4px solid var(--google-red);">
-          <span class="track-badge" style="background: var(--google-red-light); color: var(--google-red);">❌ Anti-Pattern: Silent Backend Mutation</span>
-          <h3 style="font-size: 16px; margin-bottom: 6px;">The API-First Trap</h3>
-          <p style="font-size: 13.5px; color: var(--text-secondary);">
+          <span class="track-badge" style="background: var(--google-red-light); color: var(--google-red);" data-i18n="sec3BadBadge">❌ Anti-Pattern: Silent Backend Mutation</span>
+          <h3 style="font-size: 16px; margin-bottom: 6px;" data-i18n="sec3BadTitle">The API-First Trap</h3>
+          <p style="font-size: 13.5px; color: var(--text-secondary);" data-i18n-html="sec3BadDesc">
             Calling <code>fetch('/api/cart/add')</code> inside <code>execute()</code> without updating the client state store leaves the user staring at an empty cart badge and stale page UI.
           </p>
         </div>
 
         <div class="track-card" style="border-top: 4px solid var(--google-green);">
-          <span class="track-badge" style="background: var(--google-green-light); color: var(--google-green);">✅ Best Practice: View Transitions + State Sync</span>
-          <h3 style="font-size: 16px; margin-bottom: 6px;">Synchronized Client Actuation</h3>
-          <p style="font-size: 13.5px; color: var(--text-secondary);">
+          <span class="track-badge" style="background: var(--google-green-light); color: var(--google-green);" data-i18n="sec3GoodBadge">✅ Best Practice: View Transitions + State Sync</span>
+          <h3 style="font-size: 16px; margin-bottom: 6px;" data-i18n="sec3GoodTitle">Synchronized Client Actuation</h3>
+          <p style="font-size: 13.5px; color: var(--text-secondary);" data-i18n-html="sec3GoodDesc">
             Dispatch actions to your client store (Redux/Zustand/React state) wrapped in <code>document.startViewTransition()</code> and return an <strong>Enterprise Return Envelope</strong> (<code>{ status, activeState, workflowGuidance, items }</code>).
           </p>
         </div>
@@ -756,18 +756,52 @@ await document.modelContext.registerTool({
         heroTitle: "Chrome Extension & Built-in AI Field Guide",
         heroDesc: "Production reference for Manifest V3 permissions (Track A vs. Track B), the Chrome 155.0.8052.0+ executeTool() JavaScript object argument specification, on-device Gemini Nano (LanguageModel) streaming patterns, and WebMCP UI synchronization guardrails.",
         secBreakingTitle: "CRITICAL: Chrome 155.0.8052.0+ Breaking Change (executeTool() Input Arguments)",
-        secBreakingDesc: "Following W3C WebMCP pull requests #246 and #251, the input arguments parameter for navigator.modelContextTesting.executeTool(toolName, inputArgs) has changed from a serialized DOMString (JSON string) to an optional JavaScript object (object) starting in Chrome 155.0.8052.0.",
+        secBreakingSub: `W3C WebMCP PRs <a href="https://github.com/webmachinelearning/webmcp/pull/246" target="_blank" rel="noopener" style="color:var(--google-blue); font-weight:600;">#246</a> &amp; <a href="https://github.com/webmachinelearning/webmcp/pull/251" target="_blank" rel="noopener" style="color:var(--google-blue); font-weight:600;">#251</a> • Landed in <a href="https://chromiumdash.appspot.com/commit/23cad65d6e6613d62542b27651c28925acfaffb2" target="_blank" rel="noopener" style="color:var(--google-blue); font-weight:600;">Chromium 155.0.8052.0</a>`,
+        secBreakingBadge: "Chrome 155.0.8052.0+ Spec",
+        secBreakingDesc: `Following W3C WebMCP pull requests <strong>#246</strong> and <strong>#251</strong>, the input arguments parameter for <code>navigator.modelContextTesting.executeTool(toolName, inputArgs)</code> has changed from a serialized <code>DOMString</code> (JSON string) to an <strong>optional JavaScript object (<code>object</code>)</strong> starting in Chrome 155.0.8052.0.`,
+        secBreakLegacyBadge: "❌ Legacy (Chrome ≤ 154) • DOMString Input",
+        secBreakLegacyTitle: "Serialized JSON String Required",
+        secBreakLegacyDesc: `Previously, callers had to manually <code>JSON.stringify()</code> arguments before calling <code>executeTool()</code>, and tool handlers had to <code>JSON.parse()</code> the incoming string:`,
+        secBreakModernBadge: "✅ Modern (Chrome 155.0.8052.0+) • JS Object Input",
+        secBreakModernTitle: "Native JavaScript Object Argument",
+        secBreakModernDesc: `Starting in Chrome 155.0.8052.0, pass a native JavaScript object directly as the second argument (or omit it if the tool takes no parameters):`,
+        secBreakDefensiveTitle: "🛡️ Universal Defensive Pattern (Supports Both Chrome 154 & Chrome 155.0.8052.0+)",
+        secBreakDefensiveDesc: `During the Chrome 154–155 version transition window, use this defensive normalization helper inside every tool's <code>execute(args, options)</code> handler and extension invoker so your code works seamlessly across both Chrome 154 and Chrome 155+:`,
         sec1Title: "1. Manifest V3 Architecture: Track A vs. Track B",
         sec1Desc: "Compare permission scope and execution world between declarative tool injection (Track A) and full-stack Side Panel agents (Track B).",
         trackABadge: "Track A: Tool Injector (Fast-Track)",
         trackATitle: "Declarative Content Script Injection",
+        trackADesc: `Injects WebMCP tools (<code>await document.modelContext.registerTool</code>) directly into the web application. Zero host permissions required.`,
+        trackAManifest: "Track A manifest.json:",
+        trackANote: `Content scripts run in an isolated world by default where <code>document.modelContext</code> is invisible to the page and browser agents. Setting <code>"world": "MAIN"</code> registers tools in the page's actual JavaScript context.`,
         trackBBadge: "Track B: Full-Stack AI Agent (Advanced)",
         trackBTitle: "Side Panel + Local Gemini Nano Agent",
+        trackBDesc: "Hosts a persistent Side Panel chat UI powered by local Gemini Nano (LanguageModel) that inspects and invokes WebMCP tools on the active tab:",
+        tblTh1: "Permission",
+        tblTh2: "Why It Is Required",
+        tblTd1: `<strong>Side Panel UI:</strong> Renders persistent <code>sidepanel.html</code> agent interface`,
+        tblTd2: `<strong>Active Tab Resolution:</strong> Resolves target <code>tabId</code> for tool discovery`,
+        tblTd3: `<strong>Cross-World Bridge:</strong> Executes <code>executeTool(name, argsObject)</code> in <code>MAIN</code> world`,
+        tblTd4: `<strong>Persistent Access:</strong> Side Panel clicks do not grant temporary <code>activeTab</code>`,
+        trackBManifest: "Minimal Track B manifest.json:",
         gotchaActiveTabTitle: "⚠️ Critical Gotcha: Why \"activeTab\" Alone Fails in Side Panels",
+        gotchaActiveTabDesc: `In Chrome Extensions, clicking a button inside a <strong>Side Panel</strong> does <em>not</em> count as a user gesture on the host web page. If your manifest only lists <code>"activeTab"</code> without <code>"host_permissions": ["&lt;all_urls&gt;"]</code>, calling <code>chrome.scripting.executeScript</code> from the Side Panel throws: <code>Error: Cannot access contents of the page. Extension manifest must request permission to access the respective host.</code>`,
         sec2Title: "2. Built-in AI (Gemini Nano) & WebMCP Execution Gotchas",
         sec2Desc: "Essential runtime patterns for Chrome's Prompt API (LanguageModel) and WebMCP tool orchestration.",
+        g1Title: "1️⃣ Unified LanguageModel Namespace",
+        g1Desc: `Older tutorials reference <code>window.ai.languageModel</code>. Always use the standardized global <code>LanguageModel</code> API (with fallback for older builds):`,
+        g2Title: "2️⃣ promptStreaming() Yields Delta Chunks",
+        g2Desc: `In modern Chrome Canary builds, <code>session.promptStreaming(prompt)</code> yields <strong>incremental delta chunks</strong> (not accumulated strings). Use <code>+=</code> to accumulate:`,
+        g3Title: "3️⃣ Async registerTool() & AbortSignal",
+        g3Desc: `In Chrome 154+, <code>document.modelContext.registerTool()</code> returns a <strong>Promise</strong>. Always <code>await</code> registration and pass an <code>AbortSignal</code> for clean SPA route unmounting:`,
         sec3Title: "3. Modern Web Guidance: Client UI Synchronization Rules",
-        sec3Desc: "Avoid the \"API-First Trap\" — when an agent invokes a WebMCP tool, the visible DOM must update in real time."
+        sec3Desc: "Avoid the \"API-First Trap\" — when an agent invokes a WebMCP tool, the visible DOM must update in real time.",
+        sec3BadBadge: "❌ Anti-Pattern: Silent Backend Mutation",
+        sec3BadTitle: "The API-First Trap",
+        sec3BadDesc: `Calling <code>fetch('/api/cart/add')</code> inside <code>execute()</code> without updating the client state store leaves the user staring at an empty cart badge and stale page UI.`,
+        sec3GoodBadge: "✅ Best Practice: View Transitions + State Sync",
+        sec3GoodTitle: "Synchronized Client Actuation",
+        sec3GoodDesc: `Dispatch actions to your client store (Redux/Zustand/React state) wrapped in <code>document.startViewTransition()</code> and return an <strong>Enterprise Return Envelope</strong> (<code>{ status, activeState, workflowGuidance, items }</code>).`
       },
       ja: {
         navHub: "1. 事前セットアップハブ",
@@ -778,18 +812,52 @@ await document.modelContext.registerTool({
         heroTitle: "Chrome 拡張機能 & Built-in AI 実装フィールドガイド",
         heroDesc: "Manifest V3 の権限設計（Track A vs. Track B）、Chrome 155.0.8052.0 以降の executeTool() JavaScriptオブジェクト引数仕様（PR #246 / #251）、Gemini Nano（LanguageModel）ストリーミング処理、UI同期のベストプラクティスを網羅したリファレンスです。",
         secBreakingTitle: "【重要】Chrome 155.0.8052.0+ 仕様変更：executeTool() の引数が JavaScript オブジェクトへ変更",
-        secBreakingDesc: "W3C WebMCP PR #246 および #251 により、Chrome 155.0.8052.0 以降では navigator.modelContextTesting.executeTool(toolName, inputArgs) の第2引数が従来の DOMString（JSON文字列）から「任意の JavaScript オブジェクト（object）」へ変更されました。",
+        secBreakingSub: `W3C WebMCP PR <a href="https://github.com/webmachinelearning/webmcp/pull/246" target="_blank" rel="noopener" style="color:var(--google-blue); font-weight:600;">#246</a> &amp; <a href="https://github.com/webmachinelearning/webmcp/pull/251" target="_blank" rel="noopener" style="color:var(--google-blue); font-weight:600;">#251</a> • <a href="https://chromiumdash.appspot.com/commit/23cad65d6e6613d62542b27651c28925acfaffb2" target="_blank" rel="noopener" style="color:var(--google-blue); font-weight:600;">Chromium 155.0.8052.0</a> より適用`,
+        secBreakingBadge: "Chrome 155.0.8052.0+ 新仕様",
+        secBreakingDesc: `W3C WebMCP PR <strong>#246</strong> および <strong>#251</strong> により、Chrome 155.0.8052.0 以降では <code>navigator.modelContextTesting.executeTool(toolName, inputArgs)</code> の第2引数が従来のシリアライズ済み <code>DOMString</code>（JSON文字列）から<strong>任意の JavaScript オブジェクト（<code>object</code>）</strong>へ変更されました。`,
+        secBreakLegacyBadge: "❌ 旧仕様（Chrome ≤ 154）• DOMString 入力",
+        secBreakLegacyTitle: "JSON 文字列（JSON.stringify）が必須",
+        secBreakLegacyDesc: `従来は <code>executeTool()</code> 呼び出し前に <code>JSON.stringify()</code> で文字列化し、ツール側（<code>execute</code>）で <code>JSON.parse()</code> する必要がありました：`,
+        secBreakModernBadge: "✅ 新仕様（Chrome 155.0.8052.0+）• JS オブジェクト入力",
+        secBreakModernTitle: "ネイティブ JavaScript オブジェクトを直接指定",
+        secBreakModernDesc: `Chrome 155.0.8052.0 以降では、第2引数に JavaScript オブジェクトをそのまま渡します（引数不要のツールでは第2引数を省略可能）：`,
+        secBreakDefensiveTitle: "🛡️ 両バージョン対応・防御的正規化パターン（Chrome 154 & 155+ 両対応）",
+        secBreakDefensiveDesc: `Chrome 154 から 155 への移行期間中は、各ツールの <code>execute(args, options)</code> ハンドラ内で以下の正規化ヘルパーを使用することで、Chrome 154 と 155+ の両環境でエラーなく動作します：`,
         sec1Title: "1. Manifest V3 アーキテクチャ比較：Track A vs. Track B",
         sec1Desc: "宣言的ツールインジェクション（Track A）とフルスタック Side Panel エージェント（Track B）の権限スコープと実行環境（world）の比較。",
         trackABadge: "Track A: ツールインジェクター（高速トラック）",
         trackATitle: "Content Script による WebMCP ツール登録",
+        trackADesc: `Webアプリへ WebMCP ツール（<code>await document.modelContext.registerTool</code>）を直接注入します。ホスト権限（host_permissions）は不要です。`,
+        trackAManifest: "Track A の manifest.json 設定例：",
+        trackANote: `Content Script はデフォルトでは隔離環境（Isolated World）で実行されるため、そのままでは <code>document.modelContext</code> がページやブラウザエージェントから見えません。必ず <code>"world": "MAIN"</code> を指定し、ページのメインJavaScriptコンテキストに登録してください。`,
         trackBBadge: "Track B: フルスタック AI エージェント（応用）",
         trackBTitle: "Side Panel + ローカル Gemini Nano エージェント",
+        trackBDesc: "ローカル Gemini Nano（LanguageModel）を搭載した常駐型 Side Panel チャットUIから、アクティブタブの WebMCP ツールを検出・実行します：",
+        tblTh1: "必要な権限 (Permission)",
+        tblTh2: "要求される理由",
+        tblTd1: `<strong>Side Panel UI：</strong> 常駐型の <code>sidepanel.html</code> エージェント画面を表示`,
+        tblTd2: `<strong>アクティブタブ特定：</strong> ツール探索対象の <code>tabId</code> を取得`,
+        tblTd3: `<strong>Cross-World ブリッジ：</strong> <code>MAIN</code> ワールド内で <code>executeTool(name, argsObject)</code> を実行`,
+        tblTd4: `<strong>永続的ホストアクセス：</strong> Side Panel 内のクリックでは一時的な <code>activeTab</code> 権限が付与されないため必須`,
+        trackBManifest: "Track B 最小構成 manifest.json：",
         gotchaActiveTabTitle: "⚠️ 重要ハマりどころ：Side Panel では「activeTab」単体では動作しない理由",
+        gotchaActiveTabDesc: `Chrome 拡張機能では、<strong>Side Panel</strong> 内のボタンクリックはホストWebページ上のユーザージェスチャーとしてカウントされません。そのため <code>"host_permissions": ["&lt;all_urls&gt;"]</code> を指定せずに <code>"activeTab"</code> のみを記載した場合、Side Panel から <code>chrome.scripting.executeScript</code> を呼ぶと <code>Error: Cannot access contents of the page</code> エラーが発生します。`,
         sec2Title: "2. Built-in AI (Gemini Nano) & WebMCP 実行時の重要ポイント",
         sec2Desc: "Chrome Prompt API（LanguageModel）および WebMCP ツール連携における必須実装パターン。",
+        g1Title: "1️⃣ LanguageModel 名前空間の統一",
+        g1Desc: `古いチュートリアルでは <code>window.ai.languageModel</code> が使われていますが、現在は標準化されたグローバル <code>LanguageModel</code> API を使用してください（旧ビルド向けフォールバック付き）：`,
+        g2Title: "2️⃣ promptStreaming() は差分（Delta）チャンクを返す",
+        g2Desc: `最新の Chrome Canary では <code>session.promptStreaming(prompt)</code> は累積文字列ではなく<strong>差分チャンク（Delta）</strong>を返します。必ず <code>+=</code> で文字列を結合してください：`,
+        g3Title: "3️⃣ 非同期 registerTool() と AbortSignal による解除",
+        g3Desc: `Chrome 154+ では <code>document.modelContext.registerTool()</code> は <strong>Promise</strong> を返します。必ず <code>await</code> し、SPA の画面遷移時にクリーンアップできるよう <code>AbortSignal</code> を渡してください：`,
         sec3Title: "3. Modern Web Guidance：クライアント UI 同期の鉄則",
-        sec3Desc: "「APIファーストの罠」を回避する — エージェントが WebMCP ツールを実行した際、画面上の DOM もリアルタイムに同期させる必要があります。"
+        sec3Desc: "「APIファーストの罠」を回避する — エージェントが WebMCP ツールを実行した際、画面上の DOM もリアルタイムに同期させる必要があります。",
+        sec3BadBadge: "❌ アンチパターン：画面を更新しない裏側だけのAPI通信",
+        sec3BadTitle: "APIファーストの罠（ゴーストページ現象）",
+        sec3BadDesc: `<code>execute()</code> 内で <code>fetch('/api/cart/add')</code> だけを呼び出しクライアントの状態ストアを更新しないと、カートバッジが空のままになりユーザーが混乱します。`,
+        sec3GoodBadge: "✅ ベストプラクティス：View Transitions + 状態ストア同期",
+        sec3GoodTitle: "UIと完全に同期したクライアント実行",
+        sec3GoodDesc: `クライアント状態ストア（Redux/Zustand/React state）の更新を <code>document.startViewTransition()</code> でラップして画面を即時更新し、構造化された <strong>Enterprise Return Envelope</strong>（<code>{ status, activeState, workflowGuidance, items }</code>）を返します。`
       }
     };
 
@@ -799,6 +867,10 @@ await document.modelContext.registerTool({
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
         if (dict[key]) el.textContent = dict[key];
+      });
+      document.querySelectorAll('[data-i18n-html]').forEach(el => {
+        const key = el.getAttribute('data-i18n-html');
+        if (dict[key]) el.innerHTML = dict[key];
       });
     }
 
