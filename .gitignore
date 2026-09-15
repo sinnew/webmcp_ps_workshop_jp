@@ -2,3 +2,6 @@
 Thumbs.db
 node_modules/
 *.log
+*.metadata.json
+POST_WORKSHOP_SURVEY_BLUEPRINT.md
+WORKSHOP_3PAGE_MASTER_SPEC.md
