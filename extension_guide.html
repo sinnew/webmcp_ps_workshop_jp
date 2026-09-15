@@ -493,7 +493,7 @@
       </div>
 
       <p style="font-size: 14.5px; color: var(--text-secondary); margin-bottom: 16px;" data-i18n="secBreakingDesc">
-        Following W3C WebMCP pull requests <strong>#246</strong> and <strong>#251</strong>, the input arguments parameter for <code>document.modelContext.executeTool(toolName, inputArgs)</code> has changed from a serialized <code>DOMString</code> (JSON string) to an <strong>optional JavaScript object (<code>object</code>)</strong> starting in Chrome 155.0.8052.0.
+        Following W3C WebMCP pull requests <strong>#246</strong> and <strong>#251</strong>, the input arguments parameter for <code>navigator.modelContextTesting.executeTool(toolName, inputArgs)</code> has changed from a serialized <code>DOMString</code> (JSON string) to an <strong>optional JavaScript object (<code>object</code>)</strong> starting in Chrome 155.0.8052.0.
       </p>
 
       <div class="comparison-grid">
@@ -504,7 +504,7 @@
             Previously, callers had to manually <code>JSON.stringify()</code> arguments before calling <code>executeTool()</code>, and tool handlers had to <code>JSON.parse()</code> the incoming string:
           </p>
           <pre><code>// ❌ Legacy Chrome 154 Caller (DOMString)
-const res = await document.modelContext.executeTool(
+const res = await navigator.modelContextTesting.executeTool(
   'filter_products',
   JSON.stringify({ category: 'shoes', maxPrice: 12000 })
 );<button class="copy-btn" onclick="copyCode(this)">Copy</button></code></pre>
@@ -517,7 +517,7 @@ const res = await document.modelContext.executeTool(
             Starting in Chrome 155.0.8052.0, pass a native JavaScript object directly as the second argument (or omit it if the tool takes no parameters):
           </p>
           <pre><code>// ✅ Chrome 155.0.8052.0+ Caller (PRs #246 &amp; #251)
-const res = await document.modelContext.executeTool(
+const res = await navigator.modelContextTesting.executeTool(
   'filter_products',
   { category: 'shoes', maxPrice: 12000 }
 );<button class="copy-btn" onclick="copyCode(this)">Copy</button></code></pre>
@@ -527,9 +527,9 @@ const res = await document.modelContext.executeTool(
       <div class="callout-box callout-purple" style="margin-top: 18px;">
         <div class="callout-title">🛡️ Universal Defensive Pattern (Supports Both Chrome 154 &amp; Chrome 155.0.8052.0+)</div>
         <p style="font-size: 13.5px; margin-bottom: 8px;">
-          During the Chrome 154–156 Origin Trial transition window, use this defensive normalization helper inside every Track A tool's <code>execute(args, options)</code> handler and Track B agent invoker so your code works seamlessly on both Chrome 154 and Chrome 155+:
+          During the Chrome 154–155 version transition window, use this defensive normalization helper inside every tool's <code>execute(args, options)</code> handler and extension invoker so your code works seamlessly across both Chrome 154 and Chrome 155+:
         </p>
-        <pre><code>// Inside your registerTool({ execute: async (args, options) =&gt; { ... } })
+        <pre><code>// Inside your navigator.modelContext.registerTool({ execute: async (args, options) =&gt; { ... } })
 execute: async (args, options) =&gt; {
   // Normalizes both Chrome 155+ JS Objects AND legacy Chrome 154 DOMStrings
   const params = typeof args === 'string'
@@ -756,7 +756,7 @@ await document.modelContext.registerTool({
         heroTitle: "Chrome Extension & Built-in AI Field Guide",
         heroDesc: "Production reference for Manifest V3 permissions (Track A vs. Track B), the Chrome 155.0.8052.0+ executeTool() JavaScript object argument specification, on-device Gemini Nano (LanguageModel) streaming patterns, and WebMCP UI synchronization guardrails.",
         secBreakingTitle: "CRITICAL: Chrome 155.0.8052.0+ Breaking Change (executeTool() Input Arguments)",
-        secBreakingDesc: "Following W3C WebMCP pull requests #246 and #251, the input arguments parameter for document.modelContext.executeTool(toolName, inputArgs) has changed from a serialized DOMString (JSON string) to an optional JavaScript object (object) starting in Chrome 155.0.8052.0.",
+        secBreakingDesc: "Following W3C WebMCP pull requests #246 and #251, the input arguments parameter for navigator.modelContextTesting.executeTool(toolName, inputArgs) has changed from a serialized DOMString (JSON string) to an optional JavaScript object (object) starting in Chrome 155.0.8052.0.",
         sec1Title: "1. Manifest V3 Architecture: Track A vs. Track B",
         sec1Desc: "Compare permission scope and execution world between declarative tool injection (Track A) and full-stack Side Panel agents (Track B).",
         trackABadge: "Track A: Tool Injector (Fast-Track)",
@@ -778,7 +778,7 @@ await document.modelContext.registerTool({
         heroTitle: "Chrome 拡張機能 & Built-in AI 実装フィールドガイド",
         heroDesc: "Manifest V3 の権限設計（Track A vs. Track B）、Chrome 155.0.8052.0 以降の executeTool() JavaScriptオブジェクト引数仕様（PR #246 / #251）、Gemini Nano（LanguageModel）ストリーミング処理、UI同期のベストプラクティスを網羅したリファレンスです。",
         secBreakingTitle: "【重要】Chrome 155.0.8052.0+ 仕様変更：executeTool() の引数が JavaScript オブジェクトへ変更",
-        secBreakingDesc: "W3C WebMCP PR #246 および #251 により、Chrome 155.0.8052.0 以降では document.modelContext.executeTool(toolName, inputArgs) の第2引数が従来の DOMString（JSON文字列）から「任意の JavaScript オブジェクト（object）」へ変更されました。",
+        secBreakingDesc: "W3C WebMCP PR #246 および #251 により、Chrome 155.0.8052.0 以降では navigator.modelContextTesting.executeTool(toolName, inputArgs) の第2引数が従来の DOMString（JSON文字列）から「任意の JavaScript オブジェクト（object）」へ変更されました。",
         sec1Title: "1. Manifest V3 アーキテクチャ比較：Track A vs. Track B",
         sec1Desc: "宣言的ツールインジェクション（Track A）とフルスタック Side Panel エージェント（Track B）の権限スコープと実行環境（world）の比較。",
         trackABadge: "Track A: ツールインジェクター（高速トラック）",

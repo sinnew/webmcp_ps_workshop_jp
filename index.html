@@ -747,17 +747,6 @@
       </div>
     </div>
 
-    <!-- Chrome 155.0.8052.0+ Breaking Change Banner (PRs #246 & #251) -->
-    <div style="background: linear-gradient(135deg, #f3e8fd 0%, #ffffff 100%); border: 1px solid #d7aefb; border-left: 4px solid var(--google-purple); border-radius: 12px; padding: 16px 20px; margin-bottom: 24px; box-shadow: var(--shadow-sm);">
-      <div style="font-weight: 700; font-size: 14.5px; color: var(--google-purple); margin-bottom: 4px; display: flex; align-items: center; gap: 8px;">
-        <span>⚡</span>
-        <span>Chrome 155.0.8052.0+ Breaking Change: <code>executeTool()</code> Input Arguments (PRs #246 &amp; #251)</span>
-      </div>
-      <div style="font-size: 13.5px; color: var(--text-secondary); line-height: 1.5;">
-        Starting in <a href="https://chromiumdash.appspot.com/commit/23cad65d6e6613d62542b27651c28925acfaffb2" target="_blank" rel="noopener" style="color:var(--google-blue); font-weight:600;">Chrome 155.0.8052.0</a> (per W3C WebMCP PRs <a href="https://github.com/webmachinelearning/webmcp/pull/246" target="_blank" rel="noopener" style="color:var(--google-blue); font-weight:600;">#246</a> and <a href="https://github.com/webmachinelearning/webmcp/pull/251" target="_blank" rel="noopener" style="color:var(--google-blue); font-weight:600;">#251</a>), the input arguments type for <code>document.modelContext.executeTool(toolName, inputArgs)</code> changed from a serialized <code>DOMString</code> to an <strong>optional JavaScript object (<code>object</code>)</strong>. Always normalize incoming tool arguments in your <code>execute(args)</code> handler with <code>const params = typeof args === 'string' ? JSON.parse(args) : (args || {});</code>.
-      </div>
-    </div>
-
     <!-- Section 2: Chrome Flags Checklist (Persistent in LocalStorage) -->
     <section class="card">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:10px;">

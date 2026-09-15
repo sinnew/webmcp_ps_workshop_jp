@@ -1,0 +1,5 @@
+{
+  "summary":  "Upgraded extension_guide.html fully aligned with the Material Light design system of index.html and workshop_guide.html, featuring the Chrome 155.0.8052.0 executeTool() JavaScript object breaking change (PRs #246 & #251).",
+  "updatedAt":  "2026-09-15T08:03:13.072089076Z",
+  "userFacing":  true
+}
