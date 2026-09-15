@@ -18,34 +18,50 @@
       --google-yellow-light: #fef7e0;
       --google-red: #d93025;
       --google-red-light: #fce8e6;
-      --google-purple: #7627bb;
+      --google-purple: #9334e6;
       --google-purple-light: #f3e8fd;
       
-      --bg-page: #f8fafc;
+      --bg-page: #f8f9fa;
       --bg-surface: #ffffff;
-      --bg-card: #ffffff;
-      --bg-subtle: #f1f5f9;
-      --text-main: #0f172a;
-      --text-primary: #0f172a;
-      --text-secondary: #475569;
-      --text-muted: #64748b;
-      --border: #e2e8f0;
-      --border-light: #e2e8f0;
-      --code-bg: #0f172a;
-      --code-text: #f8fafc;
+      --bg-subtle: #f1f3f4;
+      --text-main: #202124;
+      --text-secondary: #5f6368;
+      --text-muted: #80868b;
+      --border: #dadce0;
+      --border-light: #e8eaed;
+      --code-bg: #202124;
+      --code-text: #e8eaed;
       --radius-sm: 8px;
       --radius-md: 12px;
       --radius-lg: 16px;
       --radius-full: 9999px;
-      --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
-      --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.07);
-      --shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.1);
+      --shadow-sm: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.05);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-page: #121212;
+        --bg-surface: #1e1e1e;
+        --bg-subtle: #2d2d2d;
+        --text-main: #e8eaed;
+        --text-secondary: #bdc1c6;
+        --text-muted: #9aa0a6;
+        --border: #3c4043;
+        --border-light: #2d2d2d;
+        --google-blue-light: rgba(26, 115, 232, 0.15);
+        --google-green-light: rgba(30, 142, 62, 0.15);
+        --google-yellow-light: rgba(249, 171, 0, 0.15);
+        --google-red-light: rgba(217, 48, 37, 0.15);
+        --google-purple-light: rgba(147, 52, 230, 0.15);
+      }
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'Inter', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: 'Roboto', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
       background-color: var(--bg-page);
       color: var(--text-main);
       line-height: 1.6;
@@ -53,7 +69,7 @@
     }
 
     h1, h2, h3, h4, .font-display {
-      font-family: 'Google Sans', 'Inter', 'Noto Sans JP', sans-serif;
+      font-family: 'Google Sans', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
     }
 
     code, pre, .font-code {
@@ -61,19 +77,25 @@
     }
 
     .container {
-      max-width: 1120px;
-      margin: 28px auto;
+      max-width: 1040px;
+      margin: 0 auto;
       padding: 0 20px;
     }
 
-    /* Unified Hero Card */
-    .hero-card {
-      background: linear-gradient(135deg, #ffffff 0%, #f0f6ff 60%, #e8f0fe 100%);
-      border: 1px solid #d2e3fc;
-      border-radius: var(--radius-lg);
-      padding: 32px 28px;
+    /* Header & Navigation */
+    header {
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border);
+      padding: 28px 0 24px;
+      margin-bottom: 32px;
       box-shadow: var(--shadow-sm);
-      margin-bottom: 24px;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
     }
 
     .hero-badge {
@@ -84,29 +106,49 @@
       border-radius: var(--radius-full);
       background: var(--google-blue-light);
       color: var(--google-blue);
-      border: 1px solid rgba(26, 115, 232, 0.25);
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .lang-switcher {
+      display: flex;
+      background: var(--bg-subtle);
+      border-radius: var(--radius-full);
+      padding: 2px;
+      border: 1px solid var(--border-light);
+    }
+
+    .lang-btn {
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      border: none;
+      background: transparent;
       font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
-      margin-bottom: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .lang-btn.active {
+      background: var(--bg-surface);
+      color: var(--google-blue);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
 
     .hero-title {
-      font-size: 28px;
+      font-size: 30px;
       font-weight: 700;
       color: var(--text-main);
       margin-bottom: 8px;
-      line-height: 1.25;
-      letter-spacing: -0.3px;
+      letter-spacing: -0.5px;
     }
 
     .hero-subtitle {
       font-size: 15px;
       color: var(--text-secondary);
-      max-width: 860px;
+      max-width: 820px;
       margin-bottom: 20px;
-      line-height: 1.6;
     }
 
     /* Overall Status Banner */
@@ -548,133 +590,34 @@
       background: var(--google-green-light);
       border-left: 4px solid var(--google-green);
     }
-
-    /* Unified Sticky Top Navigation Bar (Identical Across All 4 Pages) */
-    .top-nav {
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      padding: 12px 24px;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .nav-container {
-      max-width: 1120px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    .brand-group {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-      color: var(--text-primary);
-      font-weight: 700;
-      font-size: 16px;
-      font-family: 'Google Sans', sans-serif;
-    }
-
-    .nav-pills {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      background: var(--bg-subtle);
-      padding: 4px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      flex-wrap: wrap;
-    }
-
-    .nav-pill {
-      text-decoration: none;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-secondary);
-      padding: 6px 14px;
-      border-radius: 999px;
-      transition: all 0.15s ease;
-    }
-
-    .nav-pill:hover {
-      color: var(--text-primary);
-    }
-
-    .nav-pill.active {
-      background: var(--google-blue);
-      color: #ffffff;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .lang-toggle {
-      background: var(--bg-card);
-      color: var(--text-primary);
-      border: 1px solid var(--border);
-      padding: 6px 12px;
-      border-radius: var(--radius-sm);
-      font-size: 12.5px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.15s ease;
-    }
-
-    .lang-toggle:hover {
-      border-color: var(--google-blue);
-      color: var(--google-blue);
-    }
   </style>
 </head>
 <body>
 
-  <!-- Unified 4-Page Sticky Header (Identical Across All Pages) -->
-  <header class="top-nav">
-    <div class="nav-container">
-      <a href="index.html" class="brand-group">
-        <span style="font-size: 22px;">⚡</span>
-        <span>WebMCP Partner Summit 2026</span>
-      </a>
-
-      <nav class="nav-pills" aria-label="Workshop Pages">
-        <a href="index.html" class="nav-pill active" data-i18n="navHub">1. Pre-Workshop Setup Hub</a>
-        <a href="workshop_guide.html" class="nav-pill" data-i18n="navGuide">2. Slide Deck &amp; Step-by-Step Guide</a>
-        <a href="extension_guide.html" class="nav-pill" data-i18n="navFieldGuide">3. Extension &amp; Built-in AI Field Guide</a>
-        <a href="survey.html" class="nav-pill" data-i18n="navSurvey">4. Post-Workshop Survey</a>
-        <a href="demo-mockup/index.html" class="nav-pill" data-i18n="navDemo">5. Interactive Demo &amp; Red-Team Lab ↗</a>
-      </nav>
-
-      <div class="header-actions">
-        <button class="lang-toggle" id="btn-lang-toggle" onclick="toggleLanguage()">🇯🇵 日本語 / EN</button>
+  <!-- Top Hero Header -->
+  <header>
+    <div class="container">
+      <div class="header-top">
+      <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+        <span class="hero-badge">
+          <span>📅</span> <span>Partner Summit 2026</span>
+        </span>
+        <a href="extension_guide.html" style="text-decoration:none; font-size:13px; font-weight:600; color:var(--google-purple); background:var(--google-purple-light); padding:4px 12px; border-radius:var(--radius-full); display:inline-flex; align-items:center; gap:6px; transition:all 0.2s;">
+          <span>🛠️</span> <span data-i18n="navFieldGuide">Extension & AI Field Guide ↗</span>
+        </a>
       </div>
-    </div>
-  </header>
-
-  <main class="container">
-
-    <!-- Unified Hero Card -->
-    <section class="hero-card">
-      <div class="hero-badge">
-        <span>⚙️</span> <span data-i18n="heroBadge">Pre-Workshop Setup &amp; Live Diagnostics</span>
+      <div class="lang-switcher">
+          <button id="btn-lang-en" class="lang-btn active" onclick="setLanguage('en')">English</button>
+          <button id="btn-lang-ja" class="lang-btn" onclick="setLanguage('ja')">日本語</button>
+        </div>
       </div>
-      <h1 class="hero-title" data-i18n="heroTitle">Built-in AI &amp; WebMCP Participant Setup Hub</h1>
+      <h1 class="hero-title" data-i18n="heroTitle">Built-in AI & WebMCP Participant Setup Hub</h1>
       <p class="hero-subtitle" data-i18n="heroSubtitle">
         Welcome! This self-contained setup page provides 100% public download links, flag checklists, agent installation guides, and live on-device browser diagnostics to ensure your laptop is ready for today's session.
       </p>
 
       <!-- Diagnostic Summary Scorecard -->
-      <div class="status-summary-bar" style="background: #ffffff; border: 1px solid var(--border); box-shadow: var(--shadow-sm);">
+      <div class="status-summary-bar">
         <div class="status-summary-left">
           <div id="overall-score-badge" class="score-badge idle">—</div>
           <div>
@@ -686,7 +629,10 @@
           <span>🔄</span> <span id="btn-diag-text" data-i18n="runDiagnostics">Run Diagnostics</span>
         </button>
       </div>
-    </section>
+    </div>
+  </header>
+
+  <main class="container">
 
     <!-- Section 1: Browser Environment Diagnostics -->
     <h2 class="section-title">
@@ -701,7 +647,7 @@
             <span id="badge-browser" class="status-pill not-run">Not Run</span>
           </div>
           <div id="desc-browser" class="diag-card-body">
-            Target: Chrome Canary / Dev ≥ 154.
+            Target: Chrome Canary / Dev ≥ 138.
           </div>
         </div>
         <div class="diag-card-action">
@@ -886,7 +832,7 @@
         </summary>
         <div style="margin-top:10px; line-height:1.6;">
           <p style="margin-bottom:8px;">
-            In Chrome 154+, calling <code>LanguageModel.create({ monitor(m) { ... } })</code> sends an IPC call to Chromium's <code>AIManager</code>, which resolves the model recipe in <strong>Optimization Guide On DeviceModels Manifest</strong> and downloads the <strong>nano_v3_gpu_component</strong> weights binary in the background.
+            In Chrome 138+, calling <code>LanguageModel.create({ monitor(m) { ... } })</code> sends an IPC call to Chromium's <code>AIManager</code>, which resolves the model recipe in <strong>Optimization Guide On DeviceModels Manifest</strong> and downloads the <strong>nano_v3_gpu_component</strong> weights binary in the background.
           </p>
           <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;">
             <button class="btn-copy" onclick="copyText('chrome://on-device-internals', 'chrome://on-device-internals URL copied!')">
@@ -1012,10 +958,10 @@ npx -y modern-web-guidance@latest retrieve "popover-api-dialog"</pre>
 
       <!-- Modern Web Guidance Verification Guide -->
       <div style="margin-top: 20px; padding: 16px; background: var(--bg-surface); border-radius: 8px; border: 1px solid var(--border-color);">
-        <h3 style="font-size: 15px; font-weight: 600; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;" data-i18n="mwgConfirmTitle">
+        <h3 style="font-size: 15px; font-weight: 600; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
           <span>✅</span> How to Confirm Your Installation
         </h3>
-        <ul style="font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-left: 20px;" data-i18n-html="mwgConfirmList">
+        <ul style="font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-left: 20px;">
           <li>
             <strong>1. Quick Terminal Check (Ground Truth):</strong> Run <code style="background:var(--bg-main); padding:2px 6px; border-radius:4px;">npx modern-web-guidance@latest search "animate a dialog"</code>. If working, it immediately returns matching JSON guide metadata (e.g. <code>animate-to-from-top-layer</code>).
           </li>
@@ -1033,7 +979,7 @@ npx -y modern-web-guidance@latest retrieve "popover-api-dialog"</pre>
       </div>
 
       <div style="margin-top:16px; font-size:13px;">
-        📖 <a href="https://developer.chrome.com/docs/modern-web-guidance/get-started" target="_blank" rel="noopener" style="color:var(--google-blue); text-decoration:none; font-weight:500;" data-i18n="mwgDocsLink">
+        📖 <a href="https://developer.chrome.com/docs/modern-web-guidance/get-started" target="_blank" rel="noopener" style="color:var(--google-blue); text-decoration:none; font-weight:500;">
           Read Modern Web Guidance Documentation on developer.chrome.com ↗
         </a>
       </div>
@@ -1088,34 +1034,16 @@ npx -y modern-web-guidance@latest retrieve "popover-api-dialog"</pre>
       <div style="display: flex; align-items: center; gap: 16px; max-width: 720px;">
         <span style="font-size: 34px;">🔍</span>
         <div>
-          <div style="font-weight: 700; font-size: 16px; color: var(--text-main);" data-i18n="inspectorBannerTitle">
+          <div style="font-weight: 700; font-size: 16px; color: var(--text-main);">
             Official WebMCP Model Context Tool Inspector Extension
           </div>
-          <div style="font-size: 13.5px; color: var(--text-secondary); margin-top: 4px; line-height: 1.4;" data-i18n-html="inspectorBannerDesc">
+          <div style="font-size: 13.5px; color: var(--text-secondary); margin-top: 4px; line-height: 1.4;">
             Install Google's official DevRel extension from the Chrome Web Store. It enables 1-click inspection, schema validation, and manual test execution of any <code>document.modelContext</code> tools registered on your active tab (Essential for Track A attendees).
           </div>
         </div>
       </div>
       <a href="https://chromewebstore.google.com/detail/webmcp-model-context-tool/gbpdfapgefenggkahomfgkhfehlcenpd?pli=1" target="_blank" rel="noopener" class="btn-diag" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px; background: var(--google-blue); color: #fff; font-size: 13.5px; padding: 10px 18px; border-radius: 8px; font-weight: 600; box-shadow: var(--shadow-sm);">
-        <span data-i18n="inspectorBannerBtn">📥 Install from Chrome Web Store ↗</span>
-      </a>
-    </div>
-
-    <!-- Recommended: Step-by-Step Workshop Guide -->
-    <div style="background: linear-gradient(135deg, #e8f0fe 0%, #f8f9fa 100%); border: 1px solid #dadce0; border-left: 4px solid var(--google-blue); border-radius: 12px; padding: 18px 22px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; box-shadow: var(--shadow-sm);">
-      <div style="display: flex; align-items: center; gap: 16px; max-width: 720px;">
-        <span style="font-size: 34px;">📑</span>
-        <div>
-          <div style="font-weight: 700; font-size: 16px; color: var(--text-main);" data-i18n="workshopBannerTitle">
-            Step-by-Step Workshop Guide (Interactive Companion + 1-Click Prompts)
-          </div>
-          <p style="font-size:13.5px; color:var(--text-secondary); margin-bottom:14px;" data-i18n="workshopBannerDesc">
-            Follow the entire workshop interactively across 6 collapsible modules: Google Store (gStore) repair case study, 1-click copy &amp; paste AI prompts, adversarial red-teaming, trajectory evals, and Chrome 154+ Origin Trial guardrails.
-          </p>
-        </div>
-      </div>
-      <a href="workshop_guide.html" class="btn-diag" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px; background: var(--google-blue); color: #fff; font-size: 13.5px; padding: 10px 18px; border-radius: 8px; font-weight: 600; box-shadow: var(--shadow-sm);">
-        <span data-i18n="workshopBannerBtn">📑 Open Workshop Guide ↗</span>
+        <span>📥 Install from Chrome Web Store ↗</span>
       </a>
     </div>
 
@@ -1124,16 +1052,16 @@ npx -y modern-web-guidance@latest retrieve "popover-api-dialog"</pre>
       <div style="display: flex; align-items: center; gap: 16px; max-width: 720px;">
         <span style="font-size: 34px;">🛠️</span>
         <div>
-          <div style="font-weight: 700; font-size: 16px; color: var(--text-main);" data-i18n="fieldGuideBannerTitle">
-            Developer Field Guide: Extension Plumbing &amp; Built-in AI Gotchas
+          <div style="font-weight: 700; font-size: 16px; color: var(--text-main);">
+            Developer Field Guide: Extension Plumbing & Built-in AI Gotchas
           </div>
-          <div style="font-size: 13.5px; color: var(--text-secondary); margin-top: 4px; line-height: 1.4;" data-i18n-html="fieldGuideBannerDesc">
+          <div style="font-size: 13.5px; color: var(--text-secondary); margin-top: 4px; line-height: 1.4;">
             Track A (declarative content scripts) vs. Track B (Side Panel AI agent) architecture, <code>world: "MAIN"</code> execution, streaming delta accumulation, and Modern Web Guidance standards.
           </div>
         </div>
       </div>
       <a href="extension_guide.html" class="btn-diag" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px; background: var(--google-purple); color: #fff; font-size: 13.5px; padding: 10px 18px; border-radius: 8px; font-weight: 600; box-shadow: var(--shadow-sm);">
-        <span data-i18n="fieldGuideBannerBtn">📖 Open Field Guide ↗</span>
+        <span>📖 Open Field Guide ↗</span>
       </a>
     </div>
 
@@ -1184,7 +1112,7 @@ npx -y modern-web-guidance@latest retrieve "popover-api-dialog"</pre>
           <span class="link-tile-icon">🌐</span>
           <div>
             <div>Chrome Canary</div>
-            <div style="font-size:12px; color:var(--text-muted);">v154+ with WebMCP</div>
+            <div style="font-size:12px; color:var(--text-muted);">v138+ with WebMCP</div>
           </div>
         </a>
 
@@ -1242,11 +1170,6 @@ npx -y modern-web-guidance@latest retrieve "popover-api-dialog"</pre>
     // ==========================================================================
     const i18nData = {
       en: {
-        navHub: '1. Pre-Workshop Setup Hub',
-        navGuide: '2. Step-by-Step Workshop Guide',
-        navFieldGuide: '3. Extension & Built-in AI Field Guide',
-        navResources: '4. Partner Links & Feedback Hub',
-        navSurvey: '5. Post-Workshop Survey',
         heroTitle: "Built-in AI & WebMCP Participant Setup Hub",
         heroSubtitle: "Welcome! This self-contained setup page provides 100% public download links, flag checklists, agent installation guides, and live on-device browser diagnostics to ensure your laptop is ready for today's session.",
         checkingStatus: "Checking Browser Environment...",
@@ -1276,35 +1199,13 @@ npx -y modern-web-guidance@latest retrieve "popover-api-dialog"</pre>
         mwgHeading: "⚡ Modern Web Guidance (MWG) Installation Hub",
         mwgDesc: "Install Google's official Modern Web Guidance skills into your AI agent or IDE so it generates modern, standards-compliant web code.",
         mwgCursorDesc: "Install Modern Web Guidance into Cursor to automatically inject modern web baseline standards into Cursor Composer and Agent:",
-        mwgConfirmTitle: "✅ How to Confirm Your Installation",
-        mwgConfirmList: `<li><strong>1. Quick Terminal Check (Ground Truth):</strong> Run <code style="background:var(--bg-main); padding:2px 6px; border-radius:4px;">npx modern-web-guidance@latest search "animate a dialog"</code>. If working, it immediately returns matching JSON guide metadata (e.g. <code>animate-to-from-top-layer</code>).</li><li><strong>2. In-Agent Test Prompt:</strong> In Cursor Composer, Claude Code, or Copilot, ask: <br><em style="color:var(--text-main); font-style:italic;">"Using Modern Web Guidance, how should I animate a modal dialog entering the top layer?"</em><br>A properly configured agent will query MWG and suggest native modern APIs (<code>&lt;dialog closedby&gt;</code>, <code>@starting-style</code>, <code>transition-behavior: allow-discrete</code>) rather than legacy JavaScript polyfills.</li><li><strong>3. Agent Activation Tip:</strong> If your agent does not trigger guidance automatically, simply append <code>"use modern-web-guidance"</code> to the end of your prompt, or use slash command syntax if supported (e.g. <code>/modern-web-guidance</code>).</li>`,
-        mwgDocsLink: "Read Modern Web Guidance Documentation on developer.chrome.com ↗",
-        mwgHeading: "⚡ Modern Web Guidance (MWG) Installation Hub",
         mcpHeading: "🛠️ Chrome DevTools MCP Server Setup",
         mcpDesc: "Connects your external AI coding assistant directly into Chrome Canary via Chrome DevTools Protocol (CDP) for live inspection, screenshot captures, console logs, and DOM validation.",
-        inspectorBannerTitle: "Official WebMCP Model Context Tool Inspector Extension",
-        inspectorBannerDesc: "Install Google's official DevRel extension from the Chrome Web Store. It enables 1-click inspection, schema validation, and manual test execution of any <code>document.modelContext</code> tools registered on your active tab (Essential for Track A attendees).",
-        inspectorBannerBtn: "📥 Install from Chrome Web Store ↗",
-        workshopBannerTitle: "Step-by-Step Workshop Guide (Interactive Companion + 1-Click Prompts)",
-        workshopBannerDesc: "Follow the entire workshop interactively across 6 collapsible modules: Google Store (gStore) repair case study, 1-click copy & paste AI prompts, adversarial red-teaming, trajectory evals, and Chrome 154+ Origin Trial guardrails.",
-        workshopBannerBtn: "📑 Open Workshop Guide ↗",
-        fieldGuideBannerTitle: "Developer Field Guide: Extension Plumbing & Built-in AI Gotchas",
-        fieldGuideBannerDesc: "Track A (declarative content scripts) vs. Track B (Side Panel AI agent) architecture, <code>world: \"MAIN\"</code> execution, streaming delta accumulation, and Modern Web Guidance standards.",
-        fieldGuideBannerBtn: "📖 Open Field Guide ↗",
         consoleHeading: "🧪 In-Browser Live Verification Console",
         consoleDesc: "Run live tests in this browser tab to verify WebMCP tool registration and local Gemini Nano inference.",
-        downloadsHeading: "📦 Workshop Downloads & Reference Links",
-        s8Heading: "🚀 Chrome 154–156 Origin Trial & WEC Co-Authoring Program",
-        s8Card1: `<div style="font-weight:700; color:var(--text-primary); margin-bottom:4px;">📅 Release Stage: Chrome 154+ / 156 OT</div><div>Chrome Stable is now on <strong>M154</strong>. The official WebMCP Origin Trial is active through the end of the year (<strong>Chrome 156</strong>), enabling production testing behind experiment flags.</div>`,
-        s8Card2: `<div style="font-weight:700; color:var(--text-primary); margin-bottom:4px;">🛠️ Native DevTools WebMCP Panel</div><div>In Chrome Canary 154+, open <code>DevTools (F12) &gt; Application &gt; WebMCP</code> (left sidebar) to inspect registered tools and monitor real-time agent tool calls natively.</div>`,
-        s8Card3: `<div style="font-weight:700; color:var(--text-primary); margin-bottom:4px;">📝 Publish on developers.google.com</div><div>Partner with Google Web Ecosystem Consultants (WEC) to co-author official enterprise WebMCP case studies published on <strong>developers.google.com</strong>.</div>`
+        downloadsHeading: "📦 Workshop Downloads & Reference Links"
       },
       ja: {
-        navHub: "1. 事前セットアップHub",
-        navGuide: "2. ステップ別実践ガイド",
-        navFieldGuide: "3. 拡張機能・Built-in AI 実装ガイド",
-        navResources: "4. パートナーリンク＆フィードバックHub",
-        navSurvey: "5. 事後アンケート",
         heroTitle: "Built-in AI & WebMCP ワークショップ参加者用環境設定ハブ",
         heroSubtitle: "ご参加ありがとうございます！本ページでは、当日のハンズオンを円滑に行うための公開ダウンロードリンク、Chrome フラグ設定チェックリスト、AI エージェント別設定ガイド、およびお使いのブラウザの動作環境をリアルタイムに自動判定する診断ツールを提供します。",
         checkingStatus: "ブラウザ環境を確認中...",
@@ -1334,27 +1235,11 @@ npx -y modern-web-guidance@latest retrieve "popover-api-dialog"</pre>
         mwgHeading: "⚡ Modern Web Guidance (MWG) インストールハブ",
         mwgDesc: "Google 公式の Modern Web Guidance スキルをお使いの AI コーディングツール（IDE/CLI）に導入し、最新のウェブ標準に準拠したコード生成を実現します。",
         mwgCursorDesc: "Cursor に Modern Web Guidance をインストールし、Composer や Agent に最新ウェブ標準を自動適用します：",
-        mwgConfirmTitle: "✅ インストールの動作確認方法",
-        mwgConfirmList: `<li><strong>1. ターミナル確認 (Ground Truth):</strong> <code style="background:var(--bg-main); padding:2px 6px; border-radius:4px;">npx modern-web-guidance@latest search "animate a dialog"</code> を実行します。正常に動作していれば、一致する JSON ガイドメタデータ（例: <code>animate-to-from-top-layer</code>）が即座に返されます。</li><li><strong>2. エージェント内テストプロンプト:</strong> Cursor Composer、Claude Code、または Copilot で次のように質問してください：<br><em style="color:var(--text-main); font-style:italic;">"Using Modern Web Guidance, how should I animate a modal dialog entering the top layer?"</em><br>適切に設定されたエージェントは MWG を参照し、レガシーな JavaScript ポリフィルではなく最新のネイティブ API（<code>&lt;dialog closedby&gt;</code>、<code>@starting-style</code>、<code>transition-behavior: allow-discrete</code>）を提案します。</li><li><strong>3. 起動のヒント:</strong> エージェントが自動的に MWG を適用しない場合は、プロンプトの末尾に <code>"use modern-web-guidance"</code> を追加するか、スラッシュコマンド（<code>/modern-web-guidance</code>）を使用してください。</li>`,
-        mwgDocsLink: "developer.chrome.com で Modern Web Guidance ドキュメントを読む ↗",
         mcpHeading: "🛠️ Chrome DevTools MCP サーバーのセットアップ",
         mcpDesc: "外部の AI コーディングアシスタントを Chrome Canary に直接接続し、CDP 経由でリアルタイムのインスペクション、スクリーンショット取得、DOM 検証を行います。",
-        inspectorBannerTitle: "公式 WebMCP Model Context Tool Inspector 拡張機能",
-        inspectorBannerDesc: "Chrome Web Store から Google 公式 DevRel 拡張機能をインストールしてください。アクティブなタブに登録された <code>document.modelContext</code> ツールのワンクリック検査、JSON Schema 検証、および手動テスト実行が可能です（Track A 参加者必須）。",
-        inspectorBannerBtn: "📥 Chrome Web Store からインストール ↗",
-        workshopBannerTitle: "ステップ・バイ・ステップ ワークショップガイド（対話型ガイド + ワンクリック・プロンプト）",
-        workshopBannerDesc: "全 6 つの折りたたみモジュールでワークショップを対話的に進行できます：Google Store (gStore) 修理フロー事例、コピー＆ペースト可能な AI プロンプト、Adversarial Red-Teaming、軌跡評価、および Chrome 154+ Origin Trial ガイド。",
-        workshopBannerBtn: "📑 ワークショップガイドを開く ↗",
-        fieldGuideBannerTitle: "開発者フィールドガイド：拡張機能アーキテクチャ & Built-in AI 実装時の落とし穴",
-        fieldGuideBannerDesc: "Track A（宣言的 Content Script）vs. Track B（Side Panel AI エージェント）アーキテクチャ、<code>world: \"MAIN\"</code> 実行、ストリーミングデルタ蓄積、Modern Web Guidance 標準について解説します。",
-        fieldGuideBannerBtn: "📖 フィールドガイドを開く ↗",
         consoleHeading: "🧪 ブラウザ内リアルタイム検証コンソール",
         consoleDesc: "このブラウザタブ内で WebMCP ツールの登録およびオンデバイス Gemini Nano の推論を直接テストできます。",
-        downloadsHeading: "📦 ワークショップ関連ダウンロード & 参照リンク",
-        s8Heading: "🚀 Chrome 154–156 Origin Trial & WEC 共同執筆プログラム",
-        s8Card1: `<div style="font-weight:700; color:var(--text-primary); margin-bottom:4px;">📅 リリース段階: Chrome 154+ / 156 OT</div><div>Chrome Stable は現在 <strong>M154</strong> です。公式 WebMCP Origin Trial は今年末（<strong>Chrome 156</strong>）まで実施されており、フラグ配下での本番環境検証が可能です。</div>`,
-        s8Card2: `<div style="font-weight:700; color:var(--text-primary); margin-bottom:4px;">🛠️ ネイティブ DevTools WebMCP パネル</div><div>Chrome Canary 154+ では、<code>DevTools (F12) &gt; Application &gt; WebMCP</code>（左サイドバー）を開くことで、登録済みのツールとリアルタイムのエージェント呼び出しを直接検査できます。</div>`,
-        s8Card3: `<div style="font-weight:700; color:var(--text-primary); margin-bottom:4px;">📝 developers.google.com での事例公開</div><div>Google Web Ecosystem Consultants (WEC) と連携し、<strong>developers.google.com</strong> に公式 WebMCP エンタープライズ事例（Case Study）を共同執筆・公開できます。</div>`
+        downloadsHeading: "📦 ワークショップ関連ダウンロード & 参照リンク"
       }
     };
 
@@ -1386,7 +1271,7 @@ npx -y modern-web-guidance@latest retrieve "popover-api-dialog"</pre>
         badgeBrowser.textContent = currentLang === 'ja' ? '未判定' : 'Not Run';
         badgeBrowser.className = 'status-pill not-run';
       }
-      if (descBrowser) descBrowser.innerHTML = currentLang === 'ja' ? '対象: Chrome Canary / Dev 154 以上。' : 'Target: Chrome Canary / Dev ≥ 154.';
+      if (descBrowser) descBrowser.innerHTML = currentLang === 'ja' ? '対象: Chrome Canary / Dev 138 以上。' : 'Target: Chrome Canary / Dev ≥ 138.';
 
       if (badgeWebmcp) {
         badgeWebmcp.textContent = currentLang === 'ja' ? '未判定' : 'Not Run';
@@ -1403,16 +1288,6 @@ npx -y modern-web-guidance@latest retrieve "popover-api-dialog"</pre>
 
     function setLanguage(lang) {
       currentLang = lang;
-      try {
-        localStorage.setItem('webmcp_lang', lang);
-      } catch (e) {}
-      document.documentElement.lang = lang;
-
-      const toggleBtn = document.getElementById('btn-lang-toggle');
-      if (toggleBtn) {
-        toggleBtn.textContent = lang === 'ja' ? '🇺🇸 English / JA' : '🇯🇵 日本語 / EN';
-      }
-
       document.getElementById('btn-lang-en')?.classList.toggle('active', lang === 'en');
       document.getElementById('btn-lang-ja')?.classList.toggle('active', lang === 'ja');
 
@@ -1423,12 +1298,6 @@ npx -y modern-web-guidance@latest retrieve "popover-api-dialog"</pre>
           el.textContent = dict[key];
         }
       });
-      document.querySelectorAll('[data-i18n-html]').forEach((el) => {
-        const key = el.getAttribute('data-i18n-html');
-        if (dict[key]) {
-          el.innerHTML = dict[key];
-        }
-      });
       if (hasRunDiagnostics) {
         updateOverallScore();
         const btnText = document.getElementById('btn-diag-text');
@@ -1436,10 +1305,6 @@ npx -y modern-web-guidance@latest retrieve "popover-api-dialog"</pre>
       } else {
         renderInitialDiagUI();
       }
-    }
-
-    function toggleLanguage() {
-      setLanguage(currentLang === 'ja' ? 'en' : 'ja');
     }
 
     // ==========================================================================
@@ -1567,7 +1432,7 @@ npx -y modern-web-guidance@latest retrieve "popover-api-dialog"</pre>
         const match = ua.match(/Chrome\/([0-9]+)/);
         const version = match ? parseInt(match[1], 10) : 0;
 
-        if (isChrome && version >= 154) {
+        if (isChrome && version >= 138) {
           diagState.browserOk = true;
           badgeBrowser.className = 'status-pill pass';
           badgeBrowser.textContent = `Pass (Chrome ${version})`;
@@ -1580,8 +1445,8 @@ npx -y modern-web-guidance@latest retrieve "popover-api-dialog"</pre>
           badgeBrowser.className = 'status-pill fail';
           badgeBrowser.textContent = `Fail (${version ? 'v' + version : 'Non-Chrome'})`;
           descBrowser.innerHTML = currentLang === 'ja'
-            ? '❌ Chrome Canary v154 以上が必要です。上部または下部のリンクから Canary をダウンロードしてください。'
-            : '❌ Chrome Canary v154+ is required. Please install Canary from the links below.';
+            ? '❌ Chrome Canary v138 以上が必要です。上部または下部のリンクから Canary をダウンロードしてください。'
+            : '❌ Chrome Canary v138+ is required. Please install Canary from the links below.';
           logConsole(`Browser: Fail (Detected user agent: ${ua})`);
         }
 
@@ -1615,10 +1480,10 @@ npx -y modern-web-guidance@latest retrieve "popover-api-dialog"</pre>
           badgePrompt.className = 'status-pill fail';
           badgePrompt.textContent = 'API Missing';
           descPrompt.innerHTML = currentLang === 'ja'
-            ? '❌ <code>LanguageModel</code> API が見つかりません。最新の Chrome Canary (v154+) をご利用ください。'
-            : '❌ <code>LanguageModel</code> API not found. Please use the latest Chrome Canary (v154+).';
+            ? '❌ <code>LanguageModel</code> API が見つかりません。最新の Chrome Canary (v138+) をご利用ください。'
+            : '❌ <code>LanguageModel</code> API not found. Please use the latest Chrome Canary (v138+).';
           logConsole('Prompt API: Fail (global LanguageModel not defined)');
-          updateNanoMonitor({ status: 'unavailable', headline: 'LanguageModel API Missing', subtext: 'Ensure you are running Chrome Canary v154+.' });
+          updateNanoMonitor({ status: 'unavailable', headline: 'LanguageModel API Missing', subtext: 'Ensure you are running Chrome Canary v138+.' });
         } else {
           try {
             const avail = await (LM.availability ? LM.availability() : Promise.resolve('unknown'));
@@ -2029,10 +1894,6 @@ npx -y modern-web-guidance@latest retrieve "popover-api-dialog"</pre>
       initChecklist();
       initTabs();
       renderInitialDiagUI();
-      const savedLang = localStorage.getItem('webmcp_lang');
-      if (savedLang === 'ja' || savedLang === 'en') {
-        setLanguage(savedLang);
-      }
     });
   </script>
 </body>

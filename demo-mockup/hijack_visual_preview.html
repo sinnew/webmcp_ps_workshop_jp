@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Point Hijacking Visual Preview (Victim vs. Hijacker Wallet)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Code:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-page: #f8f9fa;
+      --bg-surface: #ffffff;
+      --bg-subtle: #f1f3f4;
+      --text-main: #202124;
+      --text-secondary: #5f6368;
+      --text-muted: #80868b;
+      --border: #dadce0;
+      --google-blue: #1a73e8;
+      --google-green: #1e8e3e;
+      --google-green-light: #e6f4ea;
+      --google-red: #d93025;
+      --google-red-light: #fce8e6;
+      --radius-md: 12px;
+      --radius-sm: 8px;
+      --shadow-sm: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+    }
+    body {
+      margin: 0;
+      padding: 28px 36px;
+      background: var(--bg-page);
+      font-family: 'Roboto', 'Noto Sans JP', sans-serif;
+      color: var(--text-main);
+    }
+    h1 {
+      font-family: 'Google Sans', sans-serif;
+      font-size: 20px;
+      margin: 0 0 6px 0;
+    }
+    .subtitle {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+    }
+    .preview-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .state-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+      padding: 20px;
+    }
+    .state-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .state-title {
+      font-family: 'Google Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .pill {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 9999px;
+    }
+    .pill-vuln {
+      background: var(--google-red-light);
+      color: var(--google-red);
+      border: 1px solid #f2b8b5;
+    }
+    .pill-sec {
+      background: var(--google-green-light);
+      color: var(--google-green);
+      border: 1px solid #b7e1cd;
+    }
+    .wallets-row {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    .wallet-box {
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      border: 1px solid var(--border);
+      position: relative;
+    }
+    .wallet-victim-vuln {
+      background: #fff8f7;
+      border-color: #f2b8b5;
+    }
+    .wallet-attacker-vuln {
+      background: #fce8e6;
+      border: 2px solid var(--google-red);
+    }
+    .wallet-victim-sec {
+      background: #f4fbf6;
+      border-color: #b7e1cd;
+    }
+    .wallet-attacker-sec {
+      background: var(--bg-subtle);
+      border-color: var(--border);
+    }
+    .wallet-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-secondary);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .wallet-id {
+      font-family: 'Google Sans Code', monospace;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+    .wallet-balance {
+      font-family: 'Google Sans', sans-serif;
+      font-size: 26px;
+      font-weight: 700;
+      line-height: 1.1;
+    }
+    .balance-drained { color: var(--google-red); }
+    .balance-stolen { color: var(--google-red); }
+    .balance-safe { color: var(--google-green); }
+    .balance-zero { color: var(--text-secondary); }
+    .delta-badge {
+      display: inline-block;
+      margin-top: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 9999px;
+    }
+    .delta-neg {
+      background: var(--google-red-light);
+      color: var(--google-red);
+    }
+    .delta-stolen {
+      background: var(--google-red);
+      color: #fff;
+    }
+    .delta-safe {
+      background: var(--google-green-light);
+      color: var(--google-green);
+    }
+    .delta-blocked {
+      background: #e8eaed;
+      color: var(--text-secondary);
+    }
+    .flow-arrow-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0 4px;
+    }
+    .flow-arrow {
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .flow-arrow-vuln { color: var(--google-red); }
+    .flow-arrow-sec { color: var(--google-green); }
+    .flow-caption {
+      font-family: 'Google Sans Code', monospace;
+      font-size: 10px;
+      font-weight: 600;
+      margin-top: 2px;
+    }
+    .banner {
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      font-size: 12px;
+      font-weight: 500;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .banner-vuln {
+      background: var(--google-red-light);
+      color: #a50e0e;
+      border-left: 4px solid var(--google-red);
+    }
+    .banner-sec {
+      background: var(--google-green-light);
+      color: #0d652d;
+      border-left: 4px solid var(--google-green);
+    }
+    .ledger-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+    .ledger-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    .ledger-table th {
+      text-align: left;
+      font-size: 10px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      padding: 6px 8px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-subtle);
+    }
+    .ledger-table td {
+      padding: 8px;
+      border-bottom: 1px solid #f1f3f4;
+      font-family: 'Google Sans Code', monospace;
+      font-size: 11px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Point Hijacking Monitor — Visual UI Proposal</h1>
+  <div class="subtitle">Side-by-side comparison of what the user sees on Scenario 2 (Prompt Injection) & Scenario 3 (PII & Transfer)</div>
+
+  <div class="preview-grid">
+    <!-- Left Card: Vulnerable Mode (Hijack Succeeded) -->
+    <div class="state-card">
+      <div class="state-header">
+        <div class="state-title">
+          <span>🔴 State A: After Exploit in Vulnerable Mode</span>
+        </div>
+        <span class="pill pill-vuln">consequentialHint: false</span>
+      </div>
+
+      <div class="wallets-row">
+        <!-- Victim Wallet -->
+        <div class="wallet-box wallet-victim-vuln">
+          <div class="wallet-label">
+            <span>👤 Victim Wallet</span>
+            <span>Taro Tanaka</span>
+          </div>
+          <div class="wallet-id">ID: usr_994821</div>
+          <div class="wallet-balance balance-drained">0 pt</div>
+          <span class="delta-badge delta-neg">▼ -5,000 pt (Drained)</span>
+        </div>
+
+        <!-- Arrow -->
+        <div class="flow-arrow-box">
+          <div class="flow-arrow flow-arrow-vuln">💸 ➔</div>
+          <div class="flow-caption" style="color: var(--google-red);">5,000 pt<br>HIJACKED</div>
+        </div>
+
+        <!-- Hijacker Wallet -->
+        <div class="wallet-box wallet-attacker-vuln">
+          <div class="wallet-label">
+            <span>🕵️‍♂️ Hijacker Wallet</span>
+            <span style="color: var(--google-red); font-weight:700;">ATTACKER</span>
+          </div>
+          <div class="wallet-id">ID: attacker_wallet_99</div>
+          <div class="wallet-balance balance-stolen">+5,000 pt</div>
+          <span class="delta-badge delta-stolen">🚨 Stolen Funds Received</span>
+        </div>
+      </div>
+
+      <div class="banner banner-vuln">
+        <span>🚨</span>
+        <div>
+          <strong>SILENT HIJACK SUCCEEDED:</strong> 5,000 pt transferred from <code>Taro Tanaka</code> to <code>attacker_wallet_99</code> without user approval!
+        </div>
+      </div>
+
+      <div class="ledger-title">Live Point Transfer Ledger</div>
+      <table class="ledger-table">
+        <thead>
+          <tr>
+            <th>Time</th>
+            <th>From ➔ To</th>
+            <th>Amount</th>
+            <th>WebMCP Security Verdict</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background: #fff8f7;">
+            <td>14:20:08</td>
+            <td>usr_994821 ➔ <strong>attacker_wallet_99</strong></td>
+            <td style="color: var(--google-red); font-weight: 700;">5,000 pt</td>
+            <td><span class="pill pill-vuln">🔴 Hijacked (No HITL)</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Right Card: Secure Mode (Attack Blocked) -->
+    <div class="state-card">
+      <div class="state-header">
+        <div class="state-title">
+          <span>🟢 State B: After Exploit Attempt in Secure Mode</span>
+        </div>
+        <span class="pill pill-sec">consequentialHint: true + Tag Isolation</span>
+      </div>
+
+      <div class="wallets-row">
+        <!-- Victim Wallet -->
+        <div class="wallet-box wallet-victim-sec">
+          <div class="wallet-label">
+            <span>👤 Victim Wallet</span>
+            <span>Taro Tanaka</span>
+          </div>
+          <div class="wallet-id">ID: usr_994821</div>
+          <div class="wallet-balance balance-safe">5,000 pt</div>
+          <span class="delta-badge delta-safe">🛡️ Protected (No Loss)</span>
+        </div>
+
+        <!-- Arrow -->
+        <div class="flow-arrow-box">
+          <div class="flow-arrow flow-arrow-sec">🛡️ 🚫</div>
+          <div class="flow-caption" style="color: var(--google-green);">TRANSFER<br>BLOCKED</div>
+        </div>
+
+        <!-- Hijacker Wallet -->
+        <div class="wallet-box wallet-attacker-sec">
+          <div class="wallet-label">
+            <span>🕵️‍♂️ Hijacker Wallet</span>
+            <span>ATTACKER</span>
+          </div>
+          <div class="wallet-id">ID: attacker_wallet_99</div>
+          <div class="wallet-balance balance-zero">0 pt</div>
+          <span class="delta-badge delta-blocked">0 pt (Attack Failed)</span>
+        </div>
+      </div>
+
+      <div class="banner banner-sec">
+        <span>🛡️</span>
+        <div>
+          <strong>ATTACK BLOCKED BY WEBMCP GUARD:</strong> Unauthorized point transfer to <code>attacker_wallet_99</code> was rejected (HITL / Tag Isolation).
+        </div>
+      </div>
+
+      <div class="ledger-title">Live Point Transfer Ledger</div>
+      <table class="ledger-table">
+        <thead>
+          <tr>
+            <th>Time</th>
+            <th>From ➔ To</th>
+            <th>Amount</th>
+            <th>WebMCP Security Verdict</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background: #f4fbf6;">
+            <td>14:20:32</td>
+            <td>usr_994821 ➔ <strong>attacker_wallet_99</strong></td>
+            <td style="color: var(--text-secondary);">5,000 pt (0 sent)</td>
+            <td><span class="pill pill-sec">🟢 Blocked by WebMCP Guard</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>

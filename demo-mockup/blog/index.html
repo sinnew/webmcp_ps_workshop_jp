@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ブログ (Blogging) | WebMCP Demo</title>
+  <link rel="stylesheet" href="../shared/css/base.css?v=20260915">
+  <link rel="stylesheet" href="../shared/css/components.css?v=20260915">
+  <style>
+    .blog-container {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 24px 16px;
+    }
+    .blog-header-tabs {
+      display: flex;
+      gap: 20px;
+      border-bottom: 1px solid var(--border);
+      padding: 4px 0 12px 0;
+      margin-bottom: 24px;
+      overflow-x: auto;
+    }
+    .blog-tab {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      padding-bottom: 4px;
+      transition: color 0.15s ease;
+      white-space: nowrap;
+    }
+    .blog-tab:hover {
+      color: var(--text-main);
+    }
+    .blog-tab.active {
+      color: var(--brand-blog);
+      border-bottom: 2px solid var(--brand-blog);
+    }
+    .blog-feed {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .blog-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 22px;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    .blog-card:hover {
+      border-color: var(--border-hover);
+      box-shadow: var(--shadow-sm);
+    }
+    .author-line {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .author-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-full);
+      background: var(--brand-blog-light);
+      color: var(--brand-blog);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 13px;
+    }
+    .article-title-link {
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.4;
+      color: var(--text-main);
+      display: block;
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+    .article-title-link:hover {
+      color: var(--brand-blog);
+    }
+    .article-snippet {
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 14px;
+    }
+    .tag-pill {
+      display: inline-block;
+      font-size: 11.5px;
+      color: var(--text-muted);
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      margin-right: 6px;
+    }
+  </style>
+</head>
+<body>
+  
+  <!-- Google Fonts (Partner Hub Aligned: Google Sans, Roboto, Google Sans Code, Noto Sans JP) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Code:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Speculation Rules API for instant multi-page navigation -->
+  <script type="speculationrules">
+  {
+    "prerender": [
+      {
+        "where": { "href_matches": "/*" },
+        "eagerness": "moderate"
+      }
+    ]
+  }
+  </script>
+
+  <header class="global-header">
+    <div class="container header-inner">
+      <div class="brand-group">
+        <a href="../../index.html" class="hub-back-pill" title="Return to Google Partner Summit Workshop Hub">
+          <span data-ja="&larr; パートナーハブ" data-en="&larr; Partner Hub">&larr; パートナーハブ</span>
+        </a>
+        <a href="../index.html" class="brand-link">
+          <span style="color:var(--google-blue);">Google</span>
+          <span style="color:var(--text-main);font-weight:500;" data-ja="デモ検証環境" data-en="Demo Testbed">デモ検証環境</span>
+        </a>
+      </div>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="../shopping/index.html" class="nav-link "><span data-ja="ショッピング" data-en="Shopping">ショッピング</span></a></li>
+          <li><a href="../blog/index.html" class="nav-link active"><span data-ja="ブログ" data-en="Blogging">ブログ</span></a></li>
+          <li><a href="../gallery/index.html" class="nav-link "><span data-ja="ギャラリー" data-en="Gallery">ギャラリー</span></a></li>
+          <li><a href="../crm/index.html" class="nav-link "><span data-ja="CRM・サポート" data-en="CRM & Support">CRM・サポート</span></a></li>
+          <li><a href="../account/register.html" class="nav-link "><span data-ja="アカウント" data-en="Account">アカウント</span></a></li>
+          <li><a href="../redteam/index.html" class="nav-link nav-link-redteam "><span data-ja="レッドチーム" data-en="Red-Team">レッドチーム</span></a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <button id="lang-toggle-btn" class="lang-toggle-btn lang-switcher" aria-label="Toggle language" onclick="if(window.i18n) window.i18n.toggleLanguage();">
+          <span class="lang-active">JP</span><span class="lang-inactive">EN</span>
+        </button>
+        <a href="../shopping/cart.html" class="cart-indicator-btn" title="Shopping Cart">
+          <span data-ja="カート" data-en="Cart">カート</span>
+          <span class="cart-badge-count" style="display:none;">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+
+  <main class="blog-container">
+    <div class="blog-header-tabs">
+      <span class="blog-tab active" onclick="filterBlogCategory('all', this)" data-ja="おすすめ" data-en="Recommended">おすすめ</span>
+      <span class="blog-tab" onclick="filterBlogCategory('tech', this)" data-ja="テクノロジー" data-en="Technology">テクノロジー</span>
+      <span class="blog-tab" onclick="filterBlogCategory('design', this)" data-ja="デザイン" data-en="Design">デザイン</span>
+      <span class="blog-tab" onclick="filterBlogCategory('business', this)" data-ja="ビジネス" data-en="Business">ビジネス</span>
+      <span class="blog-tab" onclick="filterBlogCategory('members', this)" data-ja="メンバーシップ" data-en="Memberships">メンバーシップ</span>
+    </div>
+
+    <div class="blog-feed">
+      <!-- Article 1: Tech -->
+      <article class="blog-card" data-category="tech">
+        <div class="author-line">
+          <div class="author-avatar">中</div>
+          <div>
+            <a href="creator.html" style="font-weight:600;font-size:13px;" data-ja="中村 浩之 (QA/Experience Lead)" data-en="Hiroyuki Nakamura (Blog QA/Exp)">中村 浩之 (QA/Experience Lead)</a>
+            <div style="font-size:11.5px;color:var(--text-muted);" data-ja="2026年9月8日 · 読了目安 6分" data-en="Sep 8, 2026 · 6 min read">2026年9月8日 · 読了目安 6分</div>
+          </div>
+          <span class="badge" style="margin-left:auto;background:var(--bg-subtle);color:var(--brand-blog);border:1px solid var(--border);" data-ja="有料記事 ¥500" data-en="Paid ¥500">有料記事 ¥500</span>
+        </div>
+
+        <a href="article.html" class="article-title-link" data-ja="WebMCPとBuilt-in AIで変わる次世代Webエクスペリエンス：API-Firstの罠を越えて" data-en="Next-Gen Web Experiences with WebMCP & Built-in AI: Beyond the API-First Trap">
+          WebMCPとBuilt-in AIで変わる次世代Webエクスペリエンス：API-Firstの罠を越えて
+        </a>
+        <p class="article-snippet" data-ja="AIコーディングエージェントやブラウザ内モデル（Gemini Nano）を活用する際、多くの開発者が陥る「API-First」の罠。クライアントStateとDOMを同期させるWebMCPの設計哲学と実装パターンを徹底解説します。" data-en="A deep dive into why mechanical API-first agent wrapping breaks client UX, and how WebMCP keeps DOM and client state in lockstep.">
+          AIコーディングエージェントやブラウザ内モデル（Gemini Nano）を活用する際、多くの開発者が陥る「API-First」の罠。クライアントStateとDOMを同期させるWebMCPの設計哲学と実装パターンを徹底解説します。
+        </p>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--text-muted);">
+          <div>
+            <span class="tag-pill">#WebMCP</span>
+            <span class="tag-pill">#BuiltinAI</span>
+            <span class="tag-pill">#ChromeDev</span>
+          </div>
+          <div>
+            <span style="cursor:pointer;" onclick="AppStore.toggleLike('article-blog-1')" data-ja="❤️ スキ 142" data-en="❤️ Likes 142">❤️ スキ 142</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Article 2: Tech -->
+      <article class="blog-card" data-category="tech">
+        <div class="author-line">
+          <div class="author-avatar" style="background:#e0f2fe;color:#0284c7;">板</div>
+          <div>
+            <a href="creator.html" style="font-weight:600;font-size:13px;" data-ja="板橋 毅彦 (VP of Technology)" data-en="Takehiko Itabashi (VP of Tech)">板橋 毅彦 (VP of Technology)</a>
+            <div style="font-size:11.5px;color:var(--text-muted);" data-ja="2026年9月6日 · 読了目安 8分" data-en="Sep 6, 2026 · 8 min read">2026年9月6日 · 読了目安 8分</div>
+          </div>
+          <span class="badge" style="margin-left:auto;background:var(--bg-subtle);" data-ja="無料公開" data-en="Free">無料公開</span>
+        </div>
+
+        <a href="article.html" class="article-title-link" data-ja="大規模コンテンツプラットフォームにおけるQA自動化とAIエージェントの共存戦略" data-en="QA Automation & AI Agent Coexistence in Large-Scale Content Platforms">
+          大規模コンテンツプラットフォームにおけるQA自動化とAIエージェントの共存戦略
+        </a>
+        <p class="article-snippet" data-ja="クリエイターが安心して発信できるプラットフォームを支える品質保証体制。テストシナリオの自動生成と自律エージェントの安全なテスト実行環境の構築について共有します。" data-en="How quality assurance and autonomous AI agents collaborate safely to safeguard creators publishing at massive scale.">
+          クリエイターが安心して発信できるプラットフォームを支える品質保証体制。テストシナリオの自動生成と自律エージェントの安全なテスト実行環境の構築について共有します。
+        </p>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--text-muted);">
+          <div>
+            <span class="tag-pill">#QAエンジニア</span>
+            <span class="tag-pill">#エンジニア組織</span>
+          </div>
+          <div>
+            <span style="cursor:pointer;" onclick="AppStore.toggleLike('article-blog-2')" data-ja="❤️ スキ 89" data-en="❤️ Likes 89">❤️ スキ 89</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Article 3: Tech -->
+      <article class="blog-card" data-category="tech">
+        <div class="author-line">
+          <div class="author-avatar" style="background:#f3e8ff;color:#9333ea;">倉</div>
+          <div>
+            <a href="creator.html" style="font-weight:600;font-size:13px;" data-ja="倉本 和磨 (CTO室 エンジニア)" data-en="Kazuma Kuramoto (CTO Office Eng)">倉本 和磨 (CTO室 エンジニア)</a>
+            <div style="font-size:11.5px;color:var(--text-muted);" data-ja="2026年9月5日 · 読了目安 7分" data-en="Sep 5, 2026 · 7 min read">2026年9月5日 · 読了目安 7分</div>
+          </div>
+          <span class="badge" style="margin-left:auto;background:var(--bg-subtle);" data-ja="無料公開" data-en="Free">無料公開</span>
+        </div>
+
+        <a href="article.html" class="article-title-link" data-ja="次世代ハイパフォーマンスWeb：Speculation RulesとView Transitionsの極限最適化" data-en="High-Performance Next-Gen Web: Speculation Rules & View Transitions">
+          次世代ハイパフォーマンスWeb：Speculation RulesとView Transitionsの極限最適化
+        </a>
+        <p class="article-snippet" data-ja="ページ遷移を0msにするブラウザ標準のSpeculation Rules APIと、MPA間のシームレスなView Transitionsアニメーション設計。体感速度向上とConversion率改善の計測データを公開。" data-en="Eliminating navigation latency with browser-native Speculation Rules and seamless cross-document View Transitions animations.">
+          ページ遷移を0msにするブラウザ標準のSpeculation Rules APIと、MPA間のシームレスなView Transitionsアニメーション設計。体感速度向上とConversion率改善の計測データを公開。
+        </p>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--text-muted);">
+          <div>
+            <span class="tag-pill">#Performance</span>
+            <span class="tag-pill">#ViewTransitions</span>
+          </div>
+          <div>
+            <span style="cursor:pointer;" onclick="AppStore.toggleLike('article-blog-kuramoto')" data-ja="❤️ スキ 178" data-en="❤️ Likes 178">❤️ スキ 178</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Article 4: Tech -->
+      <article class="blog-card" data-category="tech">
+        <div class="author-line">
+          <div class="author-avatar" style="background:#ccfbf1;color:#0d9488;">デ</div>
+          <div>
+            <a href="creator.html" style="font-weight:600;font-size:13px;" data-ja="デニス パヤス (Search Engineering Lead)" data-en="Denis Payas (Search Eng Lead)">デニス パヤス (Search Engineering Lead)</a>
+            <div style="font-size:11.5px;color:var(--text-muted);" data-ja="2026年9月3日 · 読了目安 9分" data-en="Sep 3, 2026 · 9 min read">2026年9月3日 · 読了目安 9分</div>
+          </div>
+          <span class="badge" style="margin-left:auto;background:var(--bg-subtle);color:var(--brand-blog);border:1px solid var(--border);" data-ja="有料記事 ¥400" data-en="Paid ¥400">有料記事 ¥400</span>
+        </div>
+
+        <a href="article.html" class="article-title-link" data-ja="ブラウザ内ローカルGemini Nanoで実現するゼロレイテンシ・クライアント推論の実装詳解" data-en="Zero-Latency Client Inference with In-Browser Gemini Nano">
+          ブラウザ内ローカルGemini Nanoで実現するゼロレイテンシ・クライアント推論の実装詳解
+        </a>
+        <p class="article-snippet" data-ja="サーバーAPIを一切呼び出さず、Chrome組み込みのPrompt API / Summarizer APIでミリ秒オーダーのローカル推論を実現。プライバシー保護とインフラコストゼロを両立する新常識。" data-en="Hands-on guide to local browser AI inference using Chrome Built-in Prompt & Summarizer APIs with zero server roundtrips.">
+          サーバーAPIを一切呼び出さず、Chrome組み込みのPrompt API / Summarizer APIでミリ秒オーダーのローカル推論を実現。プライバシー保護とインフラコストゼロを両立する新常識。
+        </p>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--text-muted);">
+          <div>
+            <span class="tag-pill">#GeminiNano</span>
+            <span class="tag-pill">#BuiltinAI</span>
+          </div>
+          <div>
+            <span style="cursor:pointer;" onclick="AppStore.toggleLike('article-blog-denis')" data-ja="❤️ スキ 230" data-en="❤️ Likes 230">❤️ スキ 230</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Article 5: Design -->
+      <article class="blog-card" data-category="design">
+        <div class="author-line">
+          <div class="author-avatar" style="background:#fee2e2;color:#dc2626;">山</div>
+          <div>
+            <a href="creator.html" style="font-weight:600;font-size:13px;" data-ja="山田 武正 (Design Systems Specialist)" data-en="Takemasa Yamada (Design Systems)">山田 武正 (Design Systems Specialist)</a>
+            <div style="font-size:11.5px;color:var(--text-muted);" data-ja="2026年9月2日 · 読了目安 6分" data-en="Sep 2, 2026 · 6 min read">2026年9月2日 · 読了目安 6分</div>
+          </div>
+          <span class="badge" style="margin-left:auto;background:var(--bg-subtle);" data-ja="無料公開" data-en="Free">無料公開</span>
+        </div>
+
+        <a href="article.html" class="article-title-link" data-ja="2026年の空間的UIデザインとマイクロインタラクション：AIエージェントとの協調視覚言語" data-en="2026 Spatial UI Design & Micro-Interactions: Co-adaptive Visuals for AI Agents">
+          2026年の空間的UIデザインとマイクロインタラクション：AIエージェントとの協調視覚言語
+        </a>
+        <p class="article-snippet" data-ja="自律エージェントがDOMを操作する時代、人間の注視点を誘導し不安を取り除くフォーカスアニメーションと視覚的ステータスバナーの設計理論。" data-en="Designing visual clarity and calming spatial focus states when AI agents and humans share the same living web canvas.">
+          自律エージェントがDOMを操作する時代、人間の注視点を誘導し不安を取り除くフォーカスアニメーションと視覚的ステータスバナーの設計理論。
+        </p>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--text-muted);">
+          <div>
+            <span class="tag-pill">#DesignSystems</span>
+            <span class="tag-pill">#UIUX</span>
+          </div>
+          <div>
+            <span style="cursor:pointer;" onclick="AppStore.toggleLike('article-blog-yamada')" data-ja="❤️ スキ 165" data-en="❤️ Likes 165">❤️ スキ 165</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Article 6: Design -->
+      <article class="blog-card" data-category="design">
+        <div class="author-line">
+          <div class="author-avatar" style="background:#fef3c7;color:#b45309;">太</div>
+          <div>
+            <a href="creator.html" style="font-weight:600;font-size:13px;" data-ja="太田 浩二 (Creative Director)" data-en="Koji Ota (Creative Director)">太田 浩二 (Creative Director)</a>
+            <div style="font-size:11.5px;color:var(--text-muted);" data-ja="2026年9月1日 · 読了目安 5分" data-en="Sep 1, 2026 · 5 min read">2026年9月1日 · 読了目安 5分</div>
+          </div>
+          <span class="badge" style="margin-left:auto;background:var(--bg-subtle);" data-ja="無料公開" data-en="Free">無料公開</span>
+        </div>
+
+        <a href="article.html" class="article-title-link" data-ja="CJK Webフォント最適化とアクセシブルタイポグラフィの最前線" data-en="CJK Web Font Optimization & Modern Accessible Typography">
+          CJK Webフォント最適化とアクセシブルタイポグラフィの最前線
+        </a>
+        <p class="article-snippet" data-ja="重厚な日本語フォントのサブセット配信、Variable Fontsのウェイト補間、そして縦書き・横書きハイブリッド組版におけるモダンCSSプロパティ活用術。" data-en="Deep dive into modern CJK subset font streaming, variable font weight interpolation, and high-readability layouts.">
+          重厚な日本語フォントのサブセット配信、Variable Fontsのウェイト補間、そして縦書き・横書きハイブリッド組版におけるモダンCSSプロパティ活用術。
+        </p>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--text-muted);">
+          <div>
+            <span class="tag-pill">#Typography</span>
+            <span class="tag-pill">#CSS</span>
+          </div>
+          <div>
+            <span style="cursor:pointer;" onclick="AppStore.toggleLike('article-blog-ota')" data-ja="❤️ スキ 112" data-en="❤️ Likes 112">❤️ スキ 112</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Article 7: Business -->
+      <article class="blog-card" data-category="business">
+        <div class="author-line">
+          <div class="author-avatar" style="background:#fef3c7;color:#d97706;">開</div>
+          <div>
+            <a href="creator.html" style="font-weight:600;font-size:13px;" data-ja="開発チーム" data-en="Tech Engineering Team">開発チーム</a>
+            <div style="font-size:11.5px;color:var(--text-muted);" data-ja="2026年8月30日 · 読了目安 5分" data-en="Aug 30, 2026 · 5 min read">2026年8月30日 · 読了目安 5分</div>
+          </div>
+          <span class="badge" style="margin-left:auto;background:var(--bg-subtle);color:var(--brand-blog);border:1px solid var(--border);" data-ja="有料記事 ¥300" data-en="Paid ¥300">有料記事 ¥300</span>
+        </div>
+
+        <a href="article.html" class="article-title-link" data-ja="自律ブラウザエージェント時代のクリエイターエコノミー保護技術" data-en="Protecting the Creator Economy in the Autonomous Browser Agent Era">
+          自律ブラウザエージェント時代のクリエイターエコノミー保護技術
+        </a>
+        <p class="article-snippet" data-ja="AIによる無断スクレイピングや決済バイパスを防ぐWebMCPセキュリティレイヤーの実際。ブラウザ標準のHITL検証メカニズムを紹介します。" data-en="Practices for preventing unauthorized scraping and payment bypass using WebMCP security layers and browser-native HITL guards.">
+          AIによる無断スクレイピングや決済バイパスを防ぐWebMCPセキュリティレイヤーの実際。ブラウザ標準のHITL検証メカニズムを紹介します。
+        </p>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--text-muted);">
+          <div>
+            <span class="tag-pill">#WebSecurity</span>
+            <span class="tag-pill">#CreatorEconomy</span>
+          </div>
+          <div>
+            <span style="cursor:pointer;" onclick="AppStore.toggleLike('article-blog-3')" data-ja="❤️ スキ 215" data-en="❤️ Likes 215">❤️ スキ 215</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Article 8: Business -->
+      <article class="blog-card" data-category="business">
+        <div class="author-line">
+          <div class="author-avatar" style="background:#e0e7ff;color:#4f46e5;">斎</div>
+          <div>
+            <a href="creator.html" style="font-weight:600;font-size:13px;" data-ja="斎藤 滉司 (Product Analytics Lead)" data-en="Koji Saito (Product Analytics)">斎藤 滉司 (Product Analytics Lead)</a>
+            <div style="font-size:11.5px;color:var(--text-muted);" data-ja="2026年8月28日 · 読了目安 6分" data-en="Aug 28, 2026 · 6 min read">2026年8月28日 · 読了目安 6分</div>
+          </div>
+          <span class="badge" style="margin-left:auto;background:var(--bg-subtle);" data-ja="無料公開" data-en="Free">無料公開</span>
+        </div>
+
+        <a href="article.html" class="article-title-link" data-ja="リアルタイムWebイベントストリーミングによる顧客ロイヤルティとコンバージョンの最大化" data-en="Maximizing Customer LTV via Real-Time Web Event Streaming">
+          リアルタイムWebイベントストリーミングによる顧客ロイヤルティとコンバージョンの最大化
+        </a>
+        <p class="article-snippet" data-ja="ユーザー行動シグナルをマイクロ秒単位で検知し、適切なコンテキストでオファーを提示するイベント駆動型CRMアーキテクチャの構築事例。" data-en="Architecting real-time customer event pipelines that trigger contextually relevant retention journeys in microseconds.">
+          ユーザー行動シグナルをマイクロ秒単位で検知し、適切なコンテキストでオファーを提示するイベント駆動型CRMアーキテクチャの構築事例。
+        </p>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--text-muted);">
+          <div>
+            <span class="tag-pill">#Analytics</span>
+            <span class="tag-pill">#MarTech</span>
+          </div>
+          <div>
+            <span style="cursor:pointer;" onclick="AppStore.toggleLike('article-blog-saito')" data-ja="❤️ スキ 139" data-en="❤️ Likes 139">❤️ スキ 139</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Article 9: Memberships -->
+      <article class="blog-card" data-category="members">
+        <div class="author-line">
+          <div class="author-avatar" style="background:#fdf2f8;color:#db2777;">★</div>
+          <div>
+            <a href="creator.html" style="font-weight:600;font-size:13px;" data-ja="プレミアム編集部 (VIP Editorial)" data-en="VIP Editorial Board">プレミアム編集部 (VIP Editorial)</a>
+            <div style="font-size:11.5px;color:var(--text-muted);" data-ja="2026年8月25日 · 読了目安 12分" data-en="Aug 25, 2026 · 12 min read">2026年8月25日 · 読了目安 12分</div>
+          </div>
+          <span class="badge" style="margin-left:auto;background:#fdf2f8;color:#db2777;border:1px solid #fbcfe8;" data-ja="メンバー限定" data-en="Members Only">メンバー限定</span>
+        </div>
+
+        <a href="article.html" class="article-title-link" data-ja="【会員限定】エンタープライズWebMCP完全攻略アーキテクチャガイド2026" data-en="[Members Only] Enterprise WebMCP Architecture Masterclass 2026">
+          【会員限定】エンタープライズWebMCP完全攻略アーキテクチャガイド2026
+        </a>
+        <p class="article-snippet" data-ja="安全なHITLガードレール、PIIデータ射影、セッションバウンダリのベストプラクティスを全方位網羅した社内開発者向け虎の巻。本番コード付き詳解。" data-en="A comprehensive architectural playbook covering HITL safety bounds, PII masking, and multi-agent execution barriers.">
+          安全なHITLガードレール、PIIデータ射影、セッションバウンダリのベストプラクティスを全方位網羅した社内開発者向け虎の巻。本番コード付き詳解。
+        </p>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--text-muted);">
+          <div>
+            <span class="tag-pill">#Architecture</span>
+            <span class="tag-pill">#EnterpriseSecurity</span>
+          </div>
+          <div>
+            <span style="cursor:pointer;" onclick="AppStore.toggleLike('article-blog-vip')" data-ja="❤️ スキ 348" data-en="❤️ Likes 348">❤️ スキ 348</span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </main>
+
+  
+  <footer style="background:var(--bg-surface);border-top:1px solid var(--border);padding:24px 0;margin-top:64px;font-size:12px;color:var(--text-muted);">
+    <div class="container" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+      <div>
+        <strong>Google Partner Summit 2026</strong> · Built-in AI & WebMCP Workshop
+      </div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;">
+        <a href="../index.html" style="color:var(--text-secondary);" data-ja="ホーム" data-en="Home">ホーム</a>
+        <a href="../shopping/index.html" style="color:var(--text-secondary);" data-ja="ショッピング" data-en="Shopping">ショッピング</a>
+        <a href="../blog/index.html" style="color:var(--text-secondary);" data-ja="ブログ" data-en="Blogging">ブログ</a>
+        <a href="../gallery/index.html" style="color:var(--text-secondary);" data-ja="ギャラリー" data-en="Gallery">ギャラリー</a>
+        <a href="../crm/index.html" style="color:var(--text-secondary);" data-ja="CRM・サポート" data-en="CRM & Support">CRM・サポート</a>
+        <a href="../account/register.html" style="color:var(--text-secondary);" data-ja="アカウント" data-en="Account">アカウント</a>
+        <a href="../redteam/index.html" style="color:var(--brand-redteam);font-weight:600;" data-ja="レッドチーム検証" data-en="Red-Team Lab">レッドチーム検証</a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="webmcp-toast"></div>
+  <script src="../shared/js/i18n.js?v=20260915"></script>
+  <script src="../shared/js/store.js?v=20260915"></script>
+  <script src="../shared/js/webmcp-tools.js?v=20260915"></script>
+
+
+  <script>
+    function filterBlogCategory(cat, el) {
+      document.querySelectorAll('.blog-tab').forEach(t => t.classList.remove('active'));
+      if (el) el.classList.add('active');
+      const cards = document.querySelectorAll('.blog-card');
+      cards.forEach(card => {
+        const cardCat = card.getAttribute('data-category');
+        if (cat === 'all' || cardCat === cat) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+      if (window.AppStore && window.AppStore.logCRMEvent) {
+        window.AppStore.logCRMEvent('BLOG', 'TAB_FILTER', cat);
+      }
+    }
+  </script>
+</body>
+</html>

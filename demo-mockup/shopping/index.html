@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ショッピング (Shopping) | WebMCP Demo</title>
+  <link rel="stylesheet" href="../shared/css/base.css?v=20260915">
+  <link rel="stylesheet" href="../shared/css/components.css?v=20260915">
+  <style>
+    .shopping-subbar {
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 0;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+    .shopping-layout {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 28px;
+      margin-top: 28px;
+    }
+    @media (max-width: 860px) {
+      .shopping-layout { grid-template-columns: 1fr; }
+      .filter-sidebar { display: none; }
+    }
+    .filter-sidebar {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      height: fit-content;
+    }
+    .filter-group { margin-bottom: 18px; }
+    .filter-title { font-size: 13px; font-weight: 700; margin-bottom: 8px; color: var(--text-main); }
+    .filter-list { list-style: none; display: flex; flex-direction: column; gap: 6px; font-size: 13px; }
+    .filter-list label { display: flex; align-items: center; gap: 8px; cursor: pointer; color: var(--text-secondary); }
+    
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 10px;
+    }
+    .product-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    .product-card:hover {
+      border-color: var(--border-hover);
+      box-shadow: var(--shadow-sm);
+    }
+    .product-img-wrap {
+      aspect-ratio: 1;
+      background: var(--bg-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .product-img-wrap svg {
+      width: 44px;
+      height: 44px;
+    }
+    .product-img-wrap .badge-points {
+      position: absolute !important;
+      top: 4px !important;
+      left: 4px !important;
+      font-size: 9.5px !important;
+      padding: 1px 4px !important;
+      line-height: 1.2 !important;
+    }
+    .product-info {
+      padding: 8px 10px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .product-title {
+      font-size: 11.5px;
+      font-weight: 600;
+      line-height: 1.35;
+      margin-bottom: 4px;
+      min-height: 31px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .product-price {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 2px;
+    }
+    .product-points {
+      font-size: 10.5px;
+      font-weight: 600;
+      color: var(--brand-shopping);
+      margin-bottom: 8px;
+    }
+    .product-card .btn {
+      min-width: unset !important;
+      width: 100% !important;
+      height: 26px !important;
+      padding: 2px 6px !important;
+      font-size: 11px !important;
+      line-height: 1.2 !important;
+    }
+  </style>
+</head>
+<body>
+  
+  <!-- Google Fonts (Partner Hub Aligned: Google Sans, Roboto, Google Sans Code, Noto Sans JP) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Code:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Speculation Rules API for instant multi-page navigation -->
+  <script type="speculationrules">
+  {
+    "prerender": [
+      {
+        "where": { "href_matches": "/*" },
+        "eagerness": "moderate"
+      }
+    ]
+  }
+  </script>
+
+  <header class="global-header">
+    <div class="container header-inner">
+      <div class="brand-group">
+        <a href="../../index.html" class="hub-back-pill" title="Return to Google Partner Summit Workshop Hub">
+          <span data-ja="&larr; パートナーハブ" data-en="&larr; Partner Hub">&larr; パートナーハブ</span>
+        </a>
+        <a href="../index.html" class="brand-link">
+          <span style="color:var(--google-blue);">Google</span>
+          <span style="color:var(--text-main);font-weight:500;" data-ja="デモ検証環境" data-en="Demo Testbed">デモ検証環境</span>
+        </a>
+      </div>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="../shopping/index.html" class="nav-link active"><span data-ja="ショッピング" data-en="Shopping">ショッピング</span></a></li>
+          <li><a href="../blog/index.html" class="nav-link "><span data-ja="ブログ" data-en="Blogging">ブログ</span></a></li>
+          <li><a href="../gallery/index.html" class="nav-link "><span data-ja="ギャラリー" data-en="Gallery">ギャラリー</span></a></li>
+          <li><a href="../crm/index.html" class="nav-link "><span data-ja="CRM・サポート" data-en="CRM & Support">CRM・サポート</span></a></li>
+          <li><a href="../account/register.html" class="nav-link "><span data-ja="アカウント" data-en="Account">アカウント</span></a></li>
+          <li><a href="../redteam/index.html" class="nav-link nav-link-redteam "><span data-ja="レッドチーム" data-en="Red-Team">レッドチーム</span></a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <button id="lang-toggle-btn" class="lang-toggle-btn lang-switcher" aria-label="Toggle language" onclick="if(window.i18n) window.i18n.toggleLanguage();">
+          <span class="lang-active">JP</span><span class="lang-inactive">EN</span>
+        </button>
+        <a href="../shopping/cart.html" class="cart-indicator-btn" title="Shopping Cart">
+          <span data-ja="カート" data-en="Cart">カート</span>
+          <span class="cart-badge-count" style="display:none;">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+
+  <div class="shopping-subbar">
+    <div class="container" style="display:flex;justify-content:space-between;align-items:center;">
+      <span data-ja="シーズンセール開催中 · 全品ポイント対象" data-en="Seasonal Super SALE · All Items Eligible for Points">シーズンセール開催中 · 全品ポイント対象</span>
+      <span style="font-weight:600;color:var(--brand-shopping);" data-ja="送料無料ライン対応" data-en="Free Shipping Eligible">送料無料ライン対応</span>
+    </div>
+  </div>
+
+  <main class="container">
+    <!-- Minimalist Search Bar -->
+    <div style="margin: 28px 0 12px 0;">
+      <div class="search-bar-wrapper">
+        <form class="search-bar-form" id="search-form" onsubmit="event.preventDefault(); handleSearch();">
+          <select class="search-category-select" id="search-category">
+            <option value="all" data-ja="すべてのジャンル" data-en="All Categories">すべてのジャンル</option>
+            <option value="shoes" data-ja="靴・スニーカー" data-en="Shoes">靴・スニーカー</option>
+            <option value="audio" data-ja="オーディオ" data-en="Audio">オーディオ</option>
+            <option value="gaming" data-ja="ゲーミング" data-en="Gaming">ゲーミング</option>
+          </select>
+          <input 
+            type="text" 
+            class="search-bar-input" 
+            id="search-input" 
+            placeholder="何をお探しですか？（例：スニーカー、ヘッドホン）" data-ja="何をお探しですか？（例：スニーカー、ヘッドホン）" data-en="What are you looking for? (e.g. sneakers, headphones)"
+            data-ja="何をお探しですか？（例：スニーカー、ヘッドホン）" 
+            data-en="Search items (e.g. sneakers, headphones)..."
+            autocomplete="off"
+          >
+          <button type="submit" class="search-bar-btn" data-ja="検索" data-en="Search">検索</button>
+        </form>
+
+        <!-- Auto-Suggest Dropdown -->
+        <div class="auto-suggest-box" id="auto-suggest-box">
+          <div class="suggest-section">
+            <div class="suggest-header">
+              <span data-ja="最近検索したキーワード" data-en="Recent Searches">最近検索したキーワード</span>
+              <button style="color:var(--text-muted);font-size:11px;" onclick="clearSearchHistory();" data-ja="履歴クリア" data-en="Clear">履歴クリア</button>
+            </div>
+            <ul class="suggest-list" id="history-list">
+              <li class="suggest-item" onclick="applySearch('スニーカー')">🕒 スニーカー (Sneakers)</li>
+              <li class="suggest-item" onclick="applySearch('ワイヤレスヘッドホン')">🕒 ワイヤレスヘッドホン (Headphones)</li>
+            </ul>
+          </div>
+
+          <div class="suggest-section" style="border-top:1px solid var(--border);padding-top:6px;">
+            <div class="suggest-header">
+              <span data-ja="注目の急上昇ワード" data-en="Trending Searches">注目の急上昇ワード</span>
+            </div>
+            <ul class="suggest-list">
+              <li class="suggest-item" onclick="applySearch('Apex Pro Runner')"><span class="suggest-rank">#1</span> Apex Pro Runner v2</li>
+              <li class="suggest-item" onclick="applySearch('CloudSound ANC')"><span class="suggest-rank">#2</span> CloudSound ノイズキャンセリング</li>
+              <li class="suggest-item" onclick="applySearch('メカニカルキーボード')"><span class="suggest-rank">#3</span> RGBメカニカルキーボード</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="shopping-layout">
+      <!-- Filter Sidebar -->
+      <aside class="filter-sidebar">
+        <div class="filter-group">
+          <div class="filter-title" data-ja="カテゴリー" data-en="Category">カテゴリー</div>
+          <ul class="filter-list">
+            <li><label><input type="radio" name="cat" value="all" checked onchange="filterProducts()"> <span data-ja="すべて" data-en="All">すべて</span></label></li>
+            <li><label><input type="radio" name="cat" value="shoes" onchange="filterProducts()"> <span data-ja="靴・スニーカー" data-en="Shoes">靴・スニーカー</span></label></li>
+            <li><label><input type="radio" name="cat" value="audio" onchange="filterProducts()"> <span data-ja="オーディオ" data-en="Audio">オーディオ</span></label></li>
+            <li><label><input type="radio" name="cat" value="gaming" onchange="filterProducts()"> <span data-ja="ゲーミング" data-en="Gaming">ゲーミング</span></label></li>
+          </ul>
+        </div>
+
+        <div class="filter-group">
+          <div class="filter-title" data-ja="ポイント倍率" data-en="Points Multiplier">ポイント倍率</div>
+          <ul class="filter-list">
+            <li><label><input type="checkbox" checked> 3倍以上 (3x+)</label></li>
+            <li><label><input type="checkbox"> 5倍以上 (5x+)</label></li>
+            <li><label><input type="checkbox"> 10倍 (10x Super)</label></li>
+          </ul>
+        </div>
+
+        <div class="filter-group" style="margin-bottom:0;">
+          <div class="filter-title" data-ja="配送条件" data-en="Shipping">配送条件</div>
+          <ul class="filter-list">
+            <li><label><input type="checkbox" checked> <span data-ja="送料無料" data-en="Free Shipping">送料無料</span></label></li>
+            <li><label><input type="checkbox"> <span data-ja="あす楽 (翌日配送)" data-en="Next Day Delivery">あす楽 (翌日配送)</span></label></li>
+          </ul>
+        </div>
+      </aside>
+
+      <!-- Product List Grid -->
+      <section>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+          <h2 style="font-size:16px;font-weight:700;" data-ja="おすすめ商品一覧" data-en="Products">おすすめ商品一覧</h2>
+          <span style="font-size:12px;color:var(--text-muted);"><span id="product-count">12</span> <span data-ja="件の商品" data-en="items">件の商品</span></span>
+        </div>
+
+        <div class="product-grid" id="product-grid">
+          <!-- Card 1 -->
+          <article class="product-card" data-cat="shoes" data-title="Apex Pro Runner v2">
+            <a href="product.html" class="product-img-wrap">
+              <svg width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 17h20M2 12h20M7 8l3 4M17 8l-3 4"/></svg>
+              <span class="badge badge-points" style="position:absolute;top:8px;left:8px;" data-ja="ポイント3倍" data-en="3x Points">ポイント3倍</span>
+            </a>
+            <div class="product-info">
+              <h3 class="product-title"><a href="product.html" data-ja="Apex Pro Runner v2 超軽量カーボンプレート搭載" data-en="Apex Pro Runner v2 Lightweight Carbon Plate">Apex Pro Runner v2 超軽量カーボンプレート搭載</a></h3>
+              <div class="product-price">¥12,800</div>
+              <div class="product-points" data-ja="獲得: 384 pt (3倍)" data-en="Earn 384 pts (3x)">獲得: 384 pt (3倍)</div>
+              <div style="margin-top:auto;">
+                <button class="btn btn-secondary" style="width:100%;font-size:12px;" onclick="addCardToCart('sku-101', 'Apex Pro Runner v2', 12800, 3, 'shoes')" data-ja="カートに追加" data-en="Add to Cart">
+                  カートに追加
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 2 -->
+          <article class="product-card" data-cat="audio" data-title="CloudSound ANC-800">
+            <a href="product.html" class="product-img-wrap">
+              <svg width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
+              <span class="badge badge-points" style="position:absolute;top:8px;left:8px;" data-ja="ポイント5倍" data-en="5x Points">ポイント5倍</span>
+            </a>
+            <div class="product-info">
+              <h3 class="product-title"><a href="product.html" data-ja="CloudSound ANC-800 ノイズキャンセリングヘッドホン" data-en="CloudSound ANC-800 Wireless Headphones">CloudSound ANC-800 ノイズキャンセリングヘッドホン</a></h3>
+              <div class="product-price">¥24,800</div>
+              <div class="product-points" data-ja="獲得: 1,240 pt (5倍)" data-en="Earn 1,240 pts (5x)">獲得: 1,240 pt (5倍)</div>
+              <div style="margin-top:auto;">
+                <button class="btn btn-secondary" style="width:100%;font-size:12px;" onclick="addCardToCart('sku-102', 'CloudSound ANC-800', 24800, 5, 'audio')" data-ja="カートに追加" data-en="Add to Cart">
+                  カートに追加
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 3 -->
+          <article class="product-card" data-cat="gaming" data-title="UltraGrip RGB Keyboard">
+            <a href="product.html" class="product-img-wrap">
+              <svg width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M6 12h.01M10 12h.01M14 12h.01M18 12h.01M7 16h10"/></svg>
+              <span class="badge badge-points" style="position:absolute;top:8px;left:8px;" data-ja="ポイント3倍" data-en="3x Points">ポイント3倍</span>
+            </a>
+            <div class="product-info">
+              <h3 class="product-title"><a href="product.html" data-ja="UltraGrip メカニカルゲーミングキーボード RGB" data-en="UltraGrip Mechanical Gaming Keyboard">UltraGrip メカニカルゲーミングキーボード RGB</a></h3>
+              <div class="product-price">¥15,400</div>
+              <div class="product-points" data-ja="獲得: 462 pt (3倍)" data-en="Earn 462 pts (3x)">獲得: 462 pt (3倍)</div>
+              <div style="margin-top:auto;">
+                <button class="btn btn-secondary" style="width:100%;font-size:12px;" onclick="addCardToCart('sku-103', 'UltraGrip RGB Keyboard', 15400, 3, 'keyboard')" data-ja="カートに追加" data-en="Add to Cart">
+                  カートに追加
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 4 -->
+          <article class="product-card" data-cat="audio" data-title="SmartTrack Fit Pro">
+            <a href="product.html" class="product-img-wrap">
+              <svg width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M8 2v2M16 2v2M8 20v2M16 20v2M12 8v4l3 3"/></svg>
+              <span class="badge badge-points" style="position:absolute;top:8px;left:8px;" data-ja="ポイント10倍" data-en="10x Points">ポイント10倍</span>
+            </a>
+            <div class="product-info">
+              <h3 class="product-title"><a href="product.html" data-ja="SmartTrack Fit Pro 有機ELスマートウォッチ" data-en="SmartTrack Fit Pro OLED Smartwatch">SmartTrack Fit Pro 有機ELスマートウォッチ</a></h3>
+              <div class="product-price">¥18,900</div>
+              <div class="product-points" data-ja="獲得: 1,890 pt (10倍)" data-en="Earn 1,890 pts (10x)">獲得: 1,890 pt (10倍)</div>
+              <div style="margin-top:auto;">
+                <button class="btn btn-secondary" style="width:100%;font-size:12px;" onclick="addCardToCart('sku-104', 'SmartTrack Fit Pro', 18900, 10, 'watch')" data-ja="カートに追加" data-en="Add to Cart">
+                  カートに追加
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 5 -->
+          <article class="product-card" data-cat="gaming" data-title="PrecisionFlow Wireless Mouse">
+            <a href="product.html" class="product-img-wrap">
+              <svg width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a6 6 0 0 0-6 6v8a6 6 0 0 0 12 0V8a6 6 0 0 0-6-6zM12 7v4"/></svg>
+              <span class="badge badge-points" style="position:absolute;top:8px;left:8px;" data-ja="ポイント3倍" data-en="3x Points">ポイント3倍</span>
+            </a>
+            <div class="product-info">
+              <h3 class="product-title"><a href="product.html" data-ja="PrecisionFlow 超軽量ワイヤレスエルゴマウス" data-en="PrecisionFlow Lightweight Wireless Ergonomic Mouse">PrecisionFlow 超軽量ワイヤレスエルゴマウス</a></h3>
+              <div class="product-price">¥8,400</div>
+              <div class="product-points" data-ja="獲得: 252 pt (3倍)" data-en="Earn 252 pts (3x)">獲得: 252 pt (3倍)</div>
+              <div style="margin-top:auto;">
+                <button class="btn btn-secondary" style="width:100%;font-size:12px;" onclick="addCardToCart('sku-105', 'PrecisionFlow Wireless Mouse', 8400, 3, 'gaming')" data-ja="カートに追加" data-en="Add to Cart">
+                  カートに追加
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 6 -->
+          <article class="product-card" data-cat="gaming" data-title="AuraLite 4K Creator Monitor 27">
+            <a href="product.html" class="product-img-wrap">
+              <svg width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+              <span class="badge badge-points" style="position:absolute;top:8px;left:8px;" data-ja="ポイント5倍" data-en="5x Points">ポイント5倍</span>
+            </a>
+            <div class="product-info">
+              <h3 class="product-title"><a href="product.html" data-ja="AuraLite 4K クリエイターモニター 27インチ HDR" data-en="AuraLite 4K Creator Monitor 27&quot; HDR">AuraLite 4K クリエイターモニター 27インチ HDR</a></h3>
+              <div class="product-price">¥49,800</div>
+              <div class="product-points" data-ja="獲得: 2,490 pt (5倍)" data-en="Earn 2,490 pts (5x)">獲得: 2,490 pt (5倍)</div>
+              <div style="margin-top:auto;">
+                <button class="btn btn-secondary" style="width:100%;font-size:12px;" onclick="addCardToCart('sku-106', 'AuraLite 4K Creator Monitor 27', 49800, 5, 'gaming')" data-ja="カートに追加" data-en="Add to Cart">
+                  カートに追加
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 7 -->
+          <article class="product-card" data-cat="shoes" data-title="Horizon Trail Hydro Pack">
+            <a href="product.html" class="product-img-wrap">
+              <svg width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+              <span class="badge badge-points" style="position:absolute;top:8px;left:8px;" data-ja="ポイント3倍" data-en="3x Points">ポイント3倍</span>
+            </a>
+            <div class="product-info">
+              <h3 class="product-title"><a href="product.html" data-ja="Horizon Trail 超軽量トレイルランハイドレーションパック" data-en="Horizon Trail Ultra-Light Hydration Pack">Horizon Trail 超軽量トレイルランハイドレーションパック</a></h3>
+              <div class="product-price">¥9,200</div>
+              <div class="product-points" data-ja="獲得: 276 pt (3倍)" data-en="Earn 276 pts (3x)">獲得: 276 pt (3倍)</div>
+              <div style="margin-top:auto;">
+                <button class="btn btn-secondary" style="width:100%;font-size:12px;" onclick="addCardToCart('sku-107', 'Horizon Trail Hydro Pack', 9200, 3, 'shoes')" data-ja="カートに追加" data-en="Add to Cart">
+                  カートに追加
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 8 -->
+          <article class="product-card" data-cat="audio" data-title="SonicWave Mini Bluetooth Speaker">
+            <a href="product.html" class="product-img-wrap">
+              <svg width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+              <span class="badge badge-points" style="position:absolute;top:8px;left:8px;" data-ja="ポイント3倍" data-en="3x Points">ポイント3倍</span>
+            </a>
+            <div class="product-info">
+              <h3 class="product-title"><a href="product.html" data-ja="SonicWave Mini 防水ポータブルスピーカー IPX7" data-en="SonicWave Mini Waterproof Bluetooth Speaker">SonicWave Mini 防水ポータブルスピーカー IPX7</a></h3>
+              <div class="product-price">¥6,800</div>
+              <div class="product-points" data-ja="獲得: 204 pt (3倍)" data-en="Earn 204 pts (3x)">獲得: 204 pt (3倍)</div>
+              <div style="margin-top:auto;">
+                <button class="btn btn-secondary" style="width:100%;font-size:12px;" onclick="addCardToCart('sku-108', 'SonicWave Mini Bluetooth Speaker', 6800, 3, 'audio')" data-ja="カートに追加" data-en="Add to Cart">
+                  カートに追加
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 9 -->
+          <article class="product-card" data-cat="shoes" data-title="AeroSprint Carbon Insoles Pro">
+            <a href="product.html" class="product-img-wrap">
+              <svg width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              <span class="badge badge-points" style="position:absolute;top:8px;left:8px;" data-ja="ポイント3倍" data-en="3x Points">ポイント3倍</span>
+            </a>
+            <div class="product-info">
+              <h3 class="product-title"><a href="product.html" data-ja="AeroSprint プロ仕様カーボンランニングインソール" data-en="AeroSprint Carbon Fiber Running Insoles Pro">AeroSprint プロ仕様カーボンランニングインソール</a></h3>
+              <div class="product-price">¥4,500</div>
+              <div class="product-points" data-ja="獲得: 135 pt (3倍)" data-en="Earn 135 pts (3x)">獲得: 135 pt (3倍)</div>
+              <div style="margin-top:auto;">
+                <button class="btn btn-secondary" style="width:100%;font-size:12px;" onclick="addCardToCart('sku-109', 'AeroSprint Carbon Insoles Pro', 4500, 3, 'shoes')" data-ja="カートに追加" data-en="Add to Cart">
+                  カートに追加
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 10 -->
+          <article class="product-card" data-cat="audio" data-title="StudioMic USB-C Condenser Mic">
+            <a href="product.html" class="product-img-wrap">
+              <svg width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+              <span class="badge badge-points" style="position:absolute;top:8px;left:8px;" data-ja="ポイント3倍" data-en="3x Points">ポイント3倍</span>
+            </a>
+            <div class="product-info">
+              <h3 class="product-title"><a href="product.html" data-ja="StudioMic 24bit/96kHz 高音質コンデンサーマイク" data-en="StudioMic USB-C Studio Condenser Microphone">StudioMic 24bit/96kHz 高音質コンデンサーマイク</a></h3>
+              <div class="product-price">¥13,200</div>
+              <div class="product-points" data-ja="獲得: 396 pt (3倍)" data-en="Earn 396 pts (3x)">獲得: 396 pt (3倍)</div>
+              <div style="margin-top:auto;">
+                <button class="btn btn-secondary" style="width:100%;font-size:12px;" onclick="addCardToCart('sku-110', 'StudioMic USB-C Condenser Mic', 13200, 3, 'audio')" data-ja="カートに追加" data-en="Add to Cart">
+                  カートに追加
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 11 -->
+          <article class="product-card" data-cat="gaming" data-title="CyberDesk Extended Deskmat RGB">
+            <a href="product.html" class="product-img-wrap">
+              <svg width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><polyline points="3 7 12 13 21 7"/></svg>
+              <span class="badge badge-points" style="position:absolute;top:8px;left:8px;" data-ja="ポイント3倍" data-en="3x Points">ポイント3倍</span>
+            </a>
+            <div class="product-info">
+              <h3 class="product-title"><a href="product.html" data-ja="CyberDesk 大型撥水ゲーミングデスクマット RGB" data-en="CyberDesk Extended Gaming Deskmat RGB">CyberDesk 大型撥水ゲーミングデスクマット RGB</a></h3>
+              <div class="product-price">¥3,900</div>
+              <div class="product-points" data-ja="獲得: 117 pt (3倍)" data-en="Earn 117 pts (3x)">獲得: 117 pt (3倍)</div>
+              <div style="margin-top:auto;">
+                <button class="btn btn-secondary" style="width:100%;font-size:12px;" onclick="addCardToCart('sku-111', 'CyberDesk Extended Deskmat RGB', 3900, 3, 'gaming')" data-ja="カートに追加" data-en="Add to Cart">
+                  カートに追加
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 12 -->
+          <article class="product-card" data-cat="shoes" data-title="QuantumShield Blue Light Glasses">
+            <a href="product.html" class="product-img-wrap">
+              <svg width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="12" r="4"/><circle cx="18" cy="12" r="4"/><line x1="10" y1="12" x2="14" y2="12"/><line x1="2" y1="10" x2="3" y2="12"/><line x1="22" y1="10" x2="21" y2="12"/></svg>
+              <span class="badge badge-points" style="position:absolute;top:8px;left:8px;" data-ja="ポイント3倍" data-en="3x Points">ポイント3倍</span>
+            </a>
+            <div class="product-info">
+              <h3 class="product-title"><a href="product.html" data-ja="QuantumShield チタン製ブルーライトカットメガネ" data-en="QuantumShield Titanium Blue Light Glasses">QuantumShield チタン製ブルーライトカットメガネ</a></h3>
+              <div class="product-price">¥5,800</div>
+              <div class="product-points" data-ja="獲得: 174 pt (3倍)" data-en="Earn 174 pts (3x)">獲得: 174 pt (3倍)</div>
+              <div style="margin-top:auto;">
+                <button class="btn btn-secondary" style="width:100%;font-size:12px;" onclick="addCardToCart('sku-112', 'QuantumShield Blue Light Glasses', 5800, 3, 'accessories')" data-ja="カートに追加" data-en="Add to Cart">
+                  カートに追加
+                </button>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  
+  <footer style="background:var(--bg-surface);border-top:1px solid var(--border);padding:24px 0;margin-top:64px;font-size:12px;color:var(--text-muted);">
+    <div class="container" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+      <div>
+        <strong>Google Partner Summit 2026</strong> · Built-in AI & WebMCP Workshop
+      </div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;">
+        <a href="../index.html" style="color:var(--text-secondary);" data-ja="ホーム" data-en="Home">ホーム</a>
+        <a href="../shopping/index.html" style="color:var(--text-secondary);" data-ja="ショッピング" data-en="Shopping">ショッピング</a>
+        <a href="../blog/index.html" style="color:var(--text-secondary);" data-ja="ブログ" data-en="Blogging">ブログ</a>
+        <a href="../gallery/index.html" style="color:var(--text-secondary);" data-ja="ギャラリー" data-en="Gallery">ギャラリー</a>
+        <a href="../crm/index.html" style="color:var(--text-secondary);" data-ja="CRM・サポート" data-en="CRM & Support">CRM・サポート</a>
+        <a href="../account/register.html" style="color:var(--text-secondary);" data-ja="アカウント" data-en="Account">アカウント</a>
+        <a href="../redteam/index.html" style="color:var(--brand-redteam);font-weight:600;" data-ja="レッドチーム検証" data-en="Red-Team Lab">レッドチーム検証</a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="webmcp-toast"></div>
+  <script src="../shared/js/i18n.js?v=20260915"></script>
+  <script src="../shared/js/store.js?v=20260915"></script>
+  <script src="../shared/js/webmcp-tools.js?v=20260915"></script>
+
+
+  <script>
+    const searchInput = document.getElementById('search-input');
+    const autoSuggestBox = document.getElementById('auto-suggest-box');
+
+    searchInput.addEventListener('focus', () => {
+      autoSuggestBox.classList.add('active');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.search-bar-wrapper')) {
+        autoSuggestBox.classList.remove('active');
+      }
+    });
+
+    function applySearch(term) {
+      searchInput.value = term;
+      autoSuggestBox.classList.remove('active');
+      handleSearch();
+    }
+
+    function handleSearch() {
+      const term = searchInput.value.toLowerCase().trim();
+      const cards = document.querySelectorAll('.product-card');
+      let count = 0;
+      cards.forEach(card => {
+        const title = card.getAttribute('data-title').toLowerCase();
+        if (!term || title.includes(term)) {
+          card.style.display = 'flex';
+          count++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+      document.getElementById('product-count').textContent = count;
+      AppStore.logCRMEvent('SHOPPING', 'SEARCH_QUERY', term);
+    }
+
+    function filterProducts() {
+      const selected = document.querySelector('input[name="cat"]:checked').value;
+      const cards = document.querySelectorAll('.product-card');
+      let count = 0;
+      cards.forEach(card => {
+        if (selected === 'all' || card.getAttribute('data-cat') === selected) {
+          card.style.display = 'flex';
+          count++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+      document.getElementById('product-count').textContent = count;
+    }
+
+    function clearSearchHistory() {
+      document.getElementById('history-list').innerHTML = (window.i18n && window.i18n.getLang() === 'en') ? '<li style="padding:6px;font-size:12px;color:var(--text-muted);">No search history</li>' : '<li style="padding:6px;font-size:12px;color:var(--text-muted);">履歴はありません</li>';
+    }
+
+    function addCardToCart(id, name, price, pointsRate, image) {
+      AppStore.addToCart({ id, name, price, pointsRate, image });
+    }
+  </script>
+</body>
+</html>

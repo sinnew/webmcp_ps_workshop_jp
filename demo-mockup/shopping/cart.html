@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ショッピングカート (Cart) | ショッピング (Shopping)</title>
+  <link rel="stylesheet" href="../shared/css/base.css?v=20260915">
+  <link rel="stylesheet" href="../shared/css/components.css?v=20260915">
+  <style>
+    .cart-layout {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 28px;
+      margin-top: 28px;
+    }
+    @media (max-width: 860px) {
+      .cart-layout { grid-template-columns: 1fr; }
+    }
+    .cart-table-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 20px;
+    }
+    .cart-item-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .cart-summary-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      height: fit-content;
+    }
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      font-size: 13px;
+    }
+    .summary-total {
+      border-top: 1px solid var(--border);
+      padding-top: 14px;
+      margin-top: 14px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+  </style>
+</head>
+<body>
+  
+  <!-- Google Fonts (Partner Hub Aligned: Google Sans, Roboto, Google Sans Code, Noto Sans JP) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Code:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Speculation Rules API for instant multi-page navigation -->
+  <script type="speculationrules">
+  {
+    "prerender": [
+      {
+        "where": { "href_matches": "/*" },
+        "eagerness": "moderate"
+      }
+    ]
+  }
+  </script>
+
+  <header class="global-header">
+    <div class="container header-inner">
+      <div class="brand-group">
+        <a href="../../index.html" class="hub-back-pill" title="Return to Google Partner Summit Workshop Hub">
+          <span data-ja="&larr; パートナーハブ" data-en="&larr; Partner Hub">&larr; パートナーハブ</span>
+        </a>
+        <a href="../index.html" class="brand-link">
+          <span style="color:var(--google-blue);">Google</span>
+          <span style="color:var(--text-main);font-weight:500;" data-ja="デモ検証環境" data-en="Demo Testbed">デモ検証環境</span>
+        </a>
+      </div>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="../shopping/index.html" class="nav-link active"><span data-ja="ショッピング" data-en="Shopping">ショッピング</span></a></li>
+          <li><a href="../blog/index.html" class="nav-link "><span data-ja="ブログ" data-en="Blogging">ブログ</span></a></li>
+          <li><a href="../gallery/index.html" class="nav-link "><span data-ja="ギャラリー" data-en="Gallery">ギャラリー</span></a></li>
+          <li><a href="../crm/index.html" class="nav-link "><span data-ja="CRM・サポート" data-en="CRM & Support">CRM・サポート</span></a></li>
+          <li><a href="../account/register.html" class="nav-link "><span data-ja="アカウント" data-en="Account">アカウント</span></a></li>
+          <li><a href="../redteam/index.html" class="nav-link nav-link-redteam "><span data-ja="レッドチーム" data-en="Red-Team">レッドチーム</span></a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <button id="lang-toggle-btn" class="lang-toggle-btn lang-switcher" aria-label="Toggle language" onclick="if(window.i18n) window.i18n.toggleLanguage();">
+          <span class="lang-active">JP</span><span class="lang-inactive">EN</span>
+        </button>
+        <a href="../shopping/cart.html" class="cart-indicator-btn" title="Shopping Cart">
+          <span data-ja="カート" data-en="Cart">カート</span>
+          <span class="cart-badge-count" style="display:none;">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+
+  <main class="container">
+    <h1 style="font-size:20px;font-weight:700;margin-top:28px;" data-ja="ショッピングカート" data-en="Shopping Cart">ショッピングカート</h1>
+
+    <div class="cart-layout">
+      <!-- Items List -->
+      <div class="cart-table-card">
+        <div id="cart-items-container"></div>
+        <div id="empty-cart-msg" style="display:none;text-align:center;padding:40px 0;">
+          <p style="color:var(--text-muted);font-size:13px;margin-bottom:12px;" data-ja="カートに商品がありません" data-en="Your cart is empty">カートに商品がありません</p>
+          <a href="index.html" class="btn btn-secondary" style="font-size:12px;" data-ja="商品一覧へ" data-en="Browse Products">商品一覧へ</a>
+        </div>
+      </div>
+
+      <!-- Order Summary Card -->
+      <div class="cart-summary-card">
+        <h2 style="font-size:15px;font-weight:700;margin-bottom:14px;" data-ja="お支払い明細" data-en="Order Summary">お支払い明細</h2>
+        
+        <div class="summary-row">
+          <span style="color:var(--text-secondary);" data-ja="小計" data-en="Subtotal">小計</span>
+          <span id="subtotal-display">¥0</span>
+        </div>
+        <div class="summary-row">
+          <span style="color:var(--text-secondary);" data-ja="送料" data-en="Shipping">送料</span>
+          <span style="color:#10b981;font-weight:600;" data-ja="無料" data-en="Free">無料</span>
+        </div>
+        <div class="summary-row">
+          <span style="color:var(--text-secondary);" data-ja="獲得予定ポイント" data-en="Points to Earn">獲得予定ポイント</span>
+          <span style="color:var(--brand-shopping);font-weight:700;" id="points-display">0 pt</span>
+        </div>
+
+        <div class="summary-total">
+          <span data-ja="合計 (税込)" data-en="Total">合計 (税込)</span>
+          <span id="total-display">¥0</span>
+        </div>
+
+        <button class="btn btn-primary-shopping" style="width:100%;padding:12px;margin-top:18px;" id="checkout-btn" onclick="openCheckoutConfirm(event)" data-ja="注文を確定する (安全確認)" data-en="Place Order (Safe Check)">
+          注文を確定する (安全確認)
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Safe Native Dialog -->
+  <dialog id="checkout-confirm-dialog">
+    <div class="dialog-header">
+      <h3 class="dialog-title" data-ja="🛡️ 注文内容の確認 (HITL)" data-en="🛡️ Order Confirmation (HITL)">🛡️ 注文内容の確認 (HITL)</h3>
+      <button class="dialog-close-btn" onclick="document.getElementById('checkout-confirm-dialog').close()">✕</button>
+    </div>
+    <div style="font-size:13px;color:var(--text-secondary);line-height:1.6;">
+      <p style="margin-bottom:10px;" data-ja="WebMCP安全規格に基づき、決済実行前に人間による確認を行います。" data-en="WebMCP standard requires human verification before payment execution.">
+        WebMCP安全規格に基づき、決済実行前に人間による確認を行います。
+      </p>
+      <div style="background:var(--bg-subtle);padding:10px;border-radius:var(--radius-xs);margin-bottom:12px;">
+        <div><strong>ご請求金額:</strong> <span id="modal-total" style="font-weight:700;">¥0</span></div>
+        <div><strong data-ja="支払い方法:" data-en="Payment Method:">支払い方法:</strong> <span data-ja="クレジットカード (下4桁: 9821)" data-en="Credit Card (Ending in 9821)">クレジットカード (下4桁: 9821)</span></div>
+      </div>
+    </div>
+    <div class="dialog-actions">
+      <button class="btn btn-secondary" onclick="document.getElementById('checkout-confirm-dialog').close()" data-ja="キャンセル" data-en="Cancel">キャンセル</button>
+      <button class="btn btn-primary-shopping" onclick="executeRealCheckout(event)" data-ja="注文を確定" data-en="Confirm Order">注文を確定</button>
+    </div>
+  </dialog>
+
+  
+  <footer style="background:var(--bg-surface);border-top:1px solid var(--border);padding:24px 0;margin-top:64px;font-size:12px;color:var(--text-muted);">
+    <div class="container" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+      <div>
+        <strong>Google Partner Summit 2026</strong> · Built-in AI & WebMCP Workshop
+      </div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;">
+        <a href="../index.html" style="color:var(--text-secondary);" data-ja="ホーム" data-en="Home">ホーム</a>
+        <a href="../shopping/index.html" style="color:var(--text-secondary);" data-ja="ショッピング" data-en="Shopping">ショッピング</a>
+        <a href="../blog/index.html" style="color:var(--text-secondary);" data-ja="ブログ" data-en="Blogging">ブログ</a>
+        <a href="../gallery/index.html" style="color:var(--text-secondary);" data-ja="ギャラリー" data-en="Gallery">ギャラリー</a>
+        <a href="../crm/index.html" style="color:var(--text-secondary);" data-ja="CRM・サポート" data-en="CRM & Support">CRM・サポート</a>
+        <a href="../account/register.html" style="color:var(--text-secondary);" data-ja="アカウント" data-en="Account">アカウント</a>
+        <a href="../redteam/index.html" style="color:var(--brand-redteam);font-weight:600;" data-ja="レッドチーム検証" data-en="Red-Team Lab">レッドチーム検証</a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="webmcp-toast"></div>
+  <script src="../shared/js/i18n.js?v=20260915"></script>
+  <script src="../shared/js/store.js?v=20260915"></script>
+  <script src="../shared/js/webmcp-tools.js?v=20260915"></script>
+
+
+  <script>
+    function renderCart() {
+      const cart = AppStore.getCart();
+      const container = document.getElementById('cart-items-container');
+      const emptyMsg = document.getElementById('empty-cart-msg');
+      const checkoutBtn = document.getElementById('checkout-btn');
+
+      if (cart.length === 0) {
+        container.innerHTML = '';
+        emptyMsg.style.display = 'block';
+        checkoutBtn.disabled = true;
+        updateTotals(0, 0);
+        return;
+      }
+
+      emptyMsg.style.display = 'none';
+      checkoutBtn.disabled = false;
+
+      let subtotal = 0;
+      let totalPoints = 0;
+
+      container.innerHTML = cart.map((item, index) => {
+        const itemTotal = item.price * item.qty;
+        const itemPoints = Math.floor(itemTotal * (item.pointsRate / 100));
+        subtotal += itemTotal;
+        totalPoints += itemPoints;
+
+        return `
+          <div class="cart-item-row">
+            <div>
+              <div style="font-weight:600;font-size:14px;margin-bottom:2px;">${item.name}</div>
+              <div style="font-size:12px;color:var(--text-muted);">${item.size} / ${item.color} · ${itemPoints} pt</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div style="font-size:15px;font-weight:700;">¥${itemTotal.toLocaleString()}</div>
+              <div style="display:flex;align-items:center;gap:6px;border:1px solid var(--border);border-radius:var(--radius-xs);padding:1px 6px;">
+                <button onclick="AppStore.updateCartQty(${index}, -1); renderCart();">-</button>
+                <span style="font-size:12px;font-weight:600;">${item.qty}</span>
+                <button onclick="AppStore.updateCartQty(${index}, 1); renderCart();">+</button>
+              </div>
+              <button style="color:var(--text-muted);font-size:12px;" onclick="AppStore.updateCartQty(${index}, -999); renderCart();">✕</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      updateTotals(subtotal, totalPoints);
+    }
+
+    function updateTotals(subtotal, points) {
+      document.getElementById('subtotal-display').textContent = `¥${subtotal.toLocaleString()}`;
+      document.getElementById('points-display').textContent = `${points.toLocaleString()} pt`;
+      document.getElementById('total-display').textContent = `¥${subtotal.toLocaleString()}`;
+      document.getElementById('modal-total').textContent = `¥${subtotal.toLocaleString()}`;
+    }
+
+    function openCheckoutConfirm(event) {
+      if (!event.isTrusted) {
+        alert('Security Alert: Autonomous execution blocked.');
+        return;
+      }
+      document.getElementById('checkout-confirm-dialog').showModal();
+    }
+
+    function executeRealCheckout(event) {
+      if (!event.isTrusted) return;
+      document.getElementById('checkout-confirm-dialog').close();
+      const cart = AppStore.getCart();
+      const total = cart.reduce((s, i) => s + (i.price * i.qty), 0);
+      const points = Math.floor(total * 0.03);
+      AppStore.addPoints(points);
+      AppStore.clearCart();
+      renderCart();
+      AppStore.logCRMEvent('SHOPPING', 'ORDER_COMPLETED', `Total: ¥${total}`, { pointsEarned: points });
+      alert((window.i18n && window.i18n.getLang() === 'en') ? `Order completed! Total: ¥${total.toLocaleString()} (+${points} pt earned)` : `注文が完了しました！ ¥${total.toLocaleString()} （${points} pt 獲得）`);
+    }
+
+    document.addEventListener('DOMContentLoaded', renderCart);
+  </script>
+</body>
+</html>

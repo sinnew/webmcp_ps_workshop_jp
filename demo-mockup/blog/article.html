@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebMCPとBuilt-in AIで変わる次世代Webエクスペリエンス | ブログ (Blogging)</title>
+  <link rel="stylesheet" href="../shared/css/base.css?v=20260915">
+  <link rel="stylesheet" href="../shared/css/components.css?v=20260915">
+  <style>
+    .article-container {
+      max-width: 660px;
+      margin: 32px auto;
+      padding: 0 16px;
+      font-size: 15px;
+      line-height: 1.85;
+      color: var(--text-main);
+    }
+    .article-headline {
+      font-size: 24px;
+      font-weight: 800;
+      line-height: 1.35;
+      margin-bottom: 20px;
+      letter-spacing: -0.02em;
+    }
+    .author-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 28px;
+    }
+    .author-avatar-md {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-full);
+      background: var(--brand-blog-light);
+      color: var(--brand-blog);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 15px;
+    }
+    .article-body p {
+      margin-bottom: 20px;
+    }
+    .article-body h2 {
+      font-size: 18px;
+      font-weight: 700;
+      margin: 32px 0 14px 0;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 6px;
+      letter-spacing: -0.01em;
+    }
+    .paywall-gate-box {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 36px 24px;
+      margin-top: 24px;
+      text-align: center;
+    }
+    .paywall-unlocked-content {
+      display: none;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      margin-top: 24px;
+    }
+    .article-bottom-bar {
+      position: sticky;
+      bottom: 20px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-full);
+      padding: 6px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 420px;
+      margin: 40px auto;
+      box-shadow: var(--shadow-md);
+      z-index: 100;
+    }
+  </style>
+</head>
+<body>
+  
+  <!-- Google Fonts (Partner Hub Aligned: Google Sans, Roboto, Google Sans Code, Noto Sans JP) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Code:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Speculation Rules API for instant multi-page navigation -->
+  <script type="speculationrules">
+  {
+    "prerender": [
+      {
+        "where": { "href_matches": "/*" },
+        "eagerness": "moderate"
+      }
+    ]
+  }
+  </script>
+
+  <header class="global-header">
+    <div class="container header-inner">
+      <div class="brand-group">
+        <a href="../../index.html" class="hub-back-pill" title="Return to Google Partner Summit Workshop Hub">
+          <span data-ja="&larr; パートナーハブ" data-en="&larr; Partner Hub">&larr; パートナーハブ</span>
+        </a>
+        <a href="../index.html" class="brand-link">
+          <span style="color:var(--google-blue);">Google</span>
+          <span style="color:var(--text-main);font-weight:500;" data-ja="デモ検証環境" data-en="Demo Testbed">デモ検証環境</span>
+        </a>
+      </div>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="../shopping/index.html" class="nav-link "><span data-ja="ショッピング" data-en="Shopping">ショッピング</span></a></li>
+          <li><a href="../blog/index.html" class="nav-link active"><span data-ja="ブログ" data-en="Blogging">ブログ</span></a></li>
+          <li><a href="../gallery/index.html" class="nav-link "><span data-ja="ギャラリー" data-en="Gallery">ギャラリー</span></a></li>
+          <li><a href="../crm/index.html" class="nav-link "><span data-ja="CRM・サポート" data-en="CRM & Support">CRM・サポート</span></a></li>
+          <li><a href="../account/register.html" class="nav-link "><span data-ja="アカウント" data-en="Account">アカウント</span></a></li>
+          <li><a href="../redteam/index.html" class="nav-link nav-link-redteam "><span data-ja="レッドチーム" data-en="Red-Team">レッドチーム</span></a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <button id="lang-toggle-btn" class="lang-toggle-btn lang-switcher" aria-label="Toggle language" onclick="if(window.i18n) window.i18n.toggleLanguage();">
+          <span class="lang-active">JP</span><span class="lang-inactive">EN</span>
+        </button>
+        <a href="../shopping/cart.html" class="cart-indicator-btn" title="Shopping Cart">
+          <span data-ja="カート" data-en="Cart">カート</span>
+          <span class="cart-badge-count" style="display:none;">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+
+  <main class="article-container">
+    <h1 class="article-headline" data-ja="WebMCPとBuilt-in AIで変わる次世代Webエクスペリエンス：API-Firstの罠を越えて" data-en="Next-Gen Web Experiences with WebMCP & Built-in AI: Beyond the API-First Trap">
+      WebMCPとBuilt-in AIで変わる次世代Webエクスペリエンス：API-Firstの罠を越えて
+    </h1>
+
+    <div class="author-card-header">
+      <div class="author-avatar-md">中</div>
+      <div>
+        <div style="font-weight:700;font-size:14px;"><a href="creator.html" data-ja="中村 浩之" data-en="Hiroyuki Nakamura">中村 浩之</a></div>
+        <div style="font-size:12px;color:var(--text-muted);" data-ja="開発/Experience/QA Lead · 2026年9月8日" data-en="Experience & QA Lead · Sep 8, 2026">開発/Experience/QA Lead · 2026年9月8日</div>
+      </div>
+      <button class="btn btn-secondary" style="margin-left:auto;padding:5px 12px;border-radius:var(--radius-full);font-size:12px;" id="follow-btn" onclick="toggleFollow()">
+        + <span data-ja="フォロー" data-en="Follow">フォロー</span>
+      </button>
+    </div>
+
+    <!-- TOC -->
+    <div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 18px;margin-bottom:28px;font-size:13px;">
+      <div style="font-weight:700;margin-bottom:6px;" data-ja="目次 (Table of Contents)" data-en="Table of Contents">目次 (Table of Contents)</div>
+      <ul style="list-style:decimal;padding-left:18px;display:flex;flex-direction:column;gap:4px;">
+        <li><a href="#section-1" style="color:var(--brand-blog);" data-ja="機械的エンドポイントラップ「API-First」の限界" data-en="Limitations of naive API-First wrapping">機械的エンドポイントラップ「API-First」の限界</a></li>
+        <li><a href="#section-2" style="color:var(--brand-blog);" data-ja="WebMCPが実現するDOMとClient Stateの即時同期" data-en="Instant sync between DOM and Client State via WebMCP">WebMCPが実現するDOMとClient Stateの即時同期</a></li>
+        <li><a href="#section-3" style="color:var(--brand-blog);" data-ja="有料エリア：本番環境での安全なTool設計とコード仕様" data-en="Paid Section: Production Safe Tool Design & Code">有料エリア：本番環境での安全なTool設計とコード仕様</a></li>
+      </ul>
+    </div>
+
+    <div class="article-body">
+      <h2 id="section-1" data-ja="1. 機械的エンドポイントラップ「API-First」の限界" data-en="1. Limitations of naive API-First wrapping">1. 機械的エンドポイントラップ「API-First」の限界</h2>
+      <p data-ja="AIエージェント向けにツールを公開しようとする際、開発者が最初にやりがちなのが「既存のバックエンドREST APIをそのままFunction Callingとして公開する」ことです。しかし、ブラウザ上で動作するWebアプリケーションにおいて、この手法は深刻なUX崩壊を招きます。" data-en="When exposing tools to AI agents, developers often make the mistake of wrapping backend REST APIs directly into Function Calling. In browser web apps, this causes severe UX breakdowns.">
+        AIエージェント向けにツールを公開しようとする際、開発者が最初にやりがちなのが「既存のバックエンドREST APIをそのままFunction Callingとして公開する」ことです。しかし、ブラウザ上で動作するWebアプリケーションにおいて、この手法は深刻なUX崩壊を招きます。
+      </p>
+      <p data-ja="ユーザーが「黒いスニーカーをカートに入れて」と発話した際、API-First設計では画面が一切更新されないゴーストブラウジング状態に陥り、ユーザーは不安になって画面をクリックし、競合状態が発生します。" data-en="When a user asks to add an item to the cart, API-first execution leaves the browser screen frozen (ghost state), leading users to click anxiously and cause race conditions.">
+        ユーザーが「黒いスニーカーをカートに入れて」と発話した際、API-First設計では画面が一切更新されないゴーストブラウジング状態に陥り、ユーザーは不安になって画面をクリックし、競合状態が発生します。
+      </p>
+
+      <h2 id="section-2" data-ja="2. WebMCPが実現するDOMとClient Stateの即時同期" data-en="2. Instant sync between DOM and Client State via WebMCP">2. WebMCPが実現するDOMとClient Stateの即時同期</h2>
+      <p data-ja="WebMCP（Web Model Context Protocol）の神髄は、ツールが「ユーザーのアクティブなブラウザタブのメインワールド（MAIN World）」で実行される点にあります。ツールが呼ばれた瞬間にクライアントストアを更新し、DOMを再描画してトーストやバッジで人間にフィードバックを返します。" data-en="The essence of WebMCP is that tools run directly within the user's active browser MAIN world, updating store state, re-rendering DOM elements, and displaying feedback in real time.">
+        WebMCP（Web Model Context Protocol）の神髄は、ツールが「ユーザーのアクティブなブラウザタブのメインワールド（MAIN World）」で実行される点にあります。ツールが呼ばれた瞬間にクライアントストアを更新し、DOMを再描画してトーストやバッジで人間にフィードバックを返します。
+      </p>
+
+      <!-- Paywall Box -->
+      <div class="paywall-gate-box" id="paywall-gate">
+        <div style="font-size:16px;font-weight:700;color:var(--text-main);margin-bottom:6px;" data-ja="🔒 ここから先は、有料コンテンツです" data-en="🔒 The following section is paid content">
+          🔒 ここから先は、有料コンテンツです
+        </div>
+        <p style="font-size:13px;color:var(--text-secondary);max-width:440px;margin:0 auto 16px auto;" data-ja="この記事を購入すると、完全なアーキテクチャ設計図と本番コード、およびレッドチーム検証用の攻撃回避仕様をご覧いただけます。" data-en="Purchase this article to read complete production architecture patterns and defense specifications.">
+          この記事を購入すると、完全なアーキテクチャ設計図と本番コード、およびレッドチーム検証用の攻撃回避仕様をご覧いただけます。
+        </p>
+        <div style="font-size:20px;font-weight:800;color:var(--brand-blog);margin-bottom:14px;">
+          ¥500 <span style="font-size:12px;font-weight:500;color:var(--text-muted);">(税込)</span>
+        </div>
+        <button class="btn btn-primary-blog" style="padding:10px 24px;font-size:13px;" onclick="handleUnlockArticle(event)" data-ja="購入して続きを読む (¥500)" data-en="Purchase & Read (¥500)">
+          購入して続きを読む (¥500)
+        </button>
+      </div>
+
+      <!-- Hidden Paid Content -->
+      <div class="paywall-unlocked-content" id="paywall-content">
+        <div class="badge" style="background:#ecfdf5;color:#059669;border:1px solid #a7f3d0;margin-bottom:14px;" data-ja="✅ 有料コンテンツ（購入済み）" data-en="✅ Paid Content (Unlocked)">✅ 有料コンテンツ（購入済み）</div>
+        <h2 id="section-3" style="margin-top:0;" data-ja="3. 本番環境での安全なTool設計とコード仕様" data-en="3. Production Safe Tool Design & Code">3. 本番環境での安全なTool設計とコード仕様</h2>
+        <p data-ja="Chrome 154+ で導入された ToolAnnotations では、consequentialHint: true を設定することで、金銭的トランザクション（記事購入や送金）がAIエージェントによって勝手に自動実行されるのを防ぎます。" data-en="Chrome 154+ ToolAnnotations introduces consequentialHint: true to prevent financial actions from executing autonomously without user confirmation.">
+          Chrome 154+ で導入された <code>ToolAnnotations</code> では、<code>consequentialHint: true</code> を設定することで、金銭的トランザクション（記事購入や送金）がAIエージェントによって勝手に自動実行されるのを防ぎます。
+        </p>
+        <div style="background:#18181b;color:#38bdf8;padding:14px;border-radius:var(--radius-xs);font-family:var(--font-mono);font-size:12px;margin:14px 0;overflow-x:auto;">
+          // Tier 3: Consequential Action Safeguard<br>
+          document.modelContext.registerTool({<br>
+          &nbsp;&nbsp;name: 'unlock_article',<br>
+          &nbsp;&nbsp;annotations: { readOnlyHint: false, consequentialHint: true },<br>
+          &nbsp;&nbsp;execute: async ({ article_id }, { event }) =&gt; {<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;if (!event?.isTrusted) throw new Error('Human confirmation required');<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;AppStore.unlockArticle(article_id);<br>
+          &nbsp;&nbsp;}<br>
+          });
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Sticky Bar -->
+    <div class="article-bottom-bar">
+      <button class="btn" style="padding:4px 10px;font-size:13px;color:var(--text-secondary);" id="like-btn" onclick="handleLike()">
+        ❤️ <span data-ja="スキ" data-en="Like">スキ</span> <span id="like-count" style="font-weight:700;">142</span>
+      </button>
+
+      <button class="btn btn-primary-blog" style="padding:5px 14px;border-radius:var(--radius-full);font-size:12px;" onclick="document.getElementById('tip-dialog').showModal()">
+        🎁 <span data-ja="サポートする" data-en="Tip Creator">サポートする</span>
+      </button>
+    </div>
+  </main>
+
+  <!-- Native Tip Modal -->
+  <dialog id="tip-dialog">
+    <div class="dialog-header">
+      <h3 class="dialog-title" data-ja="🎁 クリエイターをサポート" data-en="🎁 Tip Creator">🎁 クリエイターをサポート</h3>
+      <button class="dialog-close-btn" onclick="document.getElementById('tip-dialog').close()">✕</button>
+    </div>
+    <div style="font-size:13px;color:var(--text-secondary);line-height:1.6;">
+      <p style="margin-bottom:12px;" data-ja="中村 浩之さんの記事をサポートして、継続的な技術情報の発信を応援しましょう。" data-en="Support Hiroyuki Nakamura to encourage continued technical publishing.">
+        中村 浩之さんの記事をサポートして、継続的な技術情報の発信を応援しましょう。
+      </p>
+
+      <div style="display:flex;gap:8px;margin-bottom:14px;" id="tip-amount-pills">
+        <button class="btn btn-secondary" onclick="selectTip(this, 100)">¥100</button>
+        <button class="btn btn-primary-blog" onclick="selectTip(this, 500)">¥500</button>
+        <button class="btn btn-secondary" onclick="selectTip(this, 1000)">¥1,000</button>
+      </div>
+
+      <textarea placeholder="クリエイターへ応援メッセージを入力（任意）" data-ja="クリエイターへ応援メッセージを入力（任意）" data-en="Add a support message for the creator (optional)" style="width:100%;border:1px solid var(--border);border-radius:var(--radius-xs);padding:8px;font-size:12px;box-sizing:border-box;" rows="3" data-ja="クリエイターへ応援メッセージを入力（任意）" data-en="Enter message to creator (optional)"></textarea>
+    </div>
+    <div class="dialog-actions">
+      <button class="btn btn-secondary" onclick="document.getElementById('tip-dialog').close()" data-ja="キャンセル" data-en="Cancel">キャンセル</button>
+      <button class="btn btn-primary-blog" onclick="executeTip(event)" data-ja="サポートを送る" data-en="Send Tip">サポートを送る</button>
+    </div>
+  </dialog>
+
+  
+  <footer style="background:var(--bg-surface);border-top:1px solid var(--border);padding:24px 0;margin-top:64px;font-size:12px;color:var(--text-muted);">
+    <div class="container" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+      <div>
+        <strong>Google Partner Summit 2026</strong> · Built-in AI & WebMCP Workshop
+      </div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;">
+        <a href="../index.html" style="color:var(--text-secondary);" data-ja="ホーム" data-en="Home">ホーム</a>
+        <a href="../shopping/index.html" style="color:var(--text-secondary);" data-ja="ショッピング" data-en="Shopping">ショッピング</a>
+        <a href="../blog/index.html" style="color:var(--text-secondary);" data-ja="ブログ" data-en="Blogging">ブログ</a>
+        <a href="../gallery/index.html" style="color:var(--text-secondary);" data-ja="ギャラリー" data-en="Gallery">ギャラリー</a>
+        <a href="../crm/index.html" style="color:var(--text-secondary);" data-ja="CRM・サポート" data-en="CRM & Support">CRM・サポート</a>
+        <a href="../account/register.html" style="color:var(--text-secondary);" data-ja="アカウント" data-en="Account">アカウント</a>
+        <a href="../redteam/index.html" style="color:var(--brand-redteam);font-weight:600;" data-ja="レッドチーム検証" data-en="Red-Team Lab">レッドチーム検証</a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="webmcp-toast"></div>
+  <script src="../shared/js/i18n.js?v=20260915"></script>
+  <script src="../shared/js/store.js?v=20260915"></script>
+  <script src="../shared/js/webmcp-tools.js?v=20260915"></script>
+
+
+  <script>
+    let currentTip = 500;
+    const ARTICLE_ID = 'article-blog-1';
+
+    function checkUnlocked() {
+      if (AppStore.isArticleUnlocked(ARTICLE_ID)) {
+        document.getElementById('paywall-gate').style.display = 'none';
+        document.getElementById('paywall-content').style.display = 'block';
+      }
+    }
+
+    function handleUnlockArticle(e) {
+      if (!e.isTrusted) {
+        alert('WebMCP Security Alert: Autonomous execution blocked.');
+        return;
+      }
+      AppStore.unlockArticle(ARTICLE_ID, 500);
+      checkUnlocked();
+      alert((window.i18n && window.i18n.getLang() === 'en') ? 'Article unlocked! You now have full access to this content.' : '記事を購入しました！有料コンテンツが閲覧可能になりました。');
+    }
+
+    function handleLike() {
+      const liked = AppStore.toggleLike(ARTICLE_ID);
+      const countEl = document.getElementById('like-count');
+      const cur = parseInt(countEl.textContent, 10);
+      countEl.textContent = liked ? (cur + 1) : (cur - 1);
+    }
+
+    function toggleFollow() {
+      const btn = document.getElementById('follow-btn');
+      const isFollowing = btn.classList.contains('active');
+      if (isFollowing) {
+        btn.classList.remove('active');
+        btn.innerHTML = '+ <span data-ja="フォロー" data-en="Follow">フォロー</span>';
+      } else {
+        btn.classList.add('active');
+        btn.innerHTML = '✓ <span data-ja="フォロー中" data-en="Following">フォロー中</span>';
+      }
+    }
+
+    function selectTip(btn, amount) {
+      currentTip = amount;
+      document.querySelectorAll('#tip-amount-pills button').forEach(b => {
+        b.className = 'btn btn-secondary';
+      });
+      btn.className = 'btn btn-primary-blog';
+    }
+
+    function executeTip(e) {
+      if (!e.isTrusted) return;
+      document.getElementById('tip-dialog').close();
+      AppStore.logCRMEvent('BLOG', 'CREATOR_TIPPED', 'Hiroyuki Nakamura', { amount: currentTip });
+      alert((window.i18n && window.i18n.getLang() === 'en') ? `Sent ¥${currentTip.toLocaleString()} support tip to creator!` : `クリエイターに ¥${currentTip.toLocaleString()} のサポートを送りました！`);
+    }
+
+    document.addEventListener('DOMContentLoaded', checkUnlocked);
+  </script>
+</body>
+</html>

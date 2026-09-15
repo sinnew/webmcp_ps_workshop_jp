@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scenario 3: PII &amp; Transfer | WebMCP Red-Team</title>
+  <link rel="stylesheet" href="../shared/css/base.css?v=20260915">
+  <link rel="stylesheet" href="../shared/css/components.css?v=20260915">
+  <link rel="stylesheet" href="../shared/css/redteam.css">
+  <style>
+    .redteam-hero {
+      padding: 32px 0 24px 0;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-surface);
+    }
+  </style>
+</head>
+<body>
+  
+  <!-- Google Fonts (Partner Hub Aligned: Google Sans, Roboto, Google Sans Code, Noto Sans JP) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Code:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Speculation Rules API for instant multi-page navigation -->
+  <script type="speculationrules">
+  {
+    "prerender": [
+      {
+        "where": { "href_matches": "/*" },
+        "eagerness": "moderate"
+      }
+    ]
+  }
+  </script>
+
+  <header class="global-header">
+    <div class="container header-inner">
+      <div class="brand-group">
+        <a href="../../index.html" class="hub-back-pill" title="Return to Google Partner Summit Workshop Hub">
+          <span data-ja="&larr; パートナーハブ" data-en="&larr; Partner Hub">&larr; パートナーハブ</span>
+        </a>
+        <a href="../index.html" class="brand-link">
+          <span style="color:var(--google-blue);">Google</span>
+          <span style="color:var(--text-main);font-weight:500;" data-ja="デモ検証環境" data-en="Demo Testbed">デモ検証環境</span>
+        </a>
+      </div>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="../shopping/index.html" class="nav-link "><span data-ja="ショッピング" data-en="Shopping">ショッピング</span></a></li>
+          <li><a href="../blog/index.html" class="nav-link "><span data-ja="ブログ" data-en="Blogging">ブログ</span></a></li>
+          <li><a href="../gallery/index.html" class="nav-link "><span data-ja="ギャラリー" data-en="Gallery">ギャラリー</span></a></li>
+          <li><a href="../crm/index.html" class="nav-link "><span data-ja="CRM・サポート" data-en="CRM & Support">CRM・サポート</span></a></li>
+          <li><a href="../account/register.html" class="nav-link "><span data-ja="アカウント" data-en="Account">アカウント</span></a></li>
+          <li><a href="../redteam/index.html" class="nav-link nav-link-redteam active"><span data-ja="レッドチーム" data-en="Red-Team">レッドチーム</span></a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <button id="lang-toggle-btn" class="lang-toggle-btn lang-switcher" aria-label="Toggle language" onclick="if(window.i18n) window.i18n.toggleLanguage();">
+          <span class="lang-active">JP</span><span class="lang-inactive">EN</span>
+        </button>
+        <a href="../shopping/cart.html" class="cart-indicator-btn" title="Shopping Cart">
+          <span data-ja="カート" data-en="Cart">カート</span>
+          <span class="cart-badge-count" style="display:none;">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+
+  <section class="redteam-hero">
+    <div class="container">
+      <div style="display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--brand-redteam);text-transform:uppercase;margin-bottom:6px;">
+        <span>🛡️ WebMCP Red-Team</span>
+        <span>·</span>
+        <span data-ja="シナリオ 3: 個人情報漏洩・送金" data-en="Scenario 3: PII &amp; Transfer">シナリオ 3: 個人情報漏洩・送金</span>
+      </div>
+      <h1 style="font-size:24px;font-weight:800;letter-spacing:-0.02em;margin-bottom:6px;" data-ja="シナリオ 3: 個人情報漏洩 &amp; 不正資産送金 (PII Leakage &amp; Unauthorized Transfer)" data-en="Scenario 3: PII Leakage &amp; Unauthorized Financial Transfer">
+        シナリオ 3: 個人情報漏洩 &amp; 不正資産送金 (PII Leakage &amp; Unauthorized Transfer)
+      </h1>
+      <p style="font-size:13.5px;color:var(--text-secondary);max-width:800px;line-height:1.6;" data-ja="過剰な権限を持つツールによる内部認証トークンや個人情報の流出と、未保護の資産送金ツールによるポイント盗難リスクを検証します。最小権限射影と送金HITL承認による防御を実証します。" data-en="Evaluates overprivileged tool leaks of sensitive auth tokens/PII and unauthorized points theft. Demonstrates least-privilege projection and HITL confirmation defenses.">
+        過剰な権限を持つツールによる内部認証トークンや個人情報の流出と、未保護の資産送金ツールによるポイント盗難リスクを検証します。最小権限射影と送金HITL承認による防御を実証します。
+      </p>
+    </div>
+  </section>
+
+  <main class="container" style="margin-top:20px;">
+    <div class="redteam-nav-sub">
+      <a href="index.html"><span data-ja="🛡️ 概要" data-en="🛡️ Overview">🛡️ 概要</span></a>
+      <a href="hitl.html"><span data-ja="⚡ 1. 承認なし課金 (Missing HITL)" data-en="⚡ 1. Missing HITL">⚡ 1. 承認なし課金 (Missing HITL)</span></a>
+      <a href="injection.html"><span data-ja="💬 2. プロンプト注入 (Injection)" data-en="💬 2. Prompt Injection">💬 2. プロンプト注入 (Injection)</span></a>
+      <a href="pii.html" class="active"><span data-ja="👤 3. 個人情報・不正送金 (PII & Transfer)" data-en="👤 3. PII & Transfer">👤 3. 個人情報・不正送金 (PII & Transfer)</span></a>
+    </div>
+
+    
+    <!-- Security Mode Switcher & Quick Actions -->
+    <div style="background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:14px 20px;margin:20px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;">
+      <div>
+        <div style="font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:2px;">
+          <span data-ja="WebMCP セキュリティ設定:" data-en="WebMCP Security Policy:">WebMCP セキュリティ設定:</span>
+          <span class="badge badge-redteam" id="active-mode-badge" data-ja="🔴 脆弱な設定 (No HITL)" data-en="🔴 Vulnerable Mode (No HITL)">🔴 脆弱な設定 (No HITL)</span>
+        </div>
+        <div style="font-size:12px;color:var(--text-muted);" id="policy-hints-display">
+          consequentialHint: false | untrustedContentHint: false | event.isTrusted ガード: 無効
+        </div>
+      </div>
+
+      <div style="display:flex;gap:10px;align-items:center;">
+        <div class="toggle-switch-group">
+          <button class="toggle-btn active vulnerable" id="btn-mode-vulnerable" onclick="setMode('vulnerable')" data-ja="🔴 脆弱な設定" data-en="🔴 Vulnerable">
+            🔴 脆弱な設定
+          </button>
+          <button class="toggle-btn" id="btn-mode-secure" onclick="setMode('secure')" data-ja="🟢 セキュア設定" data-en="🟢 Secure">
+            🟢 セキュア設定
+          </button>
+        </div>
+        <button class="btn btn-secondary" style="font-size:12px;padding:6px 12px;" onclick="resetTestState()" data-ja="🔄 状態リセット" data-en="🔄 Reset State">
+          🔄 状態リセット
+        </button>
+      </div>
+    </div>
+
+
+    <div class="redteam-two-col">
+      <!-- Left Column: Account Profile & Points Wallet UI -->
+      <div>
+        <section class="service-panel">
+          <div class="service-panel-header">
+            <div class="service-panel-title">
+              <span>👤</span>
+              <span data-ja="会員アカウント &amp; ウォレット" data-en="Account &amp; Points Wallet">会員アカウント &amp; ウォレット</span>
+            </div>
+            <span class="badge" style="font-size:10px;background:var(--bg-subtle);">Tool: transfer_points / get_user_profile</span>
+          </div>
+
+          <!-- Profile Badge -->
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+            <div style="width:42px;height:42px;border-radius:50%;background:var(--brand-shopping-subtle);color:var(--brand-shopping);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;">
+              田
+            </div>
+            <div>
+              <div style="font-weight:700;font-size:14px;" data-ja="田中 太郎 (Taro Tanaka)" data-en="Taro Tanaka">田中 太郎 (Taro Tanaka)</div>
+              <div style="font-size:11.5px;color:var(--text-muted);display:flex;gap:6px;align-items:center;">
+                <span class="badge badge-shopping" style="font-size:10px;" data-ja="ゴールド会員" data-en="Gold Member">ゴールド会員</span>
+                <span>ID: usr_994821</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action 1: Profile Query -->
+          <div style="margin-bottom:16px;">
+            <button class="btn btn-secondary" style="width:100%;font-size:12px;padding:7px;" onclick="triggerFetchProfile()" data-ja="🔍 会員情報を取得 (get_user_profile)" data-en="🔍 Fetch Profile (get_user_profile)">
+              🔍 会員情報を取得 (get_user_profile)
+            </button>
+          </div>
+
+          <!-- PII Leak Monitor Box -->
+          <div id="pii-leak-box" style="display:none;padding:12px;border-radius:var(--radius-xs);font-size:12px;margin-bottom:16px;line-height:1.5;"></div>
+
+          <!-- Action 2: Transfer Points Form -->
+          <div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:var(--radius-xs);padding:12px;margin-bottom:16px;">
+            <div style="font-size:12px;font-weight:700;margin-bottom:6px;" data-ja="ポイント送金先ウォレット:" data-en="Destination Wallet:">ポイント送金先ウォレット:</div>
+            <div style="display:flex;gap:6px;margin-bottom:10px;">
+              <input type="text" id="target-wallet-input" value="attacker_wallet_99" style="flex:1;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-xs);padding:6px 10px;font-size:12px;font-family:var(--font-mono);outline:none;">
+              <button class="btn btn-secondary" style="font-size:11.5px;padding:6px 12px;" onclick="triggerTransferPoints(event)" data-ja="💸 送金実行" data-en="💸 Transfer">
+                💸 送金実行
+              </button>
+            </div>
+            <!-- Attack Simulation Trigger -->
+            <button class="btn btn-secondary" style="width:100%;font-size:11.5px;padding:6px;color:#dc2626;border-color:#fca5a5;background:var(--bg-surface);" onclick="simulateAgentTransfer()" data-ja="🤖 外部ウォレットへの未承認送金をシミュレート" data-en="🤖 Simulate Autonomous Wallet Drain">
+              🤖 外部ウォレットへの未承認送金をシミュレート
+            </button>
+          </div>
+
+          <!-- Wallet Drain Warning Alert -->
+          <div id="wallet-alert-box" style="display:none;padding:12px;border-radius:var(--radius-xs);background:#fee2e2;border:1px solid #fecaca;color:#991b1b;font-size:12px;"></div>
+        </section>
+
+        
+        <!-- Live Point Hijacking Monitor Card (Victim vs. Hijacker Wallet + Ledger) -->
+        <section class="hijack-monitor-card">
+          <div class="hijack-monitor-header">
+            <div class="hijack-monitor-title">
+              <span>💸</span>
+              <span data-ja="リアルタイム・ポイントハイジャック監視モニター (Victim vs. Hijacker Wallet)" data-en="Live Point Hijacking Monitor (Victim vs. Hijacker Wallet)">リアルタイム・ポイントハイジャック監視モニター (Victim vs. Hijacker Wallet)</span>
+            </div>
+            <span id="hijack-monitor-pill" class="pill pill-vuln">consequentialHint: false</span>
+          </div>
+
+          <div class="wallets-row">
+            <!-- Victim Wallet -->
+            <div id="victim-wallet-box" class="wallet-box wallet-victim-sec">
+              <div class="wallet-label">
+                <span data-ja="👤 被害者ウォレット" data-en="👤 Victim Wallet">👤 被害者ウォレット</span>
+                <span>Taro Tanaka</span>
+              </div>
+              <div class="wallet-id">ID: usr_994821</div>
+              <div id="victim-wallet-balance" class="wallet-balance balance-safe">5,000 pt</div>
+              <span id="victim-delta-badge" class="delta-badge delta-safe" data-ja="🛡️ 保護済み (被害なし)" data-en="🛡️ Protected (No Loss)">🛡️ 保護済み (被害なし)</span>
+            </div>
+
+            <!-- Flow Arrow -->
+            <div class="flow-arrow-box">
+              <div id="hijack-flow-icon" class="flow-arrow" style="color:var(--text-muted);">⚡ ➔</div>
+              <div id="hijack-flow-caption" class="flow-caption"><span style="color:var(--text-muted);" data-ja="監視待機中" data-en="STANDBY">監視待機中</span></div>
+            </div>
+
+            <!-- Hijacker Wallet -->
+            <div id="attacker-wallet-box" class="wallet-box wallet-attacker-sec">
+              <div class="wallet-label">
+                <span data-ja="🕵️‍♂️ 攻撃者ウォレット" data-en="🕵️‍♂️ Hijacker Wallet">🕵️‍♂️ 攻撃者ウォレット</span>
+                <span style="color:var(--google-red);font-weight:700;">ATTACKER</span>
+              </div>
+              <div class="wallet-id">ID: attacker_wallet_99</div>
+              <div id="attacker-wallet-balance" class="wallet-balance balance-zero">0 pt</div>
+              <span id="attacker-delta-badge" class="delta-badge delta-blocked" data-ja="0 pt (着金なし)" data-en="0 pt (No Funds)">0 pt (着金なし)</span>
+            </div>
+          </div>
+
+          <div id="hijack-status-banner" class="banner" style="background:var(--bg-subtle);color:var(--text-secondary);border-left:4px solid var(--google-blue);">
+            <span>ℹ️</span>
+            <div>
+              <strong data-ja="ポイントハイジャック監視モニター稼働中:" data-en="POINT HIJACKING MONITOR ACTIVE:">ポイントハイジャック監視モニター稼働中:</strong>
+              <span data-ja="上のツール実行またはプロンプトインジェクション検証を実行すると、被害者ウォレットと攻撃者ウォレット間のポイント移動がここにリアルタイム表示されます。" data-en="Trigger an exploit simulation above to observe real-time point transfers between the Victim Wallet and Hijacker Wallet.">
+                上のツール実行またはプロンプトインジェクション検証を実行すると、被害者ウォレットと攻撃者ウォレット間のポイント移動がここにリアルタイム表示されます。
+              </span>
+            </div>
+          </div>
+
+          <div class="ledger-title" data-ja="リアルタイム・ポイント送金監査台帳 (Live Point Transfer Ledger)" data-en="Live Point Transfer Ledger">リアルタイム・ポイント送金監査台帳 (Live Point Transfer Ledger)</div>
+          <table class="ledger-table">
+            <thead>
+              <tr>
+                <th data-ja="時刻" data-en="Time">時刻</th>
+                <th data-ja="送金元 ➔ 送金先" data-en="From ➔ To">送金元 ➔ 送金先</th>
+                <th data-ja="ポイント数" data-en="Amount">ポイント数</th>
+                <th data-ja="WebMCP セキュリティ判定" data-en="WebMCP Security Verdict">WebMCP セキュリティ判定</th>
+              </tr>
+            </thead>
+            <tbody id="hijack-ledger-tbody">
+              <tr>
+                <td colspan="4" style="text-align:center;color:var(--text-muted);padding:12px;" data-ja="まだポイント移動イベントは記録されていません（シミュレーション待機中）" data-en="No point transfer events recorded yet (Waiting for simulation)">
+                  まだポイント移動イベントは記録されていません（シミュレーション待機中）
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+      </div>
+
+      <!-- Right Column: Code Comparison & Speaker Notes -->
+      <div>
+        <!-- Code Comparison -->
+        <div style="font-size:14px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:6px;" data-ja="💻 WebMCP ツール定義の比較" data-en="💻 WebMCP Tool Definition Comparison">
+          <span>💻</span>
+          <span>WebMCP ツール定義の比較</span>
+        </div>
+
+        <div class="code-diff-container">
+          <!-- Vulnerable Code -->
+          <div class="diff-card">
+            <div class="diff-header vuln">
+              <span data-ja="🔴 脆弱な定義 (過剰権限 &amp; 未保護送金)" data-en="🔴 Vulnerable (Overprivileged &amp; Unchecked)">🔴 脆弱な定義 (過剰権限 &amp; 未保護送金)</span>
+              <span>Least Privilege Violation</span>
+            </div>
+            <pre class="diff-body"><code>// [脆弱] 全DBカラムを丸ごと返却
+document.modelContext.registerTool({
+  name: 'get_user_profile',
+  execute: async () => db.findUserById(currentUserId) // JWTや住所まで流出
+});
+
+// [脆弱] 送金APIに確認なし
+document.modelContext.registerTool({
+  name: 'transfer_points',
+  annotations: { consequentialHint: false },
+  execute: async ({ to_wallet, amount }) => db.transferPoints(to_wallet, amount)
+});</code></pre>
+          </div>
+
+          <!-- Secure Code -->
+          <div class="diff-card">
+            <div class="diff-header sec">
+              <span data-ja="🟢 セキュアな定義 (最小射影 &amp; HITL送金)" data-en="🟢 Secure (Minimal Projection &amp; HITL)">🟢 セキュアな定義 (最小射影 &amp; HITL送金)</span>
+              <span>Minimal Projection + HITL</span>
+            </div>
+            <pre class="diff-body"><code>// [セキュア] 必要な公開項目のみを射影
+document.modelContext.registerTool({
+  name: 'get_user_profile',
+  execute: async () => ({
+    display_name: user.displayName,
+    tier: user.tier,
+    points: user.points
+  }) // 機密情報は除外
+});
+
+// [セキュア] 送金にHITL承認を強制
+document.modelContext.registerTool({
+  name: 'transfer_points',
+  annotations: { consequentialHint: true },
+  execute: async ({ to_wallet, amount }, { event }) => {
+    if (!event || !event.isTrusted) {
+      openTransferDialog(to_wallet, amount);
+      return { status: 'AWAITING_HUMAN_CONFIRMATION' };
+    }
+    return db.transferPoints(to_wallet, amount);
+  }
+});</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
+    <!-- Live Monospace WebMCP Execution Console -->
+    <section style="background:#090d16;border:1px solid #1f2937;border-radius:var(--radius-md);padding:18px;margin-top:28px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <div style="font-size:13px;font-weight:700;color:#f8fafc;display:flex;align-items:center;gap:8px;" data-ja="リアルタイム WebMCP ツール実行ログ (Live Execution Stream)" data-en="Real-time WebMCP Tool Execution Stream">
+          <span style="width:8px;height:8px;border-radius:50%;background:#10b981;display:inline-block;"></span>
+          リアルタイム WebMCP ツール実行ログ (Live Execution Stream)
+        </div>
+        <button class="btn btn-secondary" style="font-size:11px;padding:2px 8px;color:#94a3b8;border-color:#334155;" onclick="clearLogs()" data-ja="ログ消去" data-en="Clear Logs">ログ消去</button>
+      </div>
+      <div id="execution-log-stream" style="max-height:200px;overflow-y:auto;font-family:var(--font-mono);font-size:11.5px;color:#94a3b8;display:flex;flex-direction:column;gap:6px;">
+        <div style="color:#64748b;">// WebMCP ツール（document.modelContext）または拡張機能からの実行イベントがここにリアルタイム表示されます...</div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Safe Native Dialog for Point Transfer HITL -->
+  <dialog id="transfer-confirm-dialog">
+    <div class="dialog-header">
+      <h3 class="dialog-title" data-ja="🛡️ ポイント送金の承認 (HITL)" data-en="🛡️ Transfer Confirmation (HITL)">🛡️ ポイント送金の承認 (HITL)</h3>
+      <button class="dialog-close-btn" onclick="document.getElementById('transfer-confirm-dialog').close()">✕</button>
+    </div>
+    <div style="font-size:13px;color:var(--text-secondary);line-height:1.6;">
+      <p style="margin-bottom:10px;" data-ja="高リスクな資産移動（consequentialHint: true）のため、送金先と金額を確認してください。" data-en="High-consequence financial transfer detected. Please review recipient and amount.">
+        高リスクな資産移動（consequentialHint: true）のため、送金先と金額を確認してください。
+      </p>
+      <div style="background:var(--bg-subtle);padding:10px;border-radius:var(--radius-xs);margin-bottom:12px;">
+        <div><strong data-ja="送金先アドレス:" data-en="Recipient Address:">送金先アドレス:</strong> <code id="dialog-target-wallet">attacker_wallet_99</code></div>
+        <div><strong data-ja="送金ポイント数:" data-en="Points to Transfer:">送金ポイント数:</strong> <span style="font-weight:700;color:#dc2626;">5,000 pt</span></div>
+      </div>
+    </div>
+    <div class="dialog-actions">
+      <button class="btn btn-secondary" onclick="document.getElementById('transfer-confirm-dialog').close()" data-ja="拒否・キャンセル" data-en="Reject">拒否・キャンセル</button>
+      <button class="btn btn-primary-shopping" onclick="executeRealTransfer(event)" data-ja="送金を承認する" data-en="Approve Transfer">送金を承認する</button>
+    </div>
+  </dialog>
+
+  
+  <footer style="background:var(--bg-surface);border-top:1px solid var(--border);padding:24px 0;margin-top:64px;font-size:12px;color:var(--text-muted);">
+    <div class="container" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+      <div>
+        <strong>Google Partner Summit 2026</strong> · Built-in AI & WebMCP Workshop
+      </div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;">
+        <a href="../index.html" style="color:var(--text-secondary);" data-ja="ホーム" data-en="Home">ホーム</a>
+        <a href="../shopping/index.html" style="color:var(--text-secondary);" data-ja="ショッピング" data-en="Shopping">ショッピング</a>
+        <a href="../blog/index.html" style="color:var(--text-secondary);" data-ja="ブログ" data-en="Blogging">ブログ</a>
+        <a href="../gallery/index.html" style="color:var(--text-secondary);" data-ja="ギャラリー" data-en="Gallery">ギャラリー</a>
+        <a href="../crm/index.html" style="color:var(--text-secondary);" data-ja="CRM・サポート" data-en="CRM & Support">CRM・サポート</a>
+        <a href="../account/register.html" style="color:var(--text-secondary);" data-ja="アカウント" data-en="Account">アカウント</a>
+        <a href="../redteam/index.html" style="color:var(--brand-redteam);font-weight:600;" data-ja="レッドチーム検証" data-en="Red-Team Lab">レッドチーム検証</a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="webmcp-toast"></div>
+  <script src="../shared/js/i18n.js?v=20260915"></script>
+  <script src="../shared/js/store.js?v=20260915"></script>
+  <script src="../shared/js/webmcp-tools.js?v=20260915"></script>
+
+
+  <script>
+    function renderWallet() {
+      const balance = window.WebMCPSecurity ? window.WebMCPSecurity.getWalletBalance() : 5000;
+      const el = document.getElementById('user-points-display');
+      if (el) el.textContent = `${balance.toLocaleString()} pt`;
+      if (window.WebMCPSecurity && typeof window.WebMCPSecurity.renderPointHijackMonitor === 'function') {
+        window.WebMCPSecurity.renderPointHijackMonitor();
+      }
+    }
+
+    function setMode(mode) {
+      if (window.WebMCPSecurity) {
+        window.WebMCPSecurity.setSecurityMode(mode);
+      }
+      updateModeUI(mode);
+    }
+
+    function updateModeUI(mode) {
+      const isVuln = (mode === 'vulnerable');
+      const badge = document.getElementById('active-mode-badge');
+      const hints = document.getElementById('policy-hints-display');
+      const btnV = document.getElementById('btn-mode-vulnerable');
+      const btnS = document.getElementById('btn-mode-secure');
+
+      if (btnV && btnS) {
+        btnV.className = `toggle-btn ${isVuln ? 'active vulnerable' : ''}`;
+        btnS.className = `toggle-btn ${!isVuln ? 'active secure' : ''}`;
+      }
+      if (badge) {
+        badge.className = `badge ${isVuln ? 'badge-redteam' : 'badge-blog'}`;
+        const isEn = window.i18n && window.i18n.getLang() === 'en'; badge.textContent = isVuln ? (isEn ? '🔴 Vulnerable Mode (No HITL)' : '🔴 脆弱な設定 (No HITL)') : (isEn ? '🟢 Secure Mode (Strict HITL)' : '🟢 セキュア設定 (Strict HITL)');
+      }
+      if (hints) {
+        hints.textContent = isVuln
+          ? 'consequentialHint: false | untrustedContentHint: false | event.isTrusted ガード: 無効'
+          : 'consequentialHint: true | untrustedContentHint: true | event.isTrusted ガード: 必須';
+      }
+    }
+
+    async function callWebMCPTool(name, args = {}, context = {}) {
+      if (window.WebMCPSecurity && typeof window.WebMCPSecurity.executeTool === 'function') {
+        return await window.WebMCPSecurity.executeTool(name, args, context);
+      }
+      if (document.modelContext && typeof document.modelContext.execute === 'function') {
+        return await document.modelContext.execute(name, args, context);
+      }
+      console.error('[WebMCP] Tool executor unavailable for:', name);
+    }
+
+    async function resetTestState() {
+      await callWebMCPTool('reset_testbed_state', {});
+      renderWallet();
+    }
+
+    async function triggerFetchProfile() {
+      await callWebMCPTool('get_user_profile', {});
+    }
+
+    async function triggerTransferPoints(e) {
+      const target = document.getElementById('target-wallet-input')?.value || 'attacker_wallet_99';
+      await callWebMCPTool('transfer_points', { to_wallet: target, amount: 5000 }, { event: e });
+    }
+
+    async function simulateAgentTransfer() {
+      const target = document.getElementById('target-wallet-input')?.value || 'attacker_wallet_99';
+      await callWebMCPTool('transfer_points', { to_wallet: target, amount: 5000 }, { event: null });
+    }
+
+    async function executeRealTransfer(e) {
+      document.getElementById('transfer-confirm-dialog').close();
+      const target = document.getElementById('target-wallet-input')?.value || 'attacker_wallet_99';
+      if (window.WebMCPSecurity) {
+        const cur = window.WebMCPSecurity.getWalletBalance();
+        const transferred = Math.min(cur, 5000);
+        const remaining = cur - transferred;
+        window.WebMCPSecurity.setWalletBalance(remaining);
+        window.WebMCPSecurity.setAttackerBalance(window.WebMCPSecurity.getAttackerBalance() + transferred);
+        window.WebMCPSecurity.addPointLedgerEntry({
+          time: new Date().toLocaleTimeString('ja-JP', { hour12: false }),
+          from: 'usr_994821 (Taro Tanaka)',
+          to: target,
+          amount: transferred,
+          attemptedAmount: 5000,
+          verdict: 'sec',
+          verdictJa: '🟢 HITL承認済み送金',
+          verdictEn: '🟢 HITL Approved Transfer'
+        });
+        if (window.AppStore && window.AppStore.showToast) {
+          window.AppStore.showToast((window.i18n && window.i18n.getLang() === 'en') ? `✅ [HITL Approved] Authorized transfer of ${transferred} pt` : `✅ [HITL承認] ${transferred} pt の送金を承認しました`);
+        }
+      }
+    }
+
+    function clearLogs() {
+      const stream = document.getElementById('execution-log-stream');
+      if (stream) stream.innerHTML = (window.i18n && window.i18n.getLang() === 'en') ? '<div style="color:#64748b;">// Logs cleared...</div>' : '<div style="color:#64748b;">// ログを消去しました...</div>';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderWallet();
+      updateModeUI(window.WebMCPSecurity ? window.WebMCPSecurity.getMode() : 'vulnerable');
+
+      window.addEventListener('wallet-balance-updated', renderWallet);
+      window.addEventListener('webmcp-security-mode-changed', (e) => updateModeUI(e.detail.mode));
+
+      window.addEventListener('webmcp-tool-executed', (e) => {
+        const d = e.detail;
+        const stream = document.getElementById('execution-log-stream');
+        if (!stream) return;
+
+        const row = document.createElement('div');
+        row.style.padding = '4px 0';
+        row.style.borderBottom = '1px solid #1e293b';
+
+        let badgeCol = '#38bdf8';
+        if (d.name === 'transfer_points') badgeCol = '#ef4444';
+        if (d.name === 'get_user_profile') badgeCol = '#a855f7';
+
+        row.innerHTML = `
+          <span style="color:#64748b;">[${d.timestamp}]</span>
+          <strong style="color:${badgeCol};margin:0 6px;">${d.name}</strong>
+          <span style="color:#cbd5e1;">args: ${JSON.stringify(d.args)}</span>
+          <span style="color:#a855f7;margin-left:6px;">mode: ${d.securityMode}</span>
+          <div style="color:#94a3b8;font-size:10.5px;padding-left:14px;margin-top:2px;">↳ ${typeof d.result === 'string' ? d.result.substring(0, 150) : JSON.stringify(d.result)}</div>
+        `;
+        stream.prepend(row);
+      });
+    });
+  </script>
+</body>
+</html>

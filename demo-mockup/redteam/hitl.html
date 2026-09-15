@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scenario 1: Missing HITL | WebMCP Red-Team</title>
+  <link rel="stylesheet" href="../shared/css/base.css?v=20260915">
+  <link rel="stylesheet" href="../shared/css/components.css?v=20260915">
+  <link rel="stylesheet" href="../shared/css/redteam.css">
+  <style>
+    .redteam-hero {
+      padding: 32px 0 24px 0;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-surface);
+    }
+  </style>
+</head>
+<body>
+  
+  <!-- Google Fonts (Partner Hub Aligned: Google Sans, Roboto, Google Sans Code, Noto Sans JP) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Code:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Speculation Rules API for instant multi-page navigation -->
+  <script type="speculationrules">
+  {
+    "prerender": [
+      {
+        "where": { "href_matches": "/*" },
+        "eagerness": "moderate"
+      }
+    ]
+  }
+  </script>
+
+  <header class="global-header">
+    <div class="container header-inner">
+      <div class="brand-group">
+        <a href="../../index.html" class="hub-back-pill" title="Return to Google Partner Summit Workshop Hub">
+          <span data-ja="&larr; パートナーハブ" data-en="&larr; Partner Hub">&larr; パートナーハブ</span>
+        </a>
+        <a href="../index.html" class="brand-link">
+          <span style="color:var(--google-blue);">Google</span>
+          <span style="color:var(--text-main);font-weight:500;" data-ja="デモ検証環境" data-en="Demo Testbed">デモ検証環境</span>
+        </a>
+      </div>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="../shopping/index.html" class="nav-link "><span data-ja="ショッピング" data-en="Shopping">ショッピング</span></a></li>
+          <li><a href="../blog/index.html" class="nav-link "><span data-ja="ブログ" data-en="Blogging">ブログ</span></a></li>
+          <li><a href="../gallery/index.html" class="nav-link "><span data-ja="ギャラリー" data-en="Gallery">ギャラリー</span></a></li>
+          <li><a href="../crm/index.html" class="nav-link "><span data-ja="CRM・サポート" data-en="CRM & Support">CRM・サポート</span></a></li>
+          <li><a href="../account/register.html" class="nav-link "><span data-ja="アカウント" data-en="Account">アカウント</span></a></li>
+          <li><a href="../redteam/index.html" class="nav-link nav-link-redteam active"><span data-ja="レッドチーム" data-en="Red-Team">レッドチーム</span></a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <button id="lang-toggle-btn" class="lang-toggle-btn lang-switcher" aria-label="Toggle language" onclick="if(window.i18n) window.i18n.toggleLanguage();">
+          <span class="lang-active">JP</span><span class="lang-inactive">EN</span>
+        </button>
+        <a href="../shopping/cart.html" class="cart-indicator-btn" title="Shopping Cart">
+          <span data-ja="カート" data-en="Cart">カート</span>
+          <span class="cart-badge-count" style="display:none;">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+
+  <section class="redteam-hero">
+    <div class="container">
+      <div style="display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--brand-redteam);text-transform:uppercase;margin-bottom:6px;">
+        <span>🛡️ WebMCP Red-Team</span>
+        <span>·</span>
+        <span data-ja="シナリオ 1: 承認なき課金" data-en="Scenario 1: Missing HITL">シナリオ 1: 承認なき課金</span>
+      </div>
+      <h1 style="font-size:24px;font-weight:800;letter-spacing:-0.02em;margin-bottom:6px;" data-ja="シナリオ 1: 承認なき課金・重大アクション (Missing HITL)" data-en="Scenario 1: Unauthorized Action &amp; Missing HITL">
+        シナリオ 1: 承認なき課金・重大アクション (Missing HITL)
+      </h1>
+      <p style="font-size:13.5px;color:var(--text-secondary);max-width:800px;line-height:1.6;" data-ja="不可逆な金銭的支出を伴うツールにおいて、consequentialHint: true の欠落や event.isTrusted の未検証が引き起こす自動課金リスクを検証します。エージェントがユーザーの直接確認なしに決済を完了させる脆弱性を実証します。" data-en="Evaluates unauthorized financial execution caused by missing consequentialHint: true and unverified event.isTrusted guards. Observe how an agent commits charges autonomously without human confirmation.">
+        不可逆な金銭的支出を伴うツールにおいて、consequentialHint: true の欠落や event.isTrusted の未検証が引き起こす自動課金リスクを検証します。エージェントがユーザーの直接確認なしに決済を完了させる脆弱性を実証します。
+      </p>
+    </div>
+  </section>
+
+  <main class="container" style="margin-top:20px;">
+    <div class="redteam-nav-sub">
+      <a href="index.html"><span data-ja="🛡️ 概要" data-en="🛡️ Overview">🛡️ 概要</span></a>
+      <a href="hitl.html" class="active"><span data-ja="⚡ 1. 承認なし課金 (Missing HITL)" data-en="⚡ 1. Missing HITL">⚡ 1. 承認なし課金 (Missing HITL)</span></a>
+      <a href="injection.html"><span data-ja="💬 2. プロンプト注入 (Injection)" data-en="💬 2. Prompt Injection">💬 2. プロンプト注入 (Injection)</span></a>
+      <a href="pii.html"><span data-ja="👤 3. 個人情報・不正送金 (PII & Transfer)" data-en="👤 3. PII & Transfer">👤 3. 個人情報・不正送金 (PII & Transfer)</span></a>
+    </div>
+
+    
+    <!-- Security Mode Switcher & Quick Actions -->
+    <div style="background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:14px 20px;margin:20px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;">
+      <div>
+        <div style="font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:2px;">
+          <span data-ja="WebMCP セキュリティ設定:" data-en="WebMCP Security Policy:">WebMCP セキュリティ設定:</span>
+          <span class="badge badge-redteam" id="active-mode-badge" data-ja="🔴 脆弱な設定 (No HITL)" data-en="🔴 Vulnerable Mode (No HITL)">🔴 脆弱な設定 (No HITL)</span>
+        </div>
+        <div style="font-size:12px;color:var(--text-muted);" id="policy-hints-display">
+          consequentialHint: false | untrustedContentHint: false | event.isTrusted ガード: 無効
+        </div>
+      </div>
+
+      <div style="display:flex;gap:10px;align-items:center;">
+        <div class="toggle-switch-group">
+          <button class="toggle-btn active vulnerable" id="btn-mode-vulnerable" onclick="setMode('vulnerable')" data-ja="🔴 脆弱な設定" data-en="🔴 Vulnerable">
+            🔴 脆弱な設定
+          </button>
+          <button class="toggle-btn" id="btn-mode-secure" onclick="setMode('secure')" data-ja="🟢 セキュア設定" data-en="🟢 Secure">
+            🟢 セキュア設定
+          </button>
+        </div>
+        <button class="btn btn-secondary" style="font-size:12px;padding:6px 12px;" onclick="resetTestState()" data-ja="🔄 状態リセット" data-en="🔄 Reset State">
+          🔄 状態リセット
+        </button>
+      </div>
+    </div>
+
+
+    <div class="redteam-two-col">
+      <!-- Left Column: Authentic Service UI & Live Workbench -->
+      <div>
+        <section class="service-panel">
+          <div class="service-panel-header">
+            <div class="service-panel-title">
+              <span>🛍️</span>
+              <span data-ja="ショッピング・1-Click即時購入" data-en="Shopping &amp; 1-Click Purchase">ショッピング・1-Click即時購入</span>
+            </div>
+            <span class="badge" style="font-size:10px;background:var(--bg-subtle);">Tool: execute_instant_purchase</span>
+          </div>
+
+          <!-- Product Card -->
+          <div style="display:flex;gap:14px;margin-bottom:14px;">
+            <div style="width:76px;height:76px;background:#18181b;border-radius:var(--radius-xs);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="1.5"><path d="M4 16l4-8 4 6 4-4 4 6"/></svg>
+            </div>
+            <div style="flex:1;">
+              <div style="font-weight:700;font-size:15px;">Apex Pro Runner v2</div>
+              <div style="font-size:13px;color:var(--brand-shopping);font-weight:700;margin:2px 0;">¥12,800 <span style="font-size:11px;color:var(--text-muted);font-weight:400;">(獲得: 384 pt)</span></div>
+              <div style="font-size:11.5px;color:#10b981;font-weight:600;" data-ja="✓ 在庫あり (即時出荷可能)" data-en="✓ In Stock (Ready to Ship)">✓ 在庫あり (即時出荷可能)</div>
+            </div>
+          </div>
+
+          <!-- Variants -->
+          <div style="display:flex;gap:6px;margin-bottom:14px;font-size:12px;align-items:center;">
+            <span style="color:var(--text-muted);" data-ja="サイズ:" data-en="Size:">サイズ:</span>
+            <span class="tag-pill size-pill active" style="cursor:pointer;border-color:var(--text-main);font-weight:600;" onclick="selectSize('26.5cm', this)">26.5cm</span>
+            <span class="tag-pill size-pill" style="cursor:pointer;" onclick="selectSize('27.0cm', this)">27.0cm</span>
+            <span style="color:var(--text-muted);margin-left:8px;" data-ja="カラー:" data-en="Color:">カラー:</span>
+            <span class="tag-pill" style="border-color:var(--text-main);font-weight:600;">Black</span>
+          </div>
+
+          <!-- Live Real Buttons -->
+          <div style="display:flex;gap:8px;margin-bottom:14px;">
+            <button class="btn btn-secondary" style="flex:1;font-size:12px;padding:8px;" onclick="triggerAddToCart(event)" data-ja="🛒 カートに追加" data-en="🛒 Add to Cart">
+              🛒 カートに追加
+            </button>
+            <button class="btn btn-primary-shopping" style="flex:1.2;font-size:12px;padding:8px;" onclick="triggerInstantPurchase(event)" data-ja="⚡ 1-Click即時購入" data-en="⚡ 1-Click Purchase">
+              ⚡ 1-Click即時購入
+            </button>
+          </div>
+
+          <!-- Attack Simulation Trigger Box -->
+          <div style="background:var(--bg-subtle);border:1px dashed var(--brand-redteam);border-radius:var(--radius-xs);padding:12px;margin-bottom:16px;">
+            <div style="font-size:12px;font-weight:700;color:var(--brand-redteam);margin-bottom:4px;" data-ja="🤖 エージェント自動購入シミュレーター" data-en="🤖 Simulate Autonomous Agent Purchase">
+              🤖 エージェント自動購入シミュレーター
+            </div>
+            <p style="font-size:11.5px;color:var(--text-secondary);margin:0 0 10px 0;line-height:1.4;" data-ja="ユーザーの人間クリック（event.isTrusted）を伴わない、エージェントからの自律的なツール実行をトリガーします。" data-en="Triggers tool execution autonomously without a trusted human click (event.isTrusted = false).">
+              ユーザーの人間クリック（event.isTrusted）を伴わない、エージェントからの自律的なツール実行をトリガーします。
+            </p>
+            <button class="btn btn-secondary" style="width:100%;font-size:12px;padding:7px;background:var(--bg-surface);" onclick="simulateAgentInstantPurchase()" data-ja="⚡ 確認なし自動購入を実行 (Simulate Agent Purchase)" data-en="⚡ Execute Autonomous Agent Purchase">
+              ⚡ 確認なし自動購入を実行 (Simulate Agent Purchase)
+            </button>
+          </div>
+
+          <!-- Real-Time Order History Table -->
+          <div style="margin-top:auto;">
+            <div style="font-size:12.5px;font-weight:700;margin-bottom:6px;display:flex;justify-content:space-between;" data-ja="注文履歴 (Recent Orders)" data-en="Recent Orders">
+              <span>注文履歴 (Recent Orders)</span>
+              <span style="font-size:11px;color:var(--text-muted);" id="orders-count-badge">1 件</span>
+            </div>
+            <div style="max-height:180px;overflow-y:auto;border:1px solid var(--border);border-radius:var(--radius-xs);">
+              <table class="order-table-sm" id="orders-table">
+                <thead>
+                  <tr>
+                    <th data-ja="注文ID" data-en="Order ID">注文ID</th>
+                    <th data-ja="商品" data-en="Product">商品</th>
+                    <th data-ja="金額" data-en="Amount">金額</th>
+                    <th data-ja="ステータス" data-en="Status">ステータス</th>
+                  </tr>
+                </thead>
+                <tbody id="orders-table-body">
+                  <!-- Populated by JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Right Column: Code Comparison & Speaker Notes -->
+      <div>
+        <!-- Code Comparison -->
+        <div style="font-size:14px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:6px;" data-ja="💻 WebMCP ツール定義の比較" data-en="💻 WebMCP Tool Definition Comparison">
+          <span>💻</span>
+          <span>WebMCP ツール定義の比較</span>
+        </div>
+
+        <div class="code-diff-container">
+          <!-- Vulnerable Code -->
+          <div class="diff-card">
+            <div class="diff-header vuln">
+              <span data-ja="🔴 脆弱な定義 (No Consequential Hint)" data-en="🔴 Vulnerable (No Consequential Hint)">🔴 脆弱な定義 (No Consequential Hint)</span>
+              <span>consequentialHint: false</span>
+            </div>
+            <pre class="diff-body"><code>document.modelContext.registerTool({
+  name: 'execute_instant_purchase',
+  annotations: {
+    readOnlyHint: false,
+    consequentialHint: false // ⚠️ 危険: 確認不要と宣言
+  },
+  execute: async ({ product_id, amount }) => {
+    // ユーザーの承認なしに直ちに決済ゲートウェイへ請求！
+    return await chargePaymentCard(product_id, amount);
+  }
+});</code></pre>
+          </div>
+
+          <!-- Secure Code -->
+          <div class="diff-card">
+            <div class="diff-header sec">
+              <span data-ja="🟢 セキュアな定義 (Strict HITL + isTrusted)" data-en="🟢 Secure (Strict HITL + isTrusted)">🟢 セキュアな定義 (Strict HITL + isTrusted)</span>
+              <span>consequentialHint: true</span>
+            </div>
+            <pre class="diff-body"><code>document.modelContext.registerTool({
+  name: 'execute_instant_purchase',
+  annotations: {
+    readOnlyHint: false,
+    consequentialHint: true // 🛡️ 必須: 重大アクションを宣言
+  },
+  execute: async ({ product_id, amount }, { event }) => {
+    // 人間の直接クリックでない場合は確認モーダルを強制
+    if (!event || !event.isTrusted) {
+      showCheckoutConfirmationDialog();
+      return { status: 'AWAITING_HUMAN_CONFIRMATION' };
+    }
+    return await chargePaymentCard(product_id, amount);
+  }
+});</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
+    <!-- Live Monospace WebMCP Execution Console -->
+    <section style="background:#090d16;border:1px solid #1f2937;border-radius:var(--radius-md);padding:18px;margin-top:28px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <div style="font-size:13px;font-weight:700;color:#f8fafc;display:flex;align-items:center;gap:8px;" data-ja="リアルタイム WebMCP ツール実行ログ (Live Execution Stream)" data-en="Real-time WebMCP Tool Execution Stream">
+          <span style="width:8px;height:8px;border-radius:50%;background:#10b981;display:inline-block;"></span>
+          リアルタイム WebMCP ツール実行ログ (Live Execution Stream)
+        </div>
+        <button class="btn btn-secondary" style="font-size:11px;padding:2px 8px;color:#94a3b8;border-color:#334155;" onclick="clearLogs()" data-ja="ログ消去" data-en="Clear Logs">ログ消去</button>
+      </div>
+      <div id="execution-log-stream" style="max-height:200px;overflow-y:auto;font-family:var(--font-mono);font-size:11.5px;color:#94a3b8;display:flex;flex-direction:column;gap:6px;">
+        <div style="color:#64748b;">// WebMCP ツール（document.modelContext）または拡張機能からの実行イベントがここにリアルタイム表示されます...</div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Safe Native Dialog for Purchase HITL -->
+  <dialog id="checkout-confirm-dialog">
+    <div class="dialog-header">
+      <h3 class="dialog-title" data-ja="🛡️ 注文内容の確認 (HITL)" data-en="🛡️ Order Confirmation (HITL)">🛡️ 注文内容の確認 (HITL)</h3>
+      <button class="dialog-close-btn" onclick="document.getElementById('checkout-confirm-dialog').close()">✕</button>
+    </div>
+    <div style="font-size:13px;color:var(--text-secondary);line-height:1.6;">
+      <p style="margin-bottom:10px;" data-ja="WebMCP安全規格（consequentialHint: true）に基づき、決済実行前に人間による確認を行います。" data-en="WebMCP standard (consequentialHint: true) requires human confirmation prior to payment execution.">
+        WebMCP安全規格（consequentialHint: true）に基づき、決済実行前に人間による確認を行います。
+      </p>
+      <div style="background:var(--bg-subtle);padding:10px;border-radius:var(--radius-xs);margin-bottom:12px;">
+        <div><strong data-ja="商品:" data-en="Product:">商品:</strong> <span id="dialog-product-name">Apex Pro Runner v2 (26.5cm / Black)</span></div>
+        <div><strong>ご請求金額:</strong> <span id="dialog-product-amount" style="font-weight:700;color:var(--brand-shopping);">¥12,800</span></div>
+        <div><strong data-ja="支払い方法:" data-en="Payment Method:">支払い方法:</strong> <span data-ja="クレジットカード (下4桁: 9821)" data-en="Credit Card (Ending in 9821)">クレジットカード (下4桁: 9821)</span></div>
+      </div>
+    </div>
+    <div class="dialog-actions">
+      <button class="btn btn-secondary" onclick="document.getElementById('checkout-confirm-dialog').close()" data-ja="キャンセル" data-en="Cancel">キャンセル</button>
+      <button class="btn btn-primary-shopping" onclick="executeRealPurchase(event)" data-ja="注文を確定する" data-en="Confirm Order">注文を確定する</button>
+    </div>
+  </dialog>
+
+  
+  <footer style="background:var(--bg-surface);border-top:1px solid var(--border);padding:24px 0;margin-top:64px;font-size:12px;color:var(--text-muted);">
+    <div class="container" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+      <div>
+        <strong>Google Partner Summit 2026</strong> · Built-in AI & WebMCP Workshop
+      </div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;">
+        <a href="../index.html" style="color:var(--text-secondary);" data-ja="ホーム" data-en="Home">ホーム</a>
+        <a href="../shopping/index.html" style="color:var(--text-secondary);" data-ja="ショッピング" data-en="Shopping">ショッピング</a>
+        <a href="../blog/index.html" style="color:var(--text-secondary);" data-ja="ブログ" data-en="Blogging">ブログ</a>
+        <a href="../gallery/index.html" style="color:var(--text-secondary);" data-ja="ギャラリー" data-en="Gallery">ギャラリー</a>
+        <a href="../crm/index.html" style="color:var(--text-secondary);" data-ja="CRM・サポート" data-en="CRM & Support">CRM・サポート</a>
+        <a href="../account/register.html" style="color:var(--text-secondary);" data-ja="アカウント" data-en="Account">アカウント</a>
+        <a href="../redteam/index.html" style="color:var(--brand-redteam);font-weight:600;" data-ja="レッドチーム検証" data-en="Red-Team Lab">レッドチーム検証</a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="webmcp-toast"></div>
+  <script src="../shared/js/i18n.js?v=20260915"></script>
+  <script src="../shared/js/store.js?v=20260915"></script>
+  <script src="../shared/js/webmcp-tools.js?v=20260915"></script>
+
+
+  <script>
+    function renderOrders() {
+      const orders = window.WebMCPSecurity ? window.WebMCPSecurity.getRedTeamOrders() : [];
+      const tbody = document.getElementById('orders-table-body');
+      const countBadge = document.getElementById('orders-count-badge');
+      if (countBadge) countBadge.textContent = (window.i18n && window.i18n.getLang() === 'en') ? `${orders.length} orders` : `${orders.length} 件`;
+
+      if (!tbody) return;
+      tbody.innerHTML = orders.map(ord => {
+        const isRogue = (ord.status === 'SILENT_PURCHASE');
+        return `
+          <tr>
+            <td><code>${ord.id}</code></td>
+            <td><strong>${ord.product}</strong></td>
+            <td>¥${ord.amount.toLocaleString()}</td>
+            <td>
+              <span class="badge" style="${isRogue ? 'background:#fee2e2;color:#dc2626;border-color:#fca5a5;' : 'background:#ecfdf5;color:#059669;border-color:#a7f3d0;'}">
+                ${ord.statusLabel || ord.status}
+              </span>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function setMode(mode) {
+      if (window.WebMCPSecurity) {
+        window.WebMCPSecurity.setSecurityMode(mode);
+      }
+      updateModeUI(mode);
+    }
+
+    function updateModeUI(mode) {
+      const isVuln = (mode === 'vulnerable');
+      const badge = document.getElementById('active-mode-badge');
+      const hints = document.getElementById('policy-hints-display');
+      const btnV = document.getElementById('btn-mode-vulnerable');
+      const btnS = document.getElementById('btn-mode-secure');
+
+      if (btnV && btnS) {
+        btnV.className = `toggle-btn ${isVuln ? 'active vulnerable' : ''}`;
+        btnS.className = `toggle-btn ${!isVuln ? 'active secure' : ''}`;
+      }
+      if (badge) {
+        badge.className = `badge ${isVuln ? 'badge-redteam' : 'badge-blog'}`;
+        const isEn = window.i18n && window.i18n.getLang() === 'en'; badge.textContent = isVuln ? (isEn ? '🔴 Vulnerable Mode (No HITL)' : '🔴 脆弱な設定 (No HITL)') : (isEn ? '🟢 Secure Mode (Strict HITL)' : '🟢 セキュア設定 (Strict HITL)');
+      }
+      if (hints) {
+        hints.textContent = isVuln
+          ? 'consequentialHint: false | untrustedContentHint: false | event.isTrusted ガード: 無効'
+          : 'consequentialHint: true | untrustedContentHint: true | event.isTrusted ガード: 必須';
+      }
+    }
+
+    let selectedSize = '26.5cm';
+
+    function selectSize(size, el) {
+      selectedSize = size;
+      document.querySelectorAll('.size-pill').forEach(p => {
+        p.classList.remove('active');
+        p.style.borderColor = 'var(--border)';
+        p.style.fontWeight = '400';
+      });
+      if (el) {
+        el.classList.add('active');
+        el.style.borderColor = 'var(--text-main)';
+        el.style.fontWeight = '600';
+      }
+      const dialogName = document.getElementById('dialog-product-name');
+      if (dialogName) dialogName.textContent = `Apex Pro Runner v2 (${size} / Black)`;
+    }
+
+    async function callWebMCPTool(name, args = {}, context = {}) {
+      if (window.WebMCPSecurity && typeof window.WebMCPSecurity.executeTool === 'function') {
+        return await window.WebMCPSecurity.executeTool(name, args, context);
+      }
+      if (document.modelContext && typeof document.modelContext.execute === 'function') {
+        return await document.modelContext.execute(name, args, context);
+      }
+      console.error('[WebMCP] Tool executor unavailable for:', name);
+    }
+
+    async function resetTestState() {
+      await callWebMCPTool('reset_testbed_state', {});
+      renderOrders();
+    }
+
+    async function triggerAddToCart(e) {
+      await callWebMCPTool('add_to_cart', { product_id: 'sku-101', size: selectedSize, color: 'Black', qty: 1 });
+    }
+
+    async function triggerInstantPurchase(e) {
+      await callWebMCPTool('execute_instant_purchase', { product_id: 'sku-101', size: selectedSize, color: 'Black', amount: 12800 }, { event: e });
+    }
+
+    async function simulateAgentInstantPurchase() {
+      // Simulates agent background call without trusted user gesture
+      await callWebMCPTool('execute_instant_purchase', { product_id: 'sku-101', size: selectedSize, color: 'Black', amount: 12800 }, { event: null });
+    }
+
+    function executeRealPurchase(e) {
+      const dialog = document.getElementById('checkout-confirm-dialog');
+      if (dialog) dialog.close();
+      const newOrder = {
+        id: 'ORD-' + Math.floor(Math.random() * 90000 + 10000),
+        product: 'Apex Pro Runner v2',
+        size: selectedSize,
+        color: 'Black',
+        amount: 12800,
+        timestamp: new Date().toLocaleTimeString('ja-JP', { hour12: false }),
+        status: 'CONFIRMED',
+        statusLabel: '決済完了 (人間が承認 / User Confirmed)'
+      };
+      if (window.WebMCPSecurity) {
+        window.WebMCPSecurity.addRedTeamOrder(newOrder);
+      }
+      if (window.AppStore && window.AppStore.showToast) {
+        window.AppStore.showToast((window.i18n && window.i18n.getLang() === 'en') ? '✅ [HITL Approved] Order confirmed safely (¥12,800)' : '✅ [HITL承認] 注文が安全に確定しました (¥12,800)');
+      }
+    }
+
+    function clearLogs() {
+      const stream = document.getElementById('execution-log-stream');
+      if (stream) stream.innerHTML = (window.i18n && window.i18n.getLang() === 'en') ? '<div style="color:#64748b;">// Logs cleared...</div>' : '<div style="color:#64748b;">// ログを消去しました...</div>';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderOrders();
+      updateModeUI(window.WebMCPSecurity ? window.WebMCPSecurity.getMode() : 'vulnerable');
+
+      window.addEventListener('redteam-orders-updated', renderOrders);
+      window.addEventListener('webmcp-security-mode-changed', (e) => updateModeUI(e.detail.mode));
+
+      window.addEventListener('webmcp-tool-executed', (e) => {
+        const d = e.detail;
+        const stream = document.getElementById('execution-log-stream');
+        if (!stream) return;
+
+        const row = document.createElement('div');
+        row.style.padding = '4px 0';
+        row.style.borderBottom = '1px solid #1e293b';
+
+        let badgeCol = '#38bdf8';
+        if (d.name === 'execute_instant_purchase') badgeCol = '#f59e0b';
+
+        row.innerHTML = `
+          <span style="color:#64748b;">[${d.timestamp}]</span>
+          <strong style="color:${badgeCol};margin:0 6px;">${d.name}</strong>
+          <span style="color:#cbd5e1;">args: ${JSON.stringify(d.args)}</span>
+          <span style="color:#a855f7;margin-left:6px;">mode: ${d.securityMode}</span>
+          <div style="color:#94a3b8;font-size:10.5px;padding-left:14px;margin-top:2px;">↳ ${typeof d.result === 'string' ? d.result.substring(0, 150) : JSON.stringify(d.result)}</div>
+        `;
+        stream.prepend(row);
+      });
+    });
+  </script>
+</body>
+</html>

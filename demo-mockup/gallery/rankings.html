@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ランキング (Rankings) | ギャラリー</title>
+  <link rel="stylesheet" href="../shared/css/base.css?v=20260915">
+  <link rel="stylesheet" href="../shared/css/components.css?v=20260915">
+  <style>
+    .gallery-nav-sub {
+      display: flex;
+      gap: 20px;
+      padding: 6px 0 14px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 13.5px;
+      font-weight: 600;
+      margin-bottom: 24px;
+      overflow-x: auto;
+    }
+    .gallery-nav-sub a {
+      color: var(--text-secondary);
+      transition: color 0.15s ease;
+      white-space: nowrap;
+    }
+    .gallery-nav-sub a:hover, .gallery-nav-sub a.active {
+      color: var(--brand-gallery);
+    }
+    .rank-period-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 24px;
+      padding: 12px 16px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+    }
+    .rank-tab-group {
+      display: flex;
+      gap: 8px;
+    }
+    .rank-tab-btn {
+      padding: 6px 14px;
+      font-size: 12.5px;
+      font-weight: 600;
+      border-radius: var(--radius-xs);
+      border: 1px solid var(--border);
+      background: var(--bg-subtle);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .rank-tab-btn:hover, .rank-tab-btn.active {
+      background: var(--brand-gallery);
+      color: #fff;
+      border-color: var(--brand-gallery);
+    }
+
+    /* Podium Grid (Top 3) */
+    .podium-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-bottom: 32px;
+    }
+    @media (max-width: 860px) {
+      .podium-grid { grid-template-columns: 1fr; }
+    }
+    .podium-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    .podium-card:hover {
+      border-color: var(--border-hover);
+      box-shadow: var(--shadow-sm);
+    }
+    .podium-card-1 {
+      border-color: #f59e0b;
+      box-shadow: 0 0 0 1px #f59e0b;
+    }
+    .podium-img {
+      aspect-ratio: 16/10;
+      background: #18181b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .crown-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .crown-gold { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
+    .crown-silver { background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }
+    .crown-bronze { background: #ffedd5; color: #c2410c; border: 1px solid #fed7aa; }
+
+    .podium-info {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .podium-title {
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.4;
+      margin-bottom: 4px;
+    }
+    .podium-author {
+      font-size: 12px;
+      color: var(--brand-gallery);
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    .podium-score {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+    .podium-stats {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    /* Rank List (4 to 10) */
+    .rank-list-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+    .rank-row {
+      display: grid;
+      grid-template-columns: 50px 70px 1fr 140px 120px;
+      align-items: center;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border-light);
+      gap: 16px;
+    }
+    .rank-row:last-child {
+      border-bottom: none;
+    }
+    @media (max-width: 768px) {
+      .rank-row {
+        grid-template-columns: 40px 60px 1fr;
+      }
+      .rank-score-cell, .rank-action-cell { display: none; }
+    }
+    .rank-num-badge {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text-secondary);
+      text-align: center;
+    }
+    .rank-thumb-sm {
+      width: 70px;
+      height: 46px;
+      background: #18181b;
+      border-radius: var(--radius-xs);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body>
+  
+  <!-- Google Fonts (Partner Hub Aligned: Google Sans, Roboto, Google Sans Code, Noto Sans JP) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Code:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Speculation Rules API for instant multi-page navigation -->
+  <script type="speculationrules">
+  {
+    "prerender": [
+      {
+        "where": { "href_matches": "/*" },
+        "eagerness": "moderate"
+      }
+    ]
+  }
+  </script>
+
+  <header class="global-header">
+    <div class="container header-inner">
+      <div class="brand-group">
+        <a href="../../index.html" class="hub-back-pill" title="Return to Google Partner Summit Workshop Hub">
+          <span data-ja="&larr; パートナーハブ" data-en="&larr; Partner Hub">&larr; パートナーハブ</span>
+        </a>
+        <a href="../index.html" class="brand-link">
+          <span style="color:var(--google-blue);">Google</span>
+          <span style="color:var(--text-main);font-weight:500;" data-ja="デモ検証環境" data-en="Demo Testbed">デモ検証環境</span>
+        </a>
+      </div>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="../shopping/index.html" class="nav-link "><span data-ja="ショッピング" data-en="Shopping">ショッピング</span></a></li>
+          <li><a href="../blog/index.html" class="nav-link "><span data-ja="ブログ" data-en="Blogging">ブログ</span></a></li>
+          <li><a href="../gallery/index.html" class="nav-link active"><span data-ja="ギャラリー" data-en="Gallery">ギャラリー</span></a></li>
+          <li><a href="../crm/index.html" class="nav-link "><span data-ja="CRM・サポート" data-en="CRM & Support">CRM・サポート</span></a></li>
+          <li><a href="../account/register.html" class="nav-link "><span data-ja="アカウント" data-en="Account">アカウント</span></a></li>
+          <li><a href="../redteam/index.html" class="nav-link nav-link-redteam "><span data-ja="レッドチーム" data-en="Red-Team">レッドチーム</span></a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <button id="lang-toggle-btn" class="lang-toggle-btn lang-switcher" aria-label="Toggle language" onclick="if(window.i18n) window.i18n.toggleLanguage();">
+          <span class="lang-active">JP</span><span class="lang-inactive">EN</span>
+        </button>
+        <a href="../shopping/cart.html" class="cart-indicator-btn" title="Shopping Cart">
+          <span data-ja="カート" data-en="Cart">カート</span>
+          <span class="cart-badge-count" style="display:none;">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+
+  <main class="container" style="margin-top: 20px;">
+    <!-- Subnav -->
+    <div class="gallery-nav-sub">
+      <a href="index.html" data-ja="イラスト (Illustrations)" data-en="Illustrations">イラスト</a>
+      <a href="feature.html" data-ja="特集 (Features)" data-en="Features">特集</a>
+      <a href="tutorials.html" data-ja="作り方 (How-to)" data-en="Tutorials">作り方</a>
+      <a href="rankings.html" class="active" data-ja="ランキング (Rankings)" data-en="Rankings">ランキング</a>
+    </div>
+
+    <!-- Period Bar -->
+    <div class="rank-period-bar">
+      <div class="rank-tab-group">
+        <button class="rank-tab-btn active" onclick="switchRankingPeriod('daily', this)" data-ja="デイリー (Daily)" data-en="Daily">デイリー (Daily)</button>
+        <button class="rank-tab-btn" onclick="switchRankingPeriod('weekly', this)" data-ja="ウィークリー (Weekly)" data-en="Weekly">ウィークリー (Weekly)</button>
+        <button class="rank-tab-btn" onclick="switchRankingPeriod('monthly', this)" data-ja="マンスリー (Monthly)" data-en="Monthly">マンスリー (Monthly)</button>
+        <button class="rank-tab-btn" onclick="switchRankingPeriod('rookie', this)" data-ja="ルーキー (Rookie)" data-en="Rookie">ルーキー (Rookie)</button>
+      </div>
+      <div id="ranking-date-caption" style="font-size:12px;color:var(--text-muted);" data-ja="集計期間: 2026年9月9日 0:00 〜 23:59（1時間ごとに自動更新）" data-en="Aggregated: Sep 9, 2026 (Updated Hourly)">
+        集計期間: 2026年9月9日 0:00 〜 23:59（1時間ごとに自動更新）
+      </div>
+    </div>
+
+    <!-- Top 3 Podium Cards -->
+    <section class="podium-grid">
+      <!-- 2位 (Silver) -->
+      <article class="podium-card">
+        <a href="feature.html" class="podium-img">
+          <svg width="70" height="70" viewBox="0 0 24 24" fill="none" stroke="#eab308" stroke-width="1.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          <span class="crown-badge crown-silver">🥈 2位 (Silver)</span>
+        </a>
+        <div class="podium-info">
+          <div style="font-size:11px;color:#64748b;font-weight:600;margin-bottom:4px;">前日1位 (↓ 1)</div>
+          <h2 class="podium-title"><a href="feature.html" data-ja="零号機起動シーケンス" data-en="Unit-0 Startup Sequence">零号機起動シーケンス</a></h2>
+          <div class="podium-author">by @mecha_craft</div>
+          <div class="podium-score" id="score-rank-2">124,510 pt</div>
+          <div class="podium-stats">👁️ 15,400 閲覧 · ❤️ 3,120 · 🔖 1,850</div>
+          <button class="btn btn-secondary" style="font-size:11.5px;padding:4px 10px;margin-top:auto;" onclick="AppStore.toggleBookmark('art-px-6', '零号機起動シーケンス')" data-ja="🔖 保存する" data-en="🔖 Bookmark">🔖 保存する</button>
+        </div>
+      </article>
+
+      <!-- 1位 (Gold) -->
+      <article class="podium-card podium-card-1">
+        <a href="feature.html" class="podium-img">
+          <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="1.5"><polygon points="12 2 19 21 12 17 5 21 12 2"/></svg>
+          <span class="crown-badge crown-gold">👑 1位 (Gold Champion)</span>
+        </a>
+        <div class="podium-info">
+          <div style="font-size:11px;color:#059669;font-weight:700;margin-bottom:4px;">↑ 2ランクUP (前日3位)</div>
+          <h2 class="podium-title" style="font-size:16px;"><a href="feature.html" data-ja="サイバー・サムライ2077" data-en="Cyber Samurai 2077">サイバー・サムライ2077</a></h2>
+          <div class="podium-author">by @blade_runner_jp</div>
+          <div class="podium-score" style="color:#b45309;" id="score-rank-1">148,290 pt</div>
+          <div class="podium-stats">👁️ 18,200 閲覧 · ❤️ 3,840 · 🔖 2,190</div>
+          <button class="btn btn-primary-gallery" style="font-size:12px;padding:6px 12px;margin-top:auto;" onclick="AppStore.toggleBookmark('art-px-11', 'サイバー・サムライ2077')" data-ja="🔖 殿堂入り保存" data-en="🔖 Bookmark #1">🔖 殿堂入り保存</button>
+        </div>
+      </article>
+
+      <!-- 3位 (Bronze) -->
+      <article class="podium-card">
+        <a href="feature.html" class="podium-img">
+          <svg width="70" height="70" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="1.5"><rect x="4" y="4" width="16" height="16" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+          <span class="crown-badge crown-bronze">🥉 3位 (Bronze)</span>
+        </a>
+        <div class="podium-info">
+          <div style="font-size:11px;color:#8b5cf6;font-weight:700;margin-bottom:4px;">★ NEW (初登場)</div>
+          <h2 class="podium-title"><a href="feature.html" data-ja="量子コンピュータの夢" data-en="Dreams of Quantum AI">量子コンピュータの夢</a></h2>
+          <div class="podium-author">by @neural_canvas</div>
+          <div class="podium-score" id="score-rank-3">112,880 pt</div>
+          <div class="podium-stats">👁️ 14,310 閲覧 · ❤️ 2,980 · 🔖 1,640</div>
+          <button class="btn btn-secondary" style="font-size:11.5px;padding:4px 10px;margin-top:auto;" onclick="AppStore.toggleBookmark('art-px-12', '量子コンピュータの夢')" data-ja="🔖 保存する" data-en="🔖 Bookmark">🔖 保存する</button>
+        </div>
+      </article>
+    </section>
+
+    <!-- Rank 4 to 10 List -->
+    <h2 style="font-size:16px;font-weight:700;margin-bottom:14px;" data-ja="4位 〜 10位 の注目作品" data-en="Rank 4 to 10 Leaderboard">4位 〜 10位 の注目作品</h2>
+    <div class="rank-list-table" id="rank-list-table">
+      <!-- Row 4 -->
+      <div class="rank-row">
+        <div class="rank-num-badge">#4</div>
+        <div class="rank-thumb-sm">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.5"><circle cx="12" cy="12" r="10"/></svg>
+        </div>
+        <div>
+          <h3 style="font-size:13.5px;font-weight:700;margin-bottom:2px;"><a href="feature.html" data-ja="コズミック・ハイウェイ" data-en="Cosmic Highway">コズミック・ハイウェイ</a></h3>
+          <div style="font-size:11.5px;color:var(--brand-gallery);font-weight:500;">by @astro_voyager</div>
+        </div>
+        <div class="rank-score-cell">
+          <div style="font-weight:700;font-size:13px;" class="rank-score-val">98,400 pt</div>
+          <div style="font-size:11px;color:var(--text-muted);">👁️ 12,680</div>
+        </div>
+        <div class="rank-action-cell" style="text-align:right;">
+          <button class="btn btn-secondary" style="font-size:11px;padding:3px 8px;" onclick="AppStore.toggleBookmark('art-px-9', 'コズミック・ハイウェイ')" data-ja="🔖 保存" data-en="🔖 Save">🔖 保存</button>
+        </div>
+      </div>
+
+      <!-- Row 5 -->
+      <div class="rank-row">
+        <div class="rank-num-badge">#5</div>
+        <div class="rank-thumb-sm">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <div>
+          <h3 style="font-size:13.5px;font-weight:700;margin-bottom:2px;"><a href="feature.html" data-ja="光彩のフライト" data-en="Prismatic Flight">光彩のフライト</a></h3>
+          <div style="font-size:11.5px;color:var(--brand-gallery);font-weight:500;">by @neon_blade</div>
+        </div>
+        <div class="rank-score-cell">
+          <div style="font-weight:700;font-size:13px;" class="rank-score-val">89,200 pt</div>
+          <div style="font-size:11px;color:var(--text-muted);">👁️ 11,200</div>
+        </div>
+        <div class="rank-action-cell" style="text-align:right;">
+          <button class="btn btn-secondary" style="font-size:11px;padding:3px 8px;" onclick="AppStore.toggleBookmark('art-px-3', '光彩のフライト')" data-ja="🔖 保存" data-en="🔖 Save">🔖 保存</button>
+        </div>
+      </div>
+
+      <!-- Row 6 -->
+      <div class="rank-row">
+        <div class="rank-num-badge">#6</div>
+        <div class="rank-thumb-sm">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f43f5e" stroke-width="1.5"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+        </div>
+        <div>
+          <h3 style="font-size:13.5px;font-weight:700;margin-bottom:2px;"><a href="feature.html" data-ja="桜吹雪のプロムナード" data-en="Cherry Blossom Promenade">桜吹雪のプロムナード</a></h3>
+          <div style="font-size:11.5px;color:var(--brand-gallery);font-weight:500;">by @haru_art</div>
+        </div>
+        <div class="rank-score-cell">
+          <div style="font-weight:700;font-size:13px;" class="rank-score-val">78,900 pt</div>
+          <div style="font-size:11px;color:var(--text-muted);">👁️ 9,120</div>
+        </div>
+        <div class="rank-action-cell" style="text-align:right;">
+          <button class="btn btn-secondary" style="font-size:11px;padding:3px 8px;" onclick="AppStore.toggleBookmark('art-px-5', '桜吹雪のプロムナード')" data-ja="🔖 保存" data-en="🔖 Save">🔖 保存</button>
+        </div>
+      </div>
+
+      <!-- Row 7 -->
+      <div class="rank-row">
+        <div class="rank-num-badge">#7</div>
+        <div class="rank-thumb-sm">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="1.5"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21V11l3-2 3 2v10"/></svg>
+        </div>
+        <div>
+          <h3 style="font-size:13.5px;font-weight:700;margin-bottom:2px;"><a href="feature.html" data-ja="茜色の神社境内" data-en="Crimson Sunset Shrine">茜色の神社境内</a></h3>
+          <div style="font-size:11.5px;color:var(--brand-gallery);font-weight:500;">by @zen_brush</div>
+        </div>
+        <div class="rank-score-cell">
+          <div style="font-weight:700;font-size:13px;" class="rank-score-val">72,100 pt</div>
+          <div style="font-size:11px;color:var(--text-muted);">👁️ 8,950</div>
+        </div>
+        <div class="rank-action-cell" style="text-align:right;">
+          <button class="btn btn-secondary" style="font-size:11px;padding:3px 8px;" onclick="AppStore.toggleBookmark('art-px-10', '茜色の神社境内')" data-ja="🔖 保存" data-en="🔖 Save">🔖 保存</button>
+        </div>
+      </div>
+
+      <!-- Row 8 -->
+      <div class="rank-row">
+        <div class="rank-num-badge">#8</div>
+        <div class="rank-thumb-sm">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/></svg>
+        </div>
+        <div>
+          <h3 style="font-size:13.5px;font-weight:700;margin-bottom:2px;"><a href="feature.html" data-ja="ネオンの街路と雨音" data-en="Neon Streets & Rain">ネオンの街路と雨音</a></h3>
+          <div style="font-size:11.5px;color:var(--brand-gallery);font-weight:500;">by @mikhail_spinei (Tech Lead)</div>
+        </div>
+        <div class="rank-score-cell">
+          <div style="font-weight:700;font-size:13px;" class="rank-score-val">68,400 pt</div>
+          <div style="font-size:11px;color:var(--text-muted);">👁️ 8,420</div>
+        </div>
+        <div class="rank-action-cell" style="text-align:right;">
+          <button class="btn btn-secondary" style="font-size:11px;padding:3px 8px;" onclick="AppStore.toggleBookmark('art-px-1', 'ネオンの街路と雨音')" data-ja="🔖 保存" data-en="🔖 Save">🔖 保存</button>
+        </div>
+      </div>
+
+      <!-- Row 9 -->
+      <div class="rank-row">
+        <div class="rank-num-badge">#9</div>
+        <div class="rank-thumb-sm">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="1.5"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/></svg>
+        </div>
+        <div>
+          <h3 style="font-size:13.5px;font-weight:700;margin-bottom:2px;"><a href="feature.html" data-ja="浮遊群島クロニクル" data-en="Floating Archipelago">浮遊群島クロニクル</a></h3>
+          <div style="font-size:11.5px;color:var(--brand-gallery);font-weight:500;">by @sky_painter</div>
+        </div>
+        <div class="rank-score-cell">
+          <div style="font-weight:700;font-size:13px;" class="rank-score-val">61,200 pt</div>
+          <div style="font-size:11px;color:var(--text-muted);">👁️ 7,890</div>
+        </div>
+        <div class="rank-action-cell" style="text-align:right;">
+          <button class="btn btn-secondary" style="font-size:11px;padding:3px 8px;" onclick="AppStore.toggleBookmark('art-px-7', '浮遊群島クロニクル')" data-ja="🔖 保存" data-en="🔖 Save">🔖 保存</button>
+        </div>
+      </div>
+
+      <!-- Row 10 -->
+      <div class="rank-row">
+        <div class="rank-num-badge">#10</div>
+        <div class="rank-thumb-sm">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ec4899" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/></svg>
+        </div>
+        <div>
+          <h3 style="font-size:13.5px;font-weight:700;margin-bottom:2px;"><a href="feature.html" data-ja="電脳都市の黄昏" data-en="Cyber City Dusk">電脳都市の黄昏</a></h3>
+          <div style="font-size:11.5px;color:var(--brand-gallery);font-weight:500;">by @sakura_illust</div>
+        </div>
+        <div class="rank-score-cell">
+          <div style="font-weight:700;font-size:13px;" class="rank-score-val">54,800 pt</div>
+          <div style="font-size:11px;color:var(--text-muted);">👁️ 6,190</div>
+        </div>
+        <div class="rank-action-cell" style="text-align:right;">
+          <button class="btn btn-secondary" style="font-size:11px;padding:3px 8px;" onclick="AppStore.toggleBookmark('art-px-2', '電脳都市の黄昏')" data-ja="🔖 保存" data-en="🔖 Save">🔖 保存</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  
+  <footer style="background:var(--bg-surface);border-top:1px solid var(--border);padding:24px 0;margin-top:64px;font-size:12px;color:var(--text-muted);">
+    <div class="container" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+      <div>
+        <strong>Google Partner Summit 2026</strong> · Built-in AI & WebMCP Workshop
+      </div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;">
+        <a href="../index.html" style="color:var(--text-secondary);" data-ja="ホーム" data-en="Home">ホーム</a>
+        <a href="../shopping/index.html" style="color:var(--text-secondary);" data-ja="ショッピング" data-en="Shopping">ショッピング</a>
+        <a href="../blog/index.html" style="color:var(--text-secondary);" data-ja="ブログ" data-en="Blogging">ブログ</a>
+        <a href="../gallery/index.html" style="color:var(--text-secondary);" data-ja="ギャラリー" data-en="Gallery">ギャラリー</a>
+        <a href="../crm/index.html" style="color:var(--text-secondary);" data-ja="CRM・サポート" data-en="CRM & Support">CRM・サポート</a>
+        <a href="../account/register.html" style="color:var(--text-secondary);" data-ja="アカウント" data-en="Account">アカウント</a>
+        <a href="../redteam/index.html" style="color:var(--brand-redteam);font-weight:600;" data-ja="レッドチーム検証" data-en="Red-Team Lab">レッドチーム検証</a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="webmcp-toast"></div>
+  <script src="../shared/js/i18n.js?v=20260915"></script>
+  <script src="../shared/js/store.js?v=20260915"></script>
+  <script src="../shared/js/webmcp-tools.js?v=20260915"></script>
+
+
+  <script>
+    function switchRankingPeriod(period, btn) {
+      document.querySelectorAll('.rank-tab-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+
+      const caption = document.getElementById('ranking-date-caption');
+      const score1 = document.getElementById('score-rank-1');
+      const score2 = document.getElementById('score-rank-2');
+      const score3 = document.getElementById('score-rank-3');
+
+      if (period === 'daily') {
+        caption.textContent = (window.i18n && window.i18n.getLang() === 'en') ? 'Period: Sep 9, 2026 0:00 - 23:59 (Updated hourly)' : '集計期間: 2026年9月9日 0:00 〜 23:59（1時間ごとに自動更新）';
+        if (score1) score1.textContent = '148,290 pt';
+        if (score2) score2.textContent = '124,510 pt';
+        if (score3) score3.textContent = '112,880 pt';
+      } else if (period === 'weekly') {
+        caption.textContent = (window.i18n && window.i18n.getLang() === 'en') ? 'Period: Sep 3 - Sep 9, 2026 (Updated weekly)' : '集計期間: 2026年9月3日 〜 9月9日（毎週月曜更新）';
+        if (score1) score1.textContent = '892,100 pt';
+        if (score2) score2.textContent = '784,900 pt';
+        if (score3) score3.textContent = '691,400 pt';
+      } else if (period === 'monthly') {
+        caption.textContent = (window.i18n && window.i18n.getLang() === 'en') ? 'Period: August 2026 Monthly Rankings' : '集計期間: 2026年8月度 月間ランキング';
+        if (score1) score1.textContent = '3,450,200 pt';
+        if (score2) score2.textContent = '3,120,800 pt';
+        if (score3) score3.textContent = '2,890,500 pt';
+      } else if (period === 'rookie') {
+        caption.textContent = (window.i18n && window.i18n.getLang() === 'en') ? 'Period: Rookie Creators (Registered within 3 months)' : '集計期間: アカウント登録3ヶ月以内の新人クリエイター';
+        if (score1) score1.textContent = '64,200 pt';
+        if (score2) score2.textContent = '58,100 pt';
+        if (score3) score3.textContent = '49,800 pt';
+      }
+    }
+  </script>
+</body>
+</html>

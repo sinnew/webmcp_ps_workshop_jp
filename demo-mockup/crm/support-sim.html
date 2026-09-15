@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AIコールセンター・チャットボット自動応答シミュレータ | AI Support</title>
+  <link rel="stylesheet" href="../shared/css/base.css?v=20260915">
+  <link rel="stylesheet" href="../shared/css/components.css?v=20260915">
+  <style>
+    .sim-body {
+      background: #090d16;
+      color: #f8fafc;
+    }
+    .sim-grid {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 20px;
+      margin-top: 20px;
+    }
+    @media (max-width: 860px) {
+      .sim-grid { grid-template-columns: 1fr; }
+    }
+    .chat-container {
+      background: #111827;
+      border: 1px solid #1f2937;
+      border-radius: var(--radius-md);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      height: 580px;
+    }
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding-right: 6px;
+    }
+    .chat-bubble {
+      max-width: 80%;
+      padding: 10px 14px;
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+    .bubble-user {
+      background: #0284c7;
+      color: #ffffff;
+      margin-left: auto;
+      border-bottom-right-radius: 2px;
+    }
+    .bubble-bot {
+      background: #1f2937;
+      color: #f8fafc;
+      margin-right: auto;
+      border-bottom-left-radius: 2px;
+      border: 1px solid #374151;
+    }
+    .intent-box {
+      background: #090d16;
+      border: 1px solid #1f2937;
+      border-radius: var(--radius-xs);
+      padding: 8px 10px;
+      font-size: 11px;
+      font-family: var(--font-mono);
+      color: #38bdf8;
+      margin-top: 6px;
+    }
+    .inquiry-preset-btn {
+      width: 100%;
+      text-align: left;
+      background: #111827;
+      border: 1px solid #1f2937;
+      color: #f8fafc;
+      padding: 10px 14px;
+      border-radius: var(--radius-xs);
+      margin-bottom: 8px;
+      font-size: 12.5px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .inquiry-preset-btn:hover {
+      background: #1f2937;
+      border-color: #0284c7;
+    }
+  </style>
+</head>
+<body class="sim-body">
+  
+  <!-- Google Fonts (Partner Hub Aligned: Google Sans, Roboto, Google Sans Code, Noto Sans JP) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Code:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Speculation Rules API for instant multi-page navigation -->
+  <script type="speculationrules">
+  {
+    "prerender": [
+      {
+        "where": { "href_matches": "/*" },
+        "eagerness": "moderate"
+      }
+    ]
+  }
+  </script>
+
+  <header class="global-header">
+    <div class="container header-inner">
+      <div class="brand-group">
+        <a href="../../index.html" class="hub-back-pill" title="Return to Google Partner Summit Workshop Hub">
+          <span data-ja="&larr; パートナーハブ" data-en="&larr; Partner Hub">&larr; パートナーハブ</span>
+        </a>
+        <a href="../index.html" class="brand-link">
+          <span style="color:var(--google-blue);">Google</span>
+          <span style="color:var(--text-main);font-weight:500;" data-ja="デモ検証環境" data-en="Demo Testbed">デモ検証環境</span>
+        </a>
+      </div>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="../shopping/index.html" class="nav-link "><span data-ja="ショッピング" data-en="Shopping">ショッピング</span></a></li>
+          <li><a href="../blog/index.html" class="nav-link "><span data-ja="ブログ" data-en="Blogging">ブログ</span></a></li>
+          <li><a href="../gallery/index.html" class="nav-link "><span data-ja="ギャラリー" data-en="Gallery">ギャラリー</span></a></li>
+          <li><a href="../crm/index.html" class="nav-link active"><span data-ja="CRM・サポート" data-en="CRM & Support">CRM・サポート</span></a></li>
+          <li><a href="../account/register.html" class="nav-link "><span data-ja="アカウント" data-en="Account">アカウント</span></a></li>
+          <li><a href="../redteam/index.html" class="nav-link nav-link-redteam "><span data-ja="レッドチーム" data-en="Red-Team">レッドチーム</span></a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <button id="lang-toggle-btn" class="lang-toggle-btn lang-switcher" aria-label="Toggle language" onclick="if(window.i18n) window.i18n.toggleLanguage();">
+          <span class="lang-active">JP</span><span class="lang-inactive">EN</span>
+        </button>
+        <a href="../shopping/cart.html" class="cart-indicator-btn" title="Shopping Cart">
+          <span data-ja="カート" data-en="Cart">カート</span>
+          <span class="cart-badge-count" style="display:none;">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+
+  <main class="container">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:20px;flex-wrap:wrap;gap:12px;">
+      <div>
+        <h1 style="font-size:20px;font-weight:700;color:#f8fafc;" data-ja="AIコールセンター・自動応答シミュレータ" data-en="AI Contact Center & Chatbot Auto-Response Simulator">AIコールセンター・自動応答シミュレータ</h1>
+        <p style="font-size:12.5px;color:#94a3b8;margin:0;" data-ja="対話型AI技術とWebMCPエージェント支援の連携デモ" data-en="Interactive demo combining AI Support Engine conversational tech with WebMCP agent execution.">
+          対話型AI技術とWebMCPエージェント支援の連携デモ
+        </p>
+      </div>
+      <a href="index.html" class="btn btn-secondary" style="color:#94a3b8;border-color:#334155;font-size:12px;" data-ja="&larr; コンソールへ戻る" data-en="&larr; Back to Console">
+        &larr; コンソールへ戻る
+      </a>
+    </div>
+
+    <div class="sim-grid">
+      <!-- Left: Presets & Info -->
+      <aside>
+        <div style="background:#111827;border:1px solid #1f2937;border-radius:var(--radius-md);padding:18px;margin-bottom:16px;">
+          <h2 style="font-size:14px;font-weight:700;margin-bottom:12px;" data-ja="よくある問い合わせ（タップで送信）" data-en="Frequent Inquiries (Tap to Send)">よくある問い合わせ（タップで送信）</h2>
+          
+          <button class="inquiry-preset-btn" onclick="sendPreset(this.textContent.replace('📌 ','').trim(), 'POINT_INQUIRY', (window.i18n && window.i18n.getLang()==='en') ? 'Standard reward points are credited the day after your order, and campaign bonus points are awarded around the 15th of the following month.' : 'ストアの通常ポイントは注文日の翌日付与、キャンペーンポイントは翌月15日頃に進呈されます。マイページのポイント履歴よりご確認いただけます。')" data-ja="ストアのポイント付与タイミングを知りたい" data-en="When are store points credited?">
+            📌 ストアのポイント付与タイミングを知りたい
+          </button>
+
+          <button class="inquiry-preset-btn" onclick="sendPreset(this.textContent.replace('📌 ','').trim(), 'RECEIPT_REQUEST', (window.i18n && window.i18n.getLang()==='en') ? 'You can download PDF receipts for purchased articles anytime from Account Settings > Purchase History.' : 'ブログ記事の購入領収書は、アカウント設定の「購入履歴」より各記事の「領収書を発行」ボタンを押下してPDFダウンロードが可能です。')" data-ja="ブログの有料記事の領収書を発行したい" data-en="How to issue a receipt for blog articles?">
+            📌 ブログの有料記事の領収書を発行したい
+          </button>
+
+          <button class="inquiry-preset-btn" onclick="sendPreset(this.textContent.replace('📌 ','').trim(), 'CART_CANCEL', (window.i18n && window.i18n.getLang()==='en') ? 'Items in your shopping cart can be removed at any time by clicking the ✕ button on the Cart page.' : '現在カートに入っている商品は、カート画面の「✕」ボタンを押すことでいつでも削除・キャンセル可能です。')" data-ja="カートに入れた商品をキャンセルしたい" data-en="How to cancel items in shopping cart?">
+            📌 カートに入れた商品をキャンセルしたい
+          </button>
+
+          <button class="inquiry-preset-btn" onclick="sendPreset(this.textContent.replace('📌 ','').trim(), 'COPYRIGHT_INQUIRY', (window.i18n && window.i18n.getLang()==='en') ? 'All artwork copyrights belong to their respective creators. Commercial use requires explicit permission from the artist.' : 'ギャラリーに掲載されているイラストの著作権は各クリエイターに帰属します。無断での商用利用は禁止されており、利用には作者の許諾が必要です。')" data-ja="ギャラリーの画像を商用利用できますか？" data-en="Can I use Gallery images commercially?">
+            📌 ギャラリーの画像を商用利用できますか？
+          </button>
+        </div>
+
+        <!-- Status Card -->
+        <div style="background:#111827;border:1px solid #1f2937;border-radius:var(--radius-md);padding:16px;font-size:12px;color:#94a3b8;">
+          <div style="font-weight:700;color:#f8fafc;margin-bottom:6px;" data-ja="AI エージェント稼働ステータス" data-en="AI Agent Engine Status">AI エージェント稼働ステータス</div>
+          <div>Model: <span style="color:#38bdf8;">Gemini 1.5 Flash + WebMCP Client Context</span></div>
+          <div>Latency: <span style="color:#34d399;">240 ms (P95)</span></div>
+          <div>Accuracy: <span style="color:#34d399;">99.4% (Intent Resolution)</span></div>
+        </div>
+      </aside>
+
+      <!-- Right: Chat Window -->
+      <section class="chat-container">
+        <div class="chat-messages" id="chat-messages">
+          <div class="chat-bubble bubble-bot">
+            <span data-ja="こんにちは！AIカスタマーサポートアシスタントです。ショッピング、ブログ、ギャラリーに関するご質問やお手続きのお手伝いをいたします。" data-en="Hello! I am your AI Customer Support Assistant for Shopping, Blogging, and Gallery domains.">
+              こんにちは！AIカスタマーサポートアシスタントです。ショッピング、ブログ、ギャラリーに関するご質問やお手続きのお手伝いをいたします。
+            </span>
+          </div>
+        </div>
+
+        <form id="chat-form" onsubmit="handleSend(event)" style="display:flex;gap:8px;margin-top:14px;">
+          <input type="text" id="chat-input" placeholder="質問を入力してください..." style="flex:1;background:#090d16;border:1px solid #1f2937;border-radius:var(--radius-xs);padding:10px 14px;color:#f8fafc;font-size:13px;outline:none;" data-ja="質問を入力してください..." data-en="Type your question here...">
+          <button type="submit" class="btn" style="background:#0284c7;color:#fff;font-size:13px;padding:0 20px;" data-ja="送信" data-en="Send">送信</button>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  
+  <footer style="background:var(--bg-surface);border-top:1px solid var(--border);padding:24px 0;margin-top:64px;font-size:12px;color:var(--text-muted);">
+    <div class="container" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+      <div>
+        <strong>Google Partner Summit 2026</strong> · Built-in AI & WebMCP Workshop
+      </div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;">
+        <a href="../index.html" style="color:var(--text-secondary);" data-ja="ホーム" data-en="Home">ホーム</a>
+        <a href="../shopping/index.html" style="color:var(--text-secondary);" data-ja="ショッピング" data-en="Shopping">ショッピング</a>
+        <a href="../blog/index.html" style="color:var(--text-secondary);" data-ja="ブログ" data-en="Blogging">ブログ</a>
+        <a href="../gallery/index.html" style="color:var(--text-secondary);" data-ja="ギャラリー" data-en="Gallery">ギャラリー</a>
+        <a href="../crm/index.html" style="color:var(--text-secondary);" data-ja="CRM・サポート" data-en="CRM & Support">CRM・サポート</a>
+        <a href="../account/register.html" style="color:var(--text-secondary);" data-ja="アカウント" data-en="Account">アカウント</a>
+        <a href="../redteam/index.html" style="color:var(--brand-redteam);font-weight:600;" data-ja="レッドチーム検証" data-en="Red-Team Lab">レッドチーム検証</a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="webmcp-toast"></div>
+  <script src="../shared/js/i18n.js?v=20260915"></script>
+  <script src="../shared/js/store.js?v=20260915"></script>
+  <script src="../shared/js/webmcp-tools.js?v=20260915"></script>
+
+
+  <script>
+    function addBubble(text, sender, intent = null) {
+      const container = document.getElementById('chat-messages');
+      const bubble = document.createElement('div');
+      bubble.className = `chat-bubble bubble-${sender}`;
+      
+      let html = `<div>${text}</div>`;
+      if (intent) {
+        html += `<div class="intent-box">[Extracted Intent: ${intent}, Confidence: 0.99]</div>`;
+      }
+      bubble.innerHTML = html;
+      container.appendChild(bubble);
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function sendPreset(query, intent, response) {
+      addBubble(query, 'user');
+      AppStore.logCRMEvent('AI_SHIFT', 'BOT_INQUIRY', query, { intent });
+
+      setTimeout(() => {
+        addBubble(response, 'bot', intent);
+      }, 350);
+    }
+
+    function handleSend(e) {
+      e.preventDefault();
+      const input = document.getElementById('chat-input');
+      const val = input.value.trim();
+      if (!val) return;
+
+      addBubble(val, 'user');
+      input.value = '';
+
+      AppStore.logCRMEvent('AI_SHIFT', 'BOT_INQUIRY', val);
+
+      setTimeout(() => {
+        const isEn = window.i18n && window.i18n.getLang() === 'en'; addBubble(isEn ? `Received your inquiry regarding "${val}". Checking live client state via WebMCP tools to provide an immediate resolution.` : `「${val}」についてのお問い合わせを受け付けました。WebMCPツールを介して最新のクライアント状態と照合し、担当部門へエスカレーションまたは即時回答をご提示します。`, 'bot', 'GENERAL_SUPPORT');
+      }, 500);
+    }
+  </script>
+</body>
+</html>

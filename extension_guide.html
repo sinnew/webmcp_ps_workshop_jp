@@ -451,6 +451,7 @@
         <a href="workshop_guide.html" class="nav-pill" data-i18n="navGuide">2. Slide Deck &amp; Step-by-Step Guide</a>
         <a href="extension_guide.html" class="nav-pill active" data-i18n="navFieldGuide">3. Extension &amp; Built-in AI Field Guide</a>
         <a href="survey.html" class="nav-pill" data-i18n="navSurvey">4. Post-Workshop Survey</a>
+        <a href="demo-mockup/index.html" class="nav-pill" data-i18n="navDemo">5. Interactive Demo &amp; Red-Team Lab ↗</a>
       </nav>
 
       <div class="header-actions">
@@ -737,6 +738,63 @@ await document.modelContext.registerTool({
       </div>
     </section>
 
+
+    <!-- Section 4: Gotcha 7 - Avoiding Duplicate Confirmation Prompts (Pattern 1 vs Pattern 2) -->
+    <section class="card" id="gotcha-7">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-icon" style="background: var(--google-yellow-light); color: #b06000;">🛡️</div>
+          <div>
+            <h2 class="card-title" data-i18n="sec4Title">4. Architectural Gotcha: Avoiding Duplicate HITL Confirmation Prompts (Pattern 1 vs. Pattern 2)</h2>
+            <div style="font-size: 13px; color: var(--text-secondary);" data-i18n="sec4Desc">
+              When consequentialHint: true is set on high-stakes tools, both the Agent/Extension UI and your Website UI may prompt the user. Choose the right pattern for your architecture.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comparison-grid" style="margin-bottom: 16px;">
+        <div class="track-card" style="border-top: 4px solid var(--google-blue);">
+          <span class="track-badge" style="background: var(--google-blue-light); color: var(--google-blue);" data-i18n="sec4Pat1Badge">Pattern 1: Direct Mutation + Delegation Check</span>
+          <h3 style="font-size: 16px; margin-bottom: 6px;" data-i18n="sec4Pat1Title">consequentialHint: true + event.isTrusted Check</h3>
+          <p style="font-size: 13.5px; color: var(--text-secondary);" data-i18n-html="sec4Pat1Desc">
+            Best for single-step background mutations (e.g. toggling settings, revoking API tokens). Check <code>context?.userActivation?.isActive || event?.isTrusted</code> to skip the website's duplicate modal if the browser natively delegates the user's approval gesture.<br><br>
+            <strong>⚠️ MV3 Extension Limitation:</strong> Because MV3 content scripts relay tool calls across isolated worlds via <code>window.postMessage</code>, the browser strips <code>event.isTrusted</code>. Users will see duplicate prompts unless your extension suppresses its own prompt or you use Pattern 2.
+          </p>
+        </div>
+
+        <div class="track-card" style="border-top: 4px solid var(--google-green);">
+          <span class="track-badge" style="background: var(--google-green-light); color: var(--google-green);" data-i18n="sec4Pat2Badge">Pattern 2: Stage &amp; Handoff (Recommended for Checkout)</span>
+          <h3 style="font-size: 16px; margin-bottom: 6px;" data-i18n="sec4Pat2Title">consequentialHint: false on Staging Tool + Native UI</h3>
+          <p style="font-size: 13.5px; color: var(--text-secondary);" data-i18n-html="sec4Pat2Desc">
+            Recommended for e-commerce checkouts and financial transfers (used in Google's <code>ucp_shop</code> reference architecture). Expose a staging tool (e.g. <code>prepare_checkout</code>) with <code>consequentialHint: false</code> that fills the cart, selects shipping/payment, and opens your website's native confirmation <code>&lt;dialog&gt;</code> or Google Pay sheet.<br><br>
+            <strong>✅ Why Pattern 2 Wins:</strong> Guarantees <strong>exactly 1 physical click</strong> across both native browsers and MV3 extensions, displays full visual context (product thumbnails, tax, shipping address), and is 100% compatible with WebAuthn Passkeys, 3DS2, and PaymentRequest APIs.
+          </p>
+        </div>
+      </div>
+
+      <pre><code>// Pattern 2 Reference Implementation (Stage &amp; Handoff)
+await document.modelContext.registerTool({
+  name: 'prepare_instant_checkout',
+  description: 'Stages item in cart and opens the checkout review modal for final user confirmation.',
+  annotations: { readOnlyHint: false, consequentialHint: false }, // Agent executes without blocking prompt
+  inputSchema: {
+    type: 'object',
+    properties: { sku: { type: 'string' }, quantity: { type: 'number' } },
+    required: ['sku']
+  },
+  execute: async ({ sku, quantity = 1 }) =&gt; {
+    await CartStore.stageOrder({ sku, quantity });
+    const dialog = document.getElementById('checkout-confirm-dialog');
+    dialog.showModal(); // Website opens native &lt;dialog&gt; with Passkey / Google Pay button
+    return {
+      status: 'AWAITING_USER_CONFIRMATION_ON_PAGE',
+      workflowGuidance: 'Checkout modal opened on page. Ask the user to review the final total and click Pay.'
+    };
+  }
+});<button class="copy-btn" onclick="copyCode(this)">Copy</button></code></pre>
+    </section>
+
   </main>
 
   <footer>
@@ -752,6 +810,7 @@ await document.modelContext.registerTool({
         navGuide: "2. Slide Deck & Step-by-Step Guide",
         navFieldGuide: "3. Extension & Built-in AI Field Guide",
         navSurvey: "4. Post-Workshop Survey",
+        navDemo: "5. Interactive Demo & Red-Team Lab ↗",
         heroBadge: "Developer Field Guide • Manifest V3 & Built-in AI",
         heroTitle: "Chrome Extension & Built-in AI Field Guide",
         heroDesc: "Production reference for Manifest V3 permissions (Track A vs. Track B), the Chrome 155.0.8052.0+ executeTool() JavaScript object argument specification, on-device Gemini Nano (LanguageModel) streaming patterns, and WebMCP UI synchronization guardrails.",
@@ -801,7 +860,15 @@ await document.modelContext.registerTool({
         sec3BadDesc: `Calling <code>fetch('/api/cart/add')</code> inside <code>execute()</code> without updating the client state store leaves the user staring at an empty cart badge and stale page UI.`,
         sec3GoodBadge: "✅ Best Practice: View Transitions + State Sync",
         sec3GoodTitle: "Synchronized Client Actuation",
-        sec3GoodDesc: `Dispatch actions to your client store (Redux/Zustand/React state) wrapped in <code>document.startViewTransition()</code> and return an <strong>Enterprise Return Envelope</strong> (<code>{ status, activeState, workflowGuidance, items }</code>).`
+        sec3GoodDesc: `Dispatch actions to your client store (Redux/Zustand/React state) wrapped in <code>document.startViewTransition()</code> and return an <strong>Enterprise Return Envelope</strong> (<code>{ status, activeState, workflowGuidance, items }</code>).`,
+        sec4Title: "4. Architectural Gotcha: Avoiding Duplicate HITL Confirmation Prompts (Pattern 1 vs. Pattern 2)",
+        sec4Desc: "When consequentialHint: true is set on high-stakes tools, both the Agent/Extension UI and your Website UI may prompt the user. Choose the right pattern for your architecture.",
+        sec4Pat1Badge: "Pattern 1: Direct Mutation + Delegation Check",
+        sec4Pat1Title: "consequentialHint: true + event.isTrusted Check",
+        sec4Pat1Desc: `Best for single-step background mutations (e.g. toggling settings, revoking API tokens). Check <code>context?.userActivation?.isActive || event?.isTrusted</code> to skip the website's duplicate modal if the browser natively delegates the user's approval gesture.<br><br><strong>⚠️ MV3 Extension Limitation:</strong> Because MV3 content scripts relay tool calls across isolated worlds via <code>window.postMessage</code>, the browser strips <code>event.isTrusted</code>. Users will see duplicate prompts unless your extension suppresses its own prompt or you use Pattern 2.`,
+        sec4Pat2Badge: "Pattern 2: Stage & Handoff (Recommended for Checkout)",
+        sec4Pat2Title: "consequentialHint: false on Staging Tool + Native UI",
+        sec4Pat2Desc: `Recommended for e-commerce checkouts and financial transfers (used in Google's <code>ucp_shop</code> reference architecture). Expose a staging tool (e.g. <code>prepare_checkout</code>) with <code>consequentialHint: false</code> that fills the cart, selects shipping/payment, and opens your website's native confirmation <code>&lt;dialog&gt;</code> or Google Pay sheet.<br><br><strong>✅ Why Pattern 2 Wins:</strong> Guarantees <strong>exactly 1 physical click</strong> across both native browsers and MV3 extensions, displays full visual context (product thumbnails, tax, shipping address), and is 100% compatible with WebAuthn Passkeys, 3DS2, and PaymentRequest APIs.`
       },
       ja: {
         navHub: "1. 事前セットアップハブ",
@@ -857,7 +924,15 @@ await document.modelContext.registerTool({
         sec3BadDesc: `<code>execute()</code> 内で <code>fetch('/api/cart/add')</code> だけを呼び出しクライアントの状態ストアを更新しないと、カートバッジが空のままになりユーザーが混乱します。`,
         sec3GoodBadge: "✅ ベストプラクティス：View Transitions + 状態ストア同期",
         sec3GoodTitle: "UIと完全に同期したクライアント実行",
-        sec3GoodDesc: `クライアント状態ストア（Redux/Zustand/React state）の更新を <code>document.startViewTransition()</code> でラップして画面を即時更新し、構造化された <strong>Enterprise Return Envelope</strong>（<code>{ status, activeState, workflowGuidance, items }</code>）を返します。`
+        sec3GoodDesc: `クライアント状態ストア（Redux/Zustand/React state）の更新を <code>document.startViewTransition()</code> でラップして画面を即時更新し、構造化された <strong>Enterprise Return Envelope</strong>（<code>{ status, activeState, workflowGuidance, items }</code>）を返します。`,
+        sec4Title: "4. 重要設計ポイント：二重確認ダイアログ（Double Confirmation）の回避（パターン1 vs パターン2）",
+        sec4Desc: "consequentialHint: true を指定した決済・送金ツールでは、エージェント側とWebサイト側の双方で確認ダイアログが表示される場合があります。用途に応じて最適な設計パターンを選択してください。",
+        sec4Pat1Badge: "パターン1：直接実行 + ユーザー操作委譲チェック",
+        sec4Pat1Title: "consequentialHint: true + event.isTrusted 検証",
+        sec4Pat1Desc: `単発のバックグラウンド設定変更（設定トグルやAPIトークン失効など）に適しています。<code>context?.userActivation?.isActive || event?.isTrusted</code> を判定し、ブラウザからユーザー承認ジェスチャーが委譲されている場合はサイト側の確認モーダルをスキップします。<br><br><strong>⚠️ MV3 拡張機能での注意点：</strong> Content Script（Isolated World）から <code>window.postMessage</code> 経由で通信すると <code>event.isTrusted</code> が失われるため、拡張機能側で確認ダイアログを抑制しない限り二重確認が発生します。`,
+        sec4Pat2Badge: "パターン2：ステージング＆ハンドオフ（EC決済・送金で推奨）",
+        sec4Pat2Title: "consequentialHint: false の準備ツール + サイト純正UIでの最終承認",
+        sec4Pat2Desc: `EC決済やポイント送金で最も推奨されるアーキテクチャ（Google <code>ucp_shop</code> リファレンス実装で採用）。<code>consequentialHint: false</code> を設定した準備ツール（例：<code>prepare_checkout</code>）でカート投入・配送先選択・確認用 <code>&lt;dialog&gt;</code> の表示までを自動化し、最後の「注文を確定する」ボタンのみユーザー自身に1回クリックしてもらいます。<br><br><strong>✅ パターン2が推奨される理由：</strong> ブラウザネイティブ環境でも MV3 拡張機能でも<strong>常にクリック1回のみ</strong>で完結し、商品画像・税額・配送先などの視覚的コンテキストを正確に提示でき、さらに Passkey（WebAuthn）・3Dセキュア2.0・Google Pay などの決済APIと100%互換性を保てます。`
       }
     };
 
