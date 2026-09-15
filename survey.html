@@ -577,51 +577,133 @@
       </div>
 
       <form id="interactive-survey-form" onsubmit="event.preventDefault(); handleSurveySubmit();">
-        <div class="form-section-title" data-i18n="sec1Title">Part 1: Workshop Satisfaction &amp; Chrome 155+ WebMCP API Clarity</div>
+        <div class="form-section-title" data-i18n="sec1Title">Questions 1–9: WebMCP Workshop Feedback &amp; Next Steps (Low ➔ Big Order)</div>
 
+        <!-- Question 1: Session Pace & Balance -->
         <div class="form-group">
-          <label class="form-label" data-i18n="qCompanyLabel">Company / Organization Name (Optional)</label>
-          <input type="text" id="q-company" name="company" class="input-text" placeholder="e.g., Rakuten, Mercari, note, pixiv, CyberAgent, LINE Yahoo" />
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" data-i18n="qCsatLabel">1. Overall Workshop Satisfaction (1 = Dissatisfied, 5 = Very Satisfied)</label>
-          <input type="hidden" id="q-csat" name="csat" value="5" />
-          <div class="scale-row" id="csat-scale">
-            <div class="scale-pill" data-val="1" onclick="selectScale('csat', 1)">1 • Low</div>
-            <div class="scale-pill" data-val="2" onclick="selectScale('csat', 2)">2 • Fair</div>
-            <div class="scale-pill" data-val="3" onclick="selectScale('csat', 3)">3 • Good</div>
-            <div class="scale-pill" data-val="4" onclick="selectScale('csat', 4)">4 • Great</div>
-            <div class="scale-pill selected" data-val="5" onclick="selectScale('csat', 5)">5 • Excellent ⭐</div>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" data-i18n="qTrackLabel">2. Which Hands-On Track Did You Explore?</label>
-          <select id="q-track" name="track" class="input-select">
-            <option value="Track A: Zero-Permission WebMCP Tool Injector">Track A: Zero-Permission WebMCP Tool Injector (world: "MAIN")</option>
-            <option value="Track B: Local Gemini Nano Side Panel AI Agent">Track B: Local Gemini Nano Side Panel AI Agent</option>
-            <option value="Both Track A and Track B" selected>Both Track A &amp; Track B / 両方のトラック</option>
+          <label class="form-label" data-i18n="q1Label">1. Session Pace &amp; Balance / 進行スピードと理論・ハンズオンのバランス *</label>
+          <select id="q-pace" name="pace" class="input-select">
+            <option value="Well balanced / ちょうど良いバランスだった" selected>Well balanced / ちょうど良いバランスだった</option>
+            <option value="Wanted more hands-on coding time / ハンズオンの時間をより多くしてほしい">Wanted more hands-on coding time / ハンズオンの時間をより多くしてほしい</option>
+            <option value="Wanted deeper architectural/API theory / アーキテクチャやAPI仕様の解説をより深く聞きたい">Wanted deeper architectural/API theory / アーキテクチャやAPI仕様の解説をより深く聞きたい</option>
+            <option value="Pace was a bit too fast / 進行が少し速すぎた">Pace was a bit too fast / 進行が少し速すぎた</option>
           </select>
         </div>
 
+        <!-- Question 2: Hands-On Track Explored (Removed 'Both Track A and Track B') -->
         <div class="form-group">
-          <label class="form-label" data-i18n="qOtLabel">3. Chrome 154–156 Origin Trial Consultation &amp; Case Study Interest</label>
-          <div class="checkbox-grid">
+          <label class="form-label" data-i18n="q2Label">2. Hands-On Track Explored / 取り組んだハンズオントラック *</label>
+          <select id="q-track" name="track" class="input-select">
+            <option value="Track A: Zero-Permission WebMCP Tool Injector (world: MAIN)" selected>Track A: Zero-Permission WebMCP Tool Injector (world: MAIN)</option>
+            <option value="Track B: Local Gemini Nano Side Panel AI Agent">Track B: Local Gemini Nano Side Panel AI Agent</option>
+            <option value="Followed along with the live walkthrough / 講師のデモを中心に確認した">Followed along with the live walkthrough / 講師のデモを中心に確認した</option>
+          </select>
+        </div>
+
+        <!-- Question 3: Most Valuable Workshop Modules (External-Safe Naming + Other Free Input) -->
+        <div class="form-group">
+          <label class="form-label" data-i18n="q3Label">3. Most Valuable Workshop Modules / 特に有益だったモジュール（複数選択可） *</label>
+          <div class="checkbox-grid" style="grid-template-columns: 1fr;">
             <label class="check-card">
-              <input type="checkbox" name="interests" value="Chrome 154-156 Origin Trial 1-on-1 Consultation" checked />
-              <span>Request 1-on-1 Google WEC Consultation for Chrome 154–156 Origin Trial</span>
+              <input type="checkbox" name="modules" value="Google Store (gStore) Device Repair Case Study (-56.2% tokens, ~30% faster CUJ)" checked />
+              <span>Google Store (gStore) Device Repair Case Study (-56.2% tokens, ~30% faster CUJ) / Google Store 修理フロー導入事例</span>
             </label>
             <label class="check-card">
-              <input type="checkbox" name="interests" value="developers.google.com Official Case Study" checked />
-              <span>Interested in co-authoring an official <code>developers.google.com</code> Case Study</span>
+              <input type="checkbox" name="modules" value="1-Click Copy & Paste AI Prompts Cheat Sheet (Prompts 1-4)" checked />
+              <span>1-Click Copy &amp; Paste AI Prompts Cheat Sheet (Prompts 1–4) / 1クリック AI プロンプトシート</span>
+            </label>
+            <label class="check-card">
+              <input type="checkbox" name="modules" value="Live Adversarial Red-Teaming & 3 Safety Tiers (HITL, Prompt Injection)" checked />
+              <span>Live Adversarial Red-Teaming &amp; 3 Safety Tiers (HITL, Prompt Injection) / レッドチーミング・3つの安全境界</span>
+            </label>
+            <label class="check-card">
+              <input type="checkbox" name="modules" value="Google 5-Point Agent Trajectory Rubric & Automated CI/CD Evals" checked />
+              <span>Google 5-Point Agent Trajectory Rubric &amp; Automated CI/CD Evals / エージェント軌跡5段階評価ルーブリックとCI/CD自動評価</span>
+            </label>
+            <label class="check-card">
+              <input type="checkbox" name="modules" value="Chrome 154-156 Origin Trial & Production Guardrails (SPA Router fix, Return Envelope)" />
+              <span>Chrome 154–156 Origin Trial &amp; Production Guardrails (SPA Router fix, Return Envelope) / Chrome 154-156 Origin Trial・本番ガードレール</span>
+            </label>
+            <label class="check-card">
+              <input type="checkbox" name="modules" value="Native Chrome DevTools WebMCP Panel & Inspector Extension" />
+              <span>Native Chrome DevTools WebMCP Panel &amp; Inspector Extension / Chrome DevTools WebMCP パネル・拡張機能</span>
+            </label>
+            <label class="check-card" style="flex-wrap: wrap;">
+              <input type="checkbox" id="q-modules-other-check" name="modules_other_checked" value="Other" onchange="document.getElementById('q-modules-other-input').style.display = this.checked ? 'block' : 'none';" />
+              <span>Other (Please specify) / その他（自由記述）</span>
+              <input type="text" id="q-modules-other-input" name="modules_other_text" class="input-text" style="display:none; width:100%; margin-top:8px;" placeholder="Please specify other valuable topic / その他の有益だったトピックをご記入ください..." />
             </label>
           </div>
         </div>
 
+        <!-- Question 4: Production Adoption Timeline -->
         <div class="form-group">
-          <label class="form-label" data-i18n="qFeedbackLabel">4. Direct Feedback for Chrome WebMCP Engineering Team</label>
-          <textarea id="q-feedback" name="feedback" class="input-textarea" placeholder="Share any feedback on Chrome 155.0.8052.0+ executeTool(name, argsObject), SPA router integration, or outputSchema typing..."></textarea>
+          <label class="form-label" data-i18n="q4Label">4. Production Adoption Timeline / WebMCP 導入・PoC検証のタイムライン *</label>
+          <select id="q-timeline" name="timeline" class="input-select">
+            <option value="Immediate PoC (within 1-3 months) / 直近1〜3ヶ月以内にPoC・プロトタイプを実施したい" selected>Immediate PoC (within 1–3 months) / 直近1〜3ヶ月以内にPoC・プロトタイプを実施したい</option>
+            <option value="H2 2026 (within 3-6 months) / 2026年後半（3〜6ヶ月以内）に検討したい">H2 2026 (within 3–6 months) / 2026年後半（3〜6ヶ月以内）に検討したい</option>
+            <option value="2027 or later / 2027年以降に検討したい">2027 or later / 2027年以降に検討したい</option>
+            <option value="Research & evaluation stage only / 現時点では情報収集・技術調査のみ">Research &amp; evaluation stage only / 現時点では情報収集・技術調査のみ</option>
+          </select>
+        </div>
+
+        <!-- Question 5: Target Critical User Journeys (CUJs) -->
+        <div class="form-group">
+          <label class="form-label" data-i18n="q5Label">5. Target Critical User Journeys (CUJs) / WebMCP 適用を検討したいユースケース（複数選択可）</label>
+          <div class="checkbox-grid" style="grid-template-columns: 1fr;">
+            <label class="check-card">
+              <input type="checkbox" name="cujs" value="Multi-constraint search & faceted filtering (>= 5 clicks)" checked />
+              <span>Multi-constraint search &amp; faceted filtering (&ge; 5 clicks) / 複数条件の検索・絞り込み</span>
+            </label>
+            <label class="check-card">
+              <input type="checkbox" name="cujs" value="Customer support, self-service troubleshooting & repair flows" checked />
+              <span>Customer support, self-service troubleshooting &amp; repair flows / カスタマーサポート・自己解決・修理受付フロー</span>
+            </label>
+            <label class="check-card">
+              <input type="checkbox" name="cujs" value="E-Commerce cart management, booking & checkout" />
+              <span>E-Commerce cart management, booking &amp; checkout / ECカート操作・予約・チェックアウト</span>
+            </label>
+            <label class="check-card">
+              <input type="checkbox" name="cujs" value="Creator authoring, publishing & media editing workflows" />
+              <span>Creator authoring, publishing &amp; media editing workflows / クリエイター向け投稿・編集・制作支援ツール</span>
+            </label>
+            <label class="check-card">
+              <input type="checkbox" name="cujs" value="Internal enterprise dashboards & operations" />
+              <span>Internal enterprise dashboards &amp; operations / 社内業務ツール・管理画面の自動化</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Question 6: Chrome 154–156 Origin Trial Support -->
+        <div class="form-group">
+          <label class="form-label" data-i18n="q6Label">6. Chrome 154–156 Origin Trial Support / Chrome 154–156 Origin Trial 1-on-1 技術相談の希望 *</label>
+          <select id="q-ot" name="ot_support" class="input-select">
+            <option value="Yes, please reach out for a 1-on-1 Origin Trial consultation / はい、1on1技術相談・Origin Trial支援を希望します" selected>Yes, please reach out for a 1-on-1 Origin Trial consultation / はい、1on1技術相談・Origin Trial支援を希望します</option>
+            <option value="Interested, please send Origin Trial updates & documentation / 関心があるため、最新情報や資料を送ってほしい">Interested, please send Origin Trial updates &amp; documentation / 関心があるため、最新情報や資料を送ってほしい</option>
+            <option value="Not needed at this time / 現時点では不要">Not needed at this time / 現時点では不要</option>
+          </select>
+        </div>
+
+        <!-- Question 7: Official Case Study Program -->
+        <div class="form-group">
+          <label class="form-label" data-i18n="q7Label">7. Official Case Study Program (developers.google.com) / 公式導入事例（共同執筆）への関心 *</label>
+          <select id="q-casestudy" name="case_study" class="input-select">
+            <option value="Yes, very interested in co-authoring a case study / はい、ぜひ共同執筆・事例掲載を検討したい" selected>Yes, very interested in co-authoring a case study / はい、ぜひ共同執筆・事例掲載を検討したい</option>
+            <option value="Interested after completing our initial PoC / PoC・検証が完了した段階で前向きに検討したい">Interested after completing our initial PoC / PoC・検証が完了した段階で前向きに検討したい</option>
+            <option value="Not at this time / 現時点では予定なし">Not at this time / 現時点では予定なし</option>
+          </select>
+        </div>
+
+        <!-- Question 8: Company Name, Team & Contact Email -->
+        <div class="form-group">
+          <label class="form-label" data-i18n="q8Label">8. Company Name, Team &amp; Contact Email (Optional) / 貴社名・部署名・ご連絡先メールアドレス（任意）</label>
+          <input type="text" id="q-company" name="company" class="input-text" placeholder="e.g., Rakuten, Mercari, note, pixiv, CyberAgent, LINE Yahoo / your.email@company.co.jp" />
+        </div>
+
+        <!-- Question 9: Direct Feedback for Chrome WebMCP Engineering Team -->
+        <div class="form-group">
+          <label class="form-label" data-i18n="q9Label">9. Direct Feedback for Chrome WebMCP Engineering Team / Chrome WebMCP エンジニアリングチームへのご要望・フィードバック</label>
+          <textarea id="q-feedback" name="feedback" class="input-textarea" placeholder="Share any API requests, pain points (e.g., SPA router lifecycle, outputSchema typing, human-in-the-loop permissions), or workshop feedback..."></textarea>
         </div>
 
         <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
@@ -670,12 +752,16 @@
         card1Title: "1. Official Google Form (Direct In-Page Submission)",
         card1Sub: "Responses are recorded directly in Google Forms & Google Sheets. You can also open it in a full browser tab.",
         card2Title: "2. Interactive WebMCP Survey Tool (submit_workshop_feedback)",
-        sec1Title: "Part 1: Workshop Satisfaction & Chrome 155+ WebMCP API Clarity",
-        qCompanyLabel: "Company / Organization Name (Optional)",
-        qCsatLabel: "1. Overall Workshop Satisfaction (1 = Dissatisfied, 5 = Very Satisfied)",
-        qTrackLabel: "2. Which Hands-On Track Did You Explore?",
-        qOtLabel: "3. Chrome 154–156 Origin Trial Consultation & Case Study Interest",
-        qFeedbackLabel: "4. Direct Feedback for Chrome WebMCP Engineering Team",
+        sec1Title: "Questions 1–9: WebMCP Workshop Feedback & Next Steps (Low ➔ Big Order)",
+        q1Label: "1. Session Pace & Balance / 進行スピードと理論・ハンズオンのバランス *",
+        q2Label: "2. Hands-On Track Explored / 取り組んだハンズオントラック *",
+        q3Label: "3. Most Valuable Workshop Modules / 特に有益だったモジュール（複数選択可） *",
+        q4Label: "4. Production Adoption Timeline / WebMCP 導入・PoC検証のタイムライン *",
+        q5Label: "5. Target Critical User Journeys (CUJs) / WebMCP 適用を検討したいユースケース（複数選択可）",
+        q6Label: "6. Chrome 154–156 Origin Trial Support / Chrome 154–156 Origin Trial 1-on-1 技術相談の希望 *",
+        q7Label: "7. Official Case Study Program (developers.google.com) / 公式導入事例（共同執筆）への関心 *",
+        q8Label: "8. Company Name, Team & Contact Email (Optional) / 貴社名・部署名・ご連絡先メールアドレス（任意）",
+        q9Label: "9. Direct Feedback for Chrome WebMCP Engineering Team / Chrome WebMCP エンジニアリングチームへのご要望・フィードバック",
         btnGenerateSummary: "Generate & Copy Feedback Summary (JSON + Markdown)"
       },
       ja: {
@@ -694,12 +780,16 @@
         card1Title: "1. 公式 Google フォーム（ページ内から直接送信可能）",
         card1Sub: "ご回答内容は Google フォームおよびスプレッドシートへ直接記録されます。別タブで全画面表示も可能です。",
         card2Title: "2. WebMCP エージェント対応アンケートツール (submit_workshop_feedback)",
-        sec1Title: "パート1：ワークショップ満足度 & Chrome 155+ WebMCP API 理解度",
-        qCompanyLabel: "貴社名・ご所属チーム名（任意）",
-        qCsatLabel: "1. ワークショップ全体の満足度（1 = 不満、5 = 非常に満足）",
-        qTrackLabel: "2. 取り組んだハンズオントラック",
-        qOtLabel: "3. Chrome 154–156 Origin Trial 1on1相談 & 公式導入事例への関心",
-        qFeedbackLabel: "4. Chrome WebMCP エンジニアリングチームへのご要望・フィードバック",
+        sec1Title: "設問 1〜9：WebMCP ワークショップ事後アンケート & ネクストステップ（番号昇順）",
+        q1Label: "1. 進行スピードと理論・ハンズオンのバランス / Session Pace & Balance *",
+        q2Label: "2. 取り組んだハンズオントラック / Hands-On Track Explored *",
+        q3Label: "3. 特に有益だったモジュール（複数選択可） / Most Valuable Workshop Modules *",
+        q4Label: "4. WebMCP 導入・PoC検証のタイムライン / Production Adoption Timeline *",
+        q5Label: "5. WebMCP 適用を検討したいユースケース（複数選択可） / Target Critical User Journeys (CUJs)",
+        q6Label: "6. Chrome 154–156 Origin Trial 1-on-1 技術相談の希望 / Chrome 154–156 Origin Trial Support *",
+        q7Label: "7. 公式導入事例（共同執筆）への関心 / Official Case Study Program (developers.google.com) *",
+        q8Label: "8. 貴社名・部署名・ご連絡先メールアドレス（任意） / Company Name, Team & Contact Email (Optional)",
+        q9Label: "9. Chrome WebMCP エンジニアリングチームへのご要望・フィードバック / Direct Feedback",
         btnGenerateSummary: "フィードバック要約を生成＆コピー (JSON + Markdown)"
       }
     };
@@ -719,26 +809,27 @@
       setLanguage(current === 'ja' ? 'en' : 'ja');
     }
 
-    function selectScale(field, val) {
-      document.getElementById(`q-${field}`).value = String(val);
-      const container = document.getElementById(`${field}-scale`);
-      container.querySelectorAll('.scale-pill').forEach(pill => {
-        pill.classList.toggle('selected', Number(pill.getAttribute('data-val')) === val);
-      });
-    }
-
     function collectSurveyPayload(customArgs) {
       const form = document.getElementById('interactive-survey-form');
       const fd = new FormData(form);
+      const selectedModules = customArgs?.modules || fd.getAll('modules');
+      const otherText = customArgs?.modules_other_text || fd.get('modules_other_text');
+      if (otherText && otherText.trim()) {
+        selectedModules.push(`Other: ${otherText.trim()}`);
+      }
       return {
         status: 'OK',
         specVersion: 'Chrome 155.0.8052.0+ (PRs #246 & #251 JS Object Input)',
         timestamp: new Date().toISOString(),
-        company: customArgs?.company || fd.get('company') || 'Partner Summit Attendee',
-        csat: Number(customArgs?.csat || fd.get('csat') || 5),
-        track: customArgs?.track || fd.get('track'),
-        interests: customArgs?.interests || fd.getAll('interests'),
-        feedback: customArgs?.feedback || fd.get('feedback') || 'N/A',
+        q1_pace: customArgs?.pace || fd.get('pace'),
+        q2_track: customArgs?.track || fd.get('track'),
+        q3_valuable_modules: selectedModules,
+        q4_adoption_timeline: customArgs?.timeline || fd.get('timeline'),
+        q5_target_cujs: customArgs?.cujs || fd.getAll('cujs'),
+        q6_origin_trial_support: customArgs?.ot_support || fd.get('ot_support'),
+        q7_case_study_interest: customArgs?.case_study || fd.get('case_study'),
+        q8_company_contact: customArgs?.company || fd.get('company') || 'Partner Summit Attendee',
+        q9_direct_feedback: customArgs?.feedback || fd.get('feedback') || 'N/A',
         officialGoogleFormUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSe3S_Ys-9ddXlh3q67ZQMsNNaIxsJbGekNogwPH5VlMXhgTfQ/viewform'
       };
     }
@@ -757,8 +848,7 @@
 
     function testAgentAutoFill() {
       document.getElementById('q-company').value = 'Enterprise Partner Engineering (WebMCP Agent Demo)';
-      selectScale('csat', 5);
-      document.getElementById('q-feedback').value = 'Executed via Chrome 155.0.8052.0+ executeTool("submit_workshop_feedback", { company, csat: 5 }) with native JavaScript object arguments (PRs #246 & #251)!';
+      document.getElementById('q-feedback').value = 'Executed via Chrome 155.0.8052.0+ executeTool("submit_workshop_feedback", { q1_pace, q2_track, ... }) with native JavaScript object arguments (PRs #246 & #251)!';
       handleSurveySubmit();
     }
 
@@ -773,10 +863,16 @@
           inputSchema: {
             type: 'object',
             properties: {
-              company: { type: 'string', description: 'Partner company name' },
-              csat: { type: 'integer', minimum: 1, maximum: 5, description: 'Overall satisfaction score 1-5' },
-              track: { type: 'string', description: 'Hands-on track explored' },
-              feedback: { type: 'string', description: 'Direct engineering feedback' }
+              pace: { type: 'string', description: 'Q1: Session pace and balance' },
+              track: { type: 'string', description: 'Q2: Hands-on track explored' },
+              modules: { type: 'array', items: { type: 'string' }, description: 'Q3: Most valuable workshop modules' },
+              modules_other_text: { type: 'string', description: 'Q3: Free text input for Other valuable module' },
+              timeline: { type: 'string', description: 'Q4: Production adoption timeline' },
+              cujs: { type: 'array', items: { type: 'string' }, description: 'Q5: Target Critical User Journeys' },
+              ot_support: { type: 'string', description: 'Q6: Chrome 154-156 Origin Trial support interest' },
+              case_study: { type: 'string', description: 'Q7: Official Case Study co-authoring interest' },
+              company: { type: 'string', description: 'Q8: Partner company name and contact email' },
+              feedback: { type: 'string', description: 'Q9: Direct engineering feedback for Chrome WebMCP team' }
             }
           },
           execute: async (args) => {
