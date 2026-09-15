@@ -882,7 +882,7 @@
       </p>
       <div class="form-group">
         <label class="form-label" for="custom-google-form-url">Live Google Form URL</label>
-        <input type="url" id="custom-google-form-url" class="input-text" value="https://docs.google.com/forms/" />
+        <input type="url" id="custom-google-form-url" class="input-text" value="https://docs.google.com/forms/d/e/1FAIpQLSe3S_Ys-9ddXlh3q67ZQMsNNaIxsJbGekNogwPH5VlMXhgTfQ/viewform" />
       </div>
       <div style="display: flex; gap: 10px; justify-content: flex-end;">
         <button type="button" class="btn-secondary" onclick="closeGoogleFormModal()">Cancel</button>
@@ -1136,7 +1136,7 @@ ${JSON.stringify(payload, null, 2)}
     }
 
     function openOfficialGoogleForm() {
-      document.getElementById('google-form-modal').style.display = 'flex';
+      window.open('https://docs.google.com/forms/d/e/1FAIpQLSe3S_Ys-9ddXlh3q67ZQMsNNaIxsJbGekNogwPH5VlMXhgTfQ/viewform', '_blank', 'noopener,noreferrer');
     }
 
     function closeGoogleFormModal() {
