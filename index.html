@@ -652,6 +652,7 @@
         <a href="workshop_guide.html" class="nav-pill" data-i18n="navGuide">2. Step-by-Step Workshop Guide</a>
         <a href="extension_guide.html" class="nav-pill" data-i18n="navFieldGuide">3. Extension &amp; Built-in AI Field Guide</a>
         <a href="partner_resources.html" class="nav-pill" data-i18n="navResources">4. Partner Links &amp; Feedback Hub</a>
+        <a href="survey.html" class="nav-pill" data-i18n="navSurvey">5. Post-Workshop Survey</a>
       </nav>
 
       <div class="header-actions">
@@ -1262,10 +1263,11 @@ npx -y modern-web-guidance@latest retrieve "popover-api-dialog"</pre>
     // ==========================================================================
     const i18nData = {
       en: {
-        navHub: "1. Pre-Workshop Setup Hub",
-        navGuide: "2. Step-by-Step Workshop Guide",
-        navFieldGuide: "3. Extension & Built-in AI Field Guide",
-        navResources: "4. Partner Links & Feedback Hub",
+        navHub: '1. Pre-Workshop Setup Hub',
+        navGuide: '2. Step-by-Step Workshop Guide',
+        navFieldGuide: '3. Extension & Built-in AI Field Guide',
+        navResources: '4. Partner Links & Feedback Hub',
+        navSurvey: '5. Post-Workshop Survey',
         heroTitle: "Built-in AI & WebMCP Participant Setup Hub",
         heroSubtitle: "Welcome! This self-contained setup page provides 100% public download links, flag checklists, agent installation guides, and live on-device browser diagnostics to ensure your laptop is ready for today's session.",
         checkingStatus: "Checking Browser Environment...",
@@ -1298,6 +1300,7 @@ npx -y modern-web-guidance@latest retrieve "popover-api-dialog"</pre>
         mwgConfirmTitle: "✅ How to Confirm Your Installation",
         mwgConfirmList: `<li><strong>1. Quick Terminal Check (Ground Truth):</strong> Run <code style="background:var(--bg-main); padding:2px 6px; border-radius:4px;">npx modern-web-guidance@latest search "animate a dialog"</code>. If working, it immediately returns matching JSON guide metadata (e.g. <code>animate-to-from-top-layer</code>).</li><li><strong>2. In-Agent Test Prompt:</strong> In Cursor Composer, Claude Code, or Copilot, ask: <br><em style="color:var(--text-main); font-style:italic;">"Using Modern Web Guidance, how should I animate a modal dialog entering the top layer?"</em><br>A properly configured agent will query MWG and suggest native modern APIs (<code>&lt;dialog closedby&gt;</code>, <code>@starting-style</code>, <code>transition-behavior: allow-discrete</code>) rather than legacy JavaScript polyfills.</li><li><strong>3. Agent Activation Tip:</strong> If your agent does not trigger guidance automatically, simply append <code>"use modern-web-guidance"</code> to the end of your prompt, or use slash command syntax if supported (e.g. <code>/modern-web-guidance</code>).</li>`,
         mwgDocsLink: "Read Modern Web Guidance Documentation on developer.chrome.com ↗",
+        mwgHeading: "⚡ Modern Web Guidance (MWG) Installation Hub",
         mcpHeading: "🛠️ Chrome DevTools MCP Server Setup",
         mcpDesc: "Connects your external AI coding assistant directly into Chrome Canary via Chrome DevTools Protocol (CDP) for live inspection, screenshot captures, console logs, and DOM validation.",
         inspectorBannerTitle: "Official WebMCP Model Context Tool Inspector Extension",
@@ -1322,6 +1325,7 @@ npx -y modern-web-guidance@latest retrieve "popover-api-dialog"</pre>
         navGuide: "2. ステップ別実践ガイド",
         navFieldGuide: "3. 拡張機能・Built-in AI 実装ガイド",
         navResources: "4. パートナーリンク＆フィードバックHub",
+        navSurvey: "5. 事後アンケート",
         heroTitle: "Built-in AI & WebMCP ワークショップ参加者用環境設定ハブ",
         heroSubtitle: "ご参加ありがとうございます！本ページでは、当日のハンズオンを円滑に行うための公開ダウンロードリンク、Chrome フラグ設定チェックリスト、AI エージェント別設定ガイド、およびお使いのブラウザの動作環境をリアルタイムに自動判定する診断ツールを提供します。",
         checkingStatus: "ブラウザ環境を確認中...",

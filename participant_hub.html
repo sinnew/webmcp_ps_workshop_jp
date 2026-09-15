@@ -18,50 +18,34 @@
       --google-yellow-light: #fef7e0;
       --google-red: #d93025;
       --google-red-light: #fce8e6;
-      --google-purple: #9334e6;
+      --google-purple: #7627bb;
       --google-purple-light: #f3e8fd;
       
-      --bg-page: #f8f9fa;
+      --bg-page: #f8fafc;
       --bg-surface: #ffffff;
-      --bg-subtle: #f1f3f4;
-      --text-main: #202124;
-      --text-secondary: #5f6368;
-      --text-muted: #80868b;
-      --border: #dadce0;
-      --border-light: #e8eaed;
-      --code-bg: #202124;
-      --code-text: #e8eaed;
+      --bg-card: #ffffff;
+      --bg-subtle: #f1f5f9;
+      --text-main: #0f172a;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --border-light: #e2e8f0;
+      --code-bg: #0f172a;
+      --code-text: #f8fafc;
       --radius-sm: 8px;
       --radius-md: 12px;
       --radius-lg: 16px;
       --radius-full: 9999px;
-      --shadow-sm: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
-      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.06);
-      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.05);
-    }
-
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg-page: #121212;
-        --bg-surface: #1e1e1e;
-        --bg-subtle: #2d2d2d;
-        --text-main: #e8eaed;
-        --text-secondary: #bdc1c6;
-        --text-muted: #9aa0a6;
-        --border: #3c4043;
-        --border-light: #2d2d2d;
-        --google-blue-light: rgba(26, 115, 232, 0.15);
-        --google-green-light: rgba(30, 142, 62, 0.15);
-        --google-yellow-light: rgba(249, 171, 0, 0.15);
-        --google-red-light: rgba(217, 48, 37, 0.15);
-        --google-purple-light: rgba(147, 52, 230, 0.15);
-      }
+      --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+      --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.07);
+      --shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.1);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'Roboto', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: 'Inter', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
       background-color: var(--bg-page);
       color: var(--text-main);
       line-height: 1.6;
@@ -69,7 +53,7 @@
     }
 
     h1, h2, h3, h4, .font-display {
-      font-family: 'Google Sans', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: 'Google Sans', 'Inter', 'Noto Sans JP', sans-serif;
     }
 
     code, pre, .font-code {
@@ -77,25 +61,19 @@
     }
 
     .container {
-      max-width: 1040px;
-      margin: 0 auto;
+      max-width: 1120px;
+      margin: 28px auto;
       padding: 0 20px;
     }
 
-    /* Header & Navigation */
-    header {
-      background: var(--bg-surface);
-      border-bottom: 1px solid var(--border);
-      padding: 28px 0 24px;
-      margin-bottom: 32px;
+    /* Unified Hero Card */
+    .hero-card {
+      background: linear-gradient(135deg, #ffffff 0%, #f0f6ff 60%, #e8f0fe 100%);
+      border: 1px solid #d2e3fc;
+      border-radius: var(--radius-lg);
+      padding: 32px 28px;
       box-shadow: var(--shadow-sm);
-    }
-
-    .header-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
+      margin-bottom: 24px;
     }
 
     .hero-badge {
@@ -106,49 +84,29 @@
       border-radius: var(--radius-full);
       background: var(--google-blue-light);
       color: var(--google-blue);
-      font-size: 13px;
-      font-weight: 500;
-    }
-
-    .lang-switcher {
-      display: flex;
-      background: var(--bg-subtle);
-      border-radius: var(--radius-full);
-      padding: 2px;
-      border: 1px solid var(--border-light);
-    }
-
-    .lang-btn {
-      padding: 4px 12px;
-      border-radius: var(--radius-full);
-      border: none;
-      background: transparent;
+      border: 1px solid rgba(26, 115, 232, 0.25);
       font-size: 12px;
-      font-weight: 600;
-      color: var(--text-secondary);
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-
-    .lang-btn.active {
-      background: var(--bg-surface);
-      color: var(--google-blue);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      margin-bottom: 12px;
     }
 
     .hero-title {
-      font-size: 30px;
+      font-size: 28px;
       font-weight: 700;
       color: var(--text-main);
       margin-bottom: 8px;
-      letter-spacing: -0.5px;
+      line-height: 1.25;
+      letter-spacing: -0.3px;
     }
 
     .hero-subtitle {
       font-size: 15px;
       color: var(--text-secondary);
-      max-width: 820px;
+      max-width: 860px;
       margin-bottom: 20px;
+      line-height: 1.6;
     }
 
     /* Overall Status Banner */
@@ -590,40 +548,133 @@
       background: var(--google-green-light);
       border-left: 4px solid var(--google-green);
     }
+
+    /* Unified Sticky Top Navigation Bar (Identical Across All 4 Pages) */
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .nav-container {
+      max-width: 1120px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text-primary);
+      font-weight: 700;
+      font-size: 16px;
+      font-family: 'Google Sans', sans-serif;
+    }
+
+    .nav-pills {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: var(--bg-subtle);
+      padding: 4px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+
+    .nav-pill {
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      padding: 6px 14px;
+      border-radius: 999px;
+      transition: all 0.15s ease;
+    }
+
+    .nav-pill:hover {
+      color: var(--text-primary);
+    }
+
+    .nav-pill.active {
+      background: var(--google-blue);
+      color: #ffffff;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .lang-toggle {
+      background: var(--bg-card);
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .lang-toggle:hover {
+      border-color: var(--google-blue);
+      color: var(--google-blue);
+    }
   </style>
 </head>
 <body>
 
-  <!-- Top Hero Header -->
-  <header>
-    <div class="container">
-      <div class="header-top">
-      <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
-        <span class="hero-badge">
-          <span>📅</span> <span>Partner Summit 2026</span>
-        </span>
-        <a href="workshop_guide.html" style="text-decoration:none; font-size:13px; font-weight:700; color:#ffffff; background:var(--google-blue); padding:5px 14px; border-radius:var(--radius-full); display:inline-flex; align-items:center; gap:6px; box-shadow:0 2px 5px rgba(26,115,232,0.25); transition:all 0.2s;">
-          <span>📑</span> <span>2. Step-by-Step Workshop Guide ↗</span>
-        </a>
-        <a href="extension_guide.html" style="text-decoration:none; font-size:13px; font-weight:600; color:var(--google-purple); background:var(--google-purple-light); padding:5px 14px; border-radius:var(--radius-full); display:inline-flex; align-items:center; gap:6px; transition:all 0.2s;">
-          <span>🛠️</span> <span data-i18n="navFieldGuide">3. Extension &amp; AI Field Guide ↗</span>
-        </a>
-        <a href="survey.html" style="text-decoration:none; font-size:13px; font-weight:700; color:var(--google-green); background:var(--google-green-light); padding:5px 14px; border-radius:var(--radius-full); display:inline-flex; align-items:center; gap:6px; transition:all 0.2s;">
-          <span>📊</span> <span data-i18n="navSurvey">4. Post-Workshop Survey ↗</span>
-        </a>
+  <!-- Unified 4-Page Sticky Header (Identical Across All Pages) -->
+  <header class="top-nav">
+    <div class="nav-container">
+      <a href="index.html" class="brand-group">
+        <span style="font-size: 22px;">⚡</span>
+        <span>WebMCP Partner Summit 2026</span>
+      </a>
+
+      <nav class="nav-pills" aria-label="Workshop Pages">
+        <a href="index.html" class="nav-pill active" data-i18n="navHub">1. Pre-Workshop Setup Hub</a>
+        <a href="workshop_guide.html" class="nav-pill" data-i18n="navGuide">2. Step-by-Step Workshop Guide</a>
+        <a href="extension_guide.html" class="nav-pill" data-i18n="navFieldGuide">3. Extension &amp; Built-in AI Field Guide</a>
+        <a href="partner_resources.html" class="nav-pill" data-i18n="navResources">4. Partner Links &amp; Feedback Hub</a>
+        <a href="survey.html" class="nav-pill" data-i18n="navSurvey">5. Post-Workshop Survey</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="lang-toggle" id="btn-lang-toggle" onclick="toggleLanguage()">🇯🇵 日本語 / EN</button>
       </div>
-      <div class="lang-switcher">
-          <button id="btn-lang-en" class="lang-btn active" onclick="setLanguage('en')">English</button>
-          <button id="btn-lang-ja" class="lang-btn" onclick="setLanguage('ja')">日本語</button>
-        </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- Unified Hero Card -->
+    <section class="hero-card">
+      <div class="hero-badge">
+        <span>⚙️</span> <span data-i18n="heroBadge">Pre-Workshop Setup &amp; Live Diagnostics</span>
       </div>
-      <h1 class="hero-title" data-i18n="heroTitle">Built-in AI & WebMCP Participant Setup Hub</h1>
+      <h1 class="hero-title" data-i18n="heroTitle">Built-in AI &amp; WebMCP Participant Setup Hub</h1>
       <p class="hero-subtitle" data-i18n="heroSubtitle">
         Welcome! This self-contained setup page provides 100% public download links, flag checklists, agent installation guides, and live on-device browser diagnostics to ensure your laptop is ready for today's session.
       </p>
 
       <!-- Diagnostic Summary Scorecard -->
-      <div class="status-summary-bar">
+      <div class="status-summary-bar" style="background: #ffffff; border: 1px solid var(--border); box-shadow: var(--shadow-sm);">
         <div class="status-summary-left">
           <div id="overall-score-badge" class="score-badge idle">—</div>
           <div>
@@ -635,10 +686,7 @@
           <span>🔄</span> <span id="btn-diag-text" data-i18n="runDiagnostics">Run Diagnostics</span>
         </button>
       </div>
-    </div>
-  </header>
-
-  <main class="container">
+    </section>
 
     <!-- Section 1: Browser Environment Diagnostics -->
     <h2 class="section-title">
@@ -1215,6 +1263,11 @@ npx -y modern-web-guidance@latest retrieve "popover-api-dialog"</pre>
     // ==========================================================================
     const i18nData = {
       en: {
+        navHub: '1. Pre-Workshop Setup Hub',
+        navGuide: '2. Step-by-Step Workshop Guide',
+        navFieldGuide: '3. Extension & Built-in AI Field Guide',
+        navResources: '4. Partner Links & Feedback Hub',
+        navSurvey: '5. Post-Workshop Survey',
         heroTitle: "Built-in AI & WebMCP Participant Setup Hub",
         heroSubtitle: "Welcome! This self-contained setup page provides 100% public download links, flag checklists, agent installation guides, and live on-device browser diagnostics to ensure your laptop is ready for today's session.",
         checkingStatus: "Checking Browser Environment...",
@@ -1247,6 +1300,7 @@ npx -y modern-web-guidance@latest retrieve "popover-api-dialog"</pre>
         mwgConfirmTitle: "✅ How to Confirm Your Installation",
         mwgConfirmList: `<li><strong>1. Quick Terminal Check (Ground Truth):</strong> Run <code style="background:var(--bg-main); padding:2px 6px; border-radius:4px;">npx modern-web-guidance@latest search "animate a dialog"</code>. If working, it immediately returns matching JSON guide metadata (e.g. <code>animate-to-from-top-layer</code>).</li><li><strong>2. In-Agent Test Prompt:</strong> In Cursor Composer, Claude Code, or Copilot, ask: <br><em style="color:var(--text-main); font-style:italic;">"Using Modern Web Guidance, how should I animate a modal dialog entering the top layer?"</em><br>A properly configured agent will query MWG and suggest native modern APIs (<code>&lt;dialog closedby&gt;</code>, <code>@starting-style</code>, <code>transition-behavior: allow-discrete</code>) rather than legacy JavaScript polyfills.</li><li><strong>3. Agent Activation Tip:</strong> If your agent does not trigger guidance automatically, simply append <code>"use modern-web-guidance"</code> to the end of your prompt, or use slash command syntax if supported (e.g. <code>/modern-web-guidance</code>).</li>`,
         mwgDocsLink: "Read Modern Web Guidance Documentation on developer.chrome.com ↗",
+        mwgHeading: "⚡ Modern Web Guidance (MWG) Installation Hub",
         mcpHeading: "🛠️ Chrome DevTools MCP Server Setup",
         mcpDesc: "Connects your external AI coding assistant directly into Chrome Canary via Chrome DevTools Protocol (CDP) for live inspection, screenshot captures, console logs, and DOM validation.",
         inspectorBannerTitle: "Official WebMCP Model Context Tool Inspector Extension",
@@ -1267,6 +1321,11 @@ npx -y modern-web-guidance@latest retrieve "popover-api-dialog"</pre>
         s8Card3: `<div style="font-weight:700; color:var(--text-primary); margin-bottom:4px;">📝 Publish on developers.google.com</div><div>Partner with Google Web Ecosystem Consultants (WEC) to co-author official enterprise WebMCP case studies published on <strong>developers.google.com</strong>.</div>`
       },
       ja: {
+        navHub: "1. 事前セットアップHub",
+        navGuide: "2. ステップ別実践ガイド",
+        navFieldGuide: "3. 拡張機能・Built-in AI 実装ガイド",
+        navResources: "4. パートナーリンク＆フィードバックHub",
+        navSurvey: "5. 事後アンケート",
         heroTitle: "Built-in AI & WebMCP ワークショップ参加者用環境設定ハブ",
         heroSubtitle: "ご参加ありがとうございます！本ページでは、当日のハンズオンを円滑に行うための公開ダウンロードリンク、Chrome フラグ設定チェックリスト、AI エージェント別設定ガイド、およびお使いのブラウザの動作環境をリアルタイムに自動判定する診断ツールを提供します。",
         checkingStatus: "ブラウザ環境を確認中...",
@@ -1365,7 +1424,16 @@ npx -y modern-web-guidance@latest retrieve "popover-api-dialog"</pre>
 
     function setLanguage(lang) {
       currentLang = lang;
-      localStorage.setItem('webmcp_lang', lang);
+      try {
+        localStorage.setItem('webmcp_lang', lang);
+      } catch (e) {}
+      document.documentElement.lang = lang;
+
+      const toggleBtn = document.getElementById('btn-lang-toggle');
+      if (toggleBtn) {
+        toggleBtn.textContent = lang === 'ja' ? '🇺🇸 English / JA' : '🇯🇵 日本語 / EN';
+      }
+
       document.getElementById('btn-lang-en')?.classList.toggle('active', lang === 'en');
       document.getElementById('btn-lang-ja')?.classList.toggle('active', lang === 'ja');
 
@@ -1389,6 +1457,10 @@ npx -y modern-web-guidance@latest retrieve "popover-api-dialog"</pre>
       } else {
         renderInitialDiagUI();
       }
+    }
+
+    function toggleLanguage() {
+      setLanguage(currentLang === 'ja' ? 'en' : 'ja');
     }
 
     // ==========================================================================
