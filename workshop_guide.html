@@ -972,10 +972,9 @@
 
       <nav class="nav-pills" aria-label="Workshop Pages">
         <a href="index.html" class="nav-pill" data-i18n="navHub">1. Pre-Workshop Setup Hub</a>
-        <a href="workshop_guide.html" class="nav-pill active" data-i18n="navGuide">2. Step-by-Step Workshop Guide</a>
+        <a href="workshop_guide.html" class="nav-pill active" data-i18n="navGuide">2. Slide Deck &amp; Step-by-Step Guide</a>
         <a href="extension_guide.html" class="nav-pill" data-i18n="navFieldGuide">3. Extension &amp; Built-in AI Field Guide</a>
-        <a href="partner_resources.html" class="nav-pill" data-i18n="navResources">4. Partner Links &amp; Feedback Hub</a>
-        <a href="survey.html" class="nav-pill" data-i18n="navSurvey">5. Post-Workshop Survey</a>
+        <a href="survey.html" class="nav-pill" data-i18n="navSurvey">4. Post-Workshop Survey</a>
       </nav>
 
       <div class="header-actions">
@@ -1763,6 +1762,44 @@ Extend our extension with `sidepanel.html` and `sidepanel.js` to host a local on
                   <li>Annotate with <code>readOnlyHint</code> / native <code>&lt;dialog&gt;</code> HITL and verify with <code>webmcp_eval.js</code> (&lt;= 1.5 KB).</li>
                   <li>Reach out to your Google WEC contact (<code>synakim@google.com</code>) to schedule a joint review &amp; kick off your case study!</li>
                 </ol>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chrome 155.0.8052.0+ Breaking Change Notice (PRs #246 & #251) -->
+          <div class="compare-box" style="margin-top:14px; border-left: 4px solid #7627bb; background: #f3e8fd;">
+            <h4 style="font-size:14.5px; font-weight:700; margin-bottom:6px; color:#7627bb;">
+              ⚡ Chrome 155.0.8052.0+ Breaking Change: <code>executeTool()</code> Input Arguments (PRs #246 &amp; #251)
+            </h4>
+            <p style="font-size:13px; color:var(--text-primary); margin-bottom:8px;">
+              Following W3C WebMCP PRs <a href="https://github.com/webmachinelearning/webmcp/pull/246" target="_blank" rel="noopener" style="color:#1a73e8; font-weight:600;">#246</a> and <a href="https://github.com/webmachinelearning/webmcp/pull/251" target="_blank" rel="noopener" style="color:#1a73e8; font-weight:600;">#251</a> (landed in <a href="https://chromiumdash.appspot.com/commit/23cad65d6e6613d62542b27651c28925acfaffb2" target="_blank" rel="noopener" style="color:#1a73e8; font-weight:600;">Chrome 155.0.8052.0</a>), the second argument to <code>document.modelContext.executeTool(name, inputArgs)</code> changed from a serialized <code>DOMString</code> to an <strong>optional JavaScript object (<code>object</code>)</strong>. Always normalize incoming tool arguments in your <code>execute(args)</code> handler with <code>typeof args === 'string' ? JSON.parse(args) : (args || {})</code>.
+            </p>
+          </div>
+
+          <!-- Post-Workshop Survey & QR Code Wrap-Up Card -->
+          <div class="slide-card" style="margin-top:16px; background: linear-gradient(135deg, #ffffff 0%, #f0f6ff 70%, #e8f0fe 100%); border: 2px solid #1a73e8;">
+            <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:24px;">
+              <div style="flex:1; min-width:280px;">
+                <span class="slide-pill" style="background:#1a73e8; color:#fff;">📋 Official Wrap-Up Survey &amp; Origin Trial Sign-Up</span>
+                <h3 style="font-size:20px; font-weight:700; color:var(--text-primary); margin:10px 0 6px;">
+                  Share Your Feedback &amp; Request Chrome 154–156 Origin Trial Support
+                </h3>
+                <p style="font-size:13.5px; color:var(--text-secondary); margin-bottom:14px;">
+                  Scan the QR code on the right with your smartphone camera or click below to open the official Google Partner Summit 2026 survey (takes ~2 minutes). Request 1-on-1 Google WEC onboarding for the Chrome 154–156 Origin Trial and co-author an engineering Case Study on <code>developers.google.com</code>!
+                </p>
+                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                  <a href="https://docs.google.com/forms/d/e/1FAIpQLSe3S_Ys-9ddXlh3q67ZQMsNNaIxsJbGekNogwPH5VlMXhgTfQ/viewform" target="_blank" rel="noopener" class="btn-hero" style="text-decoration:none; background:#1a73e8; color:#fff;">
+                    <span>📝 Open Official Google Form ↗</span>
+                  </a>
+                  <a href="survey.html" class="btn-hero" style="text-decoration:none; background:#fff; color:#1a73e8; border:1px solid #1a73e8;">
+                    <span>🤖 Open Interactive Survey Page (4. Post-Workshop Survey)</span>
+                  </a>
+                </div>
+              </div>
+              <div style="background:#ffffff; border:2px solid #d2e3fc; border-radius:12px; padding:14px; text-align:center; box-shadow: 0 2px 8px rgba(26,115,232,0.12);">
+                <img src="survey_qr.png" alt="Scan QR Code for Official Post-Workshop Survey" style="width:155px; height:155px; object-fit:contain; display:block; margin:0 auto 6px;" />
+                <div style="font-size:12px; font-weight:700; color:var(--text-primary);">📱 Scan for Post-Workshop Survey</div>
+                <div style="font-size:10.5px; color:var(--text-secondary);">Google Partner Summit 2026</div>
               </div>
             </div>
           </div>

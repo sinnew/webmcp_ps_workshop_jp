@@ -7,24 +7,27 @@ Welcome to the **Built-in AI & WebMCP Practical Workshop** developer portal. Thi
 
 ## 🌐 Quick Access (Hosted Hub & Guides)
 
-* **Participant Setup & Diagnostics Hub**: `index.html` (or `participant_hub.html`)
+* **1. Participant Setup & Diagnostics Hub**: `index.html` (or `participant_hub.html`)
   * Real-time browser environment diagnostics (Chrome Canary version check, WebMCP API availability, Gemini Nano model status).
   * Interactive on-device Gemini Nano download progress monitor.
   * Persistent Chrome Flags checklist with 1-click copy buttons.
   * Multi-agent Modern Web Guidance (MWG) setup guide (Cursor, Claude Code, GitHub Copilot, Antigravity / Project IDX).
   * In-browser WebMCP tool execution console.
-* **Developer Field Guide**: `extension_guide.html`
+* **2. Slide Deck & Step-by-Step Guide**: `workshop_guide.html`
+  * Interactive 6-step collapsible guide covering all 20 presentation slides, Google Store (gStore) repair case study, 1-Click AI Prompts Cheat Sheet (Prompts 1–4), and live red-teaming.
+* **3. Extension & Built-in AI Field Guide**: `extension_guide.html`
   * Manifest V3 permission matrix: Declarative Tool Injection (Track A) vs. Side Panel AI Agent (Track B).
+  * **Chrome 155.0.8052.0+ Breaking Change (PRs #246 & #251)**: `document.modelContext.executeTool(toolName, inputArgs)` now accepts an **optional JavaScript object (`object`)** instead of a serialized `DOMString`.
   * Built-in AI (`LanguageModel`) essential gotchas (standardized top-level API, streaming chunk accumulation, VRAM management).
-  * WebMCP function calling bridge best practices (`world: "MAIN"`, 1.5 KB token budgeting, `form.requestSubmit()`, `AbortSignal` cancellation, native `<dialog>` for Human-in-the-Loop).
-  * The "Ghost Browser" Trap: Why client UI reflection is mandatory in interactive co-browsing.
+* **4. Post-Workshop Survey & Origin Trial Sign-Up**: `survey.html`
+  * Scannable QR code (`survey_qr.png`), embedded official Google Form, and interactive WebMCP agent feedback submission (`submit_workshop_feedback`).
 
 ---
 
 ## 🚀 Getting Started
 
 ### 1. Prerequisites
-1. **Google Chrome Canary** (v154 or later required due to WebMCP API breaking changes): [Download Chrome Canary](https://www.google.com/chrome/canary/)
+1. **Google Chrome Canary** (v154+ required; **v155.0.8052.0+** recommended for PRs [#246](https://github.com/webmachinelearning/webmcp/pull/246) & [#251](https://github.com/webmachinelearning/webmcp/pull/251) where `executeTool()` accepts native JavaScript object arguments): [Download Chrome Canary](https://www.google.com/chrome/canary/)
 2. Open `chrome://flags` and configure the following flags:
    * `#enable-webmcp-testing` ➡️ **Enabled**
    * `#prompt-api-tool-use` ➡️ **Enabled**

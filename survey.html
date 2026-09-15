@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Post-Workshop Survey | Google Partner Summit 2026: Built-in AI & WebMCP</title>
+  <title>WebMCP Partner Summit 2026 — 4. Post-Workshop Survey</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
@@ -24,7 +24,7 @@
       --bg-page: #f8f9fa;
       --bg-card: #ffffff;
       --bg-subtle: #f1f3f4;
-      --bg-code: #1e293b;
+      --bg-code: #0f172a;
 
       --text-primary: #202124;
       --text-secondary: #5f6368;
@@ -40,49 +40,26 @@
       --shadow-md: 0 4px 12px rgba(60, 64, 67, 0.12);
     }
 
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg-page: #121212;
-        --bg-card: #1e1e1e;
-        --bg-subtle: #2d2d2d;
-        --bg-code: #0f172a;
-        --text-primary: #e8eaed;
-        --text-secondary: #bdc1c6;
-        --text-muted: #9aa0a6;
-        --border: #3c4043;
-        --google-blue: #8ab4f8;
-        --google-blue-light: rgba(138, 180, 248, 0.16);
-        --google-green: #81c995;
-        --google-green-light: rgba(129, 201, 149, 0.16);
-        --google-yellow: #fdd663;
-        --google-yellow-light: rgba(253, 214, 99, 0.16);
-        --google-red: #f28b82;
-        --google-red-light: rgba(242, 139, 130, 0.16);
-        --google-purple: #c58af9;
-        --google-purple-light: rgba(197, 138, 249, 0.16);
-      }
-    }
-
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'Inter', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: 'Inter', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background-color: var(--bg-page);
       color: var(--text-primary);
       line-height: 1.6;
-      padding-bottom: 88px;
+      padding-bottom: 80px;
     }
 
-    h1, h2, h3, h4 {
-      font-family: 'Google Sans', 'Noto Sans JP', sans-serif;
+    h1, h2, h3, h4, .font-display {
+      font-family: 'Google Sans', 'Inter', 'Noto Sans JP', sans-serif;
     }
 
-    code, pre {
-      font-family: 'Google Sans Code', monospace;
+    code, pre, .font-code {
+      font-family: 'Google Sans Code', SFMono-Regular, Consolas, monospace;
     }
 
-    /* Unified Sticky Top Navigation Bar */
-    .top-nav {
+    /* Unified Sticky Top Header (Identical Across All 4 Pages) */
+    header.top-nav {
       position: sticky;
       top: 0;
       z-index: 1000;
@@ -91,12 +68,6 @@
       border-bottom: 1px solid var(--border);
       padding: 12px 24px;
       box-shadow: var(--shadow-sm);
-    }
-
-    @media (prefers-color-scheme: dark) {
-      .top-nav {
-        background: rgba(30, 30, 30, 0.95);
-      }
     }
 
     .nav-container {
@@ -180,7 +151,7 @@
       padding: 0 20px;
     }
 
-    /* Hero Card */
+    /* Unified Hero Split Card (Left Content + Right QR Code) */
     .hero-card {
       background: linear-gradient(135deg, #ffffff 0%, #f0f6ff 60%, #e8f0fe 100%);
       border: 1px solid #d2e3fc;
@@ -188,41 +159,87 @@
       padding: 32px 28px;
       box-shadow: var(--shadow-sm);
       margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px;
+      flex-wrap: wrap;
     }
 
-    .hero-badges {
+    .hero-left {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .hero-qr-box {
+      background: #ffffff;
+      border: 2px solid #d2e3fc;
+      border-radius: var(--radius-md);
+      padding: 16px;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .hero-qr-box img {
+      width: 170px;
+      height: 170px;
+      object-fit: contain;
+      border-radius: 6px;
+    }
+
+    .hero-badge-row {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
 
-    .badge {
+    .hero-badge {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 4px 12px;
-      border-radius: var(--radius-full);
+      background: var(--google-blue-light);
+      color: var(--google-blue);
+      border: 1px solid rgba(26, 115, 232, 0.25);
       font-size: 12px;
       font-weight: 700;
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
     }
 
-    .badge-blue { background: var(--google-blue-light); color: var(--google-blue); }
-    .badge-green { background: var(--google-green-light); color: var(--google-green); }
-    .badge-purple { background: var(--google-purple-light); color: var(--google-purple); }
+    .hero-badge.badge-green {
+      background: var(--google-green-light);
+      color: var(--google-green);
+      border-color: rgba(30, 142, 62, 0.25);
+    }
+
+    .hero-badge.badge-purple {
+      background: var(--google-purple-light);
+      color: var(--google-purple);
+      border-color: rgba(118, 39, 187, 0.25);
+    }
 
     .hero-title {
       font-size: 28px;
       font-weight: 700;
-      margin-bottom: 10px;
-      letter-spacing: -0.4px;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+      line-height: 1.25;
+      letter-spacing: -0.3px;
     }
 
     .hero-subtitle {
       font-size: 15px;
       color: var(--text-secondary);
-      max-width: 820px;
-      margin-bottom: 22px;
+      max-width: 720px;
+      margin-bottom: 20px;
+      line-height: 1.6;
     }
 
     .hero-cta-row {
@@ -236,16 +253,16 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
+      padding: 11px 20px;
+      border-radius: var(--radius-sm);
       background: var(--google-blue);
       color: #ffffff;
-      border: none;
-      padding: 12px 22px;
-      border-radius: var(--radius-sm);
-      font-size: 14px;
       font-weight: 700;
-      cursor: pointer;
+      font-size: 14px;
       text-decoration: none;
-      box-shadow: var(--shadow-sm);
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 1px 3px rgba(26, 115, 232, 0.3);
       transition: all 0.15s ease;
     }
 
@@ -258,107 +275,121 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: var(--bg-card);
-      color: var(--text-primary);
-      border: 1px solid var(--border);
-      padding: 11px 18px;
+      padding: 10px 18px;
       border-radius: var(--radius-sm);
-      font-size: 13.5px;
+      background: #ffffff;
+      color: var(--text-primary);
       font-weight: 600;
-      cursor: pointer;
+      font-size: 13.5px;
       text-decoration: none;
+      border: 1px solid var(--border);
+      cursor: pointer;
       transition: all 0.15s ease;
     }
 
     .btn-secondary:hover {
-      background: var(--bg-subtle);
+      border-color: var(--google-blue);
+      color: var(--google-blue);
     }
 
-    /* WebMCP Live Tool Banner */
-    .webmcp-live-banner {
+    /* Card Containers */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .card-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 14px;
-      background: var(--google-purple-light);
-      border: 1px solid rgba(118, 39, 187, 0.3);
-      border-radius: var(--radius-md);
-      padding: 16px 20px;
-      margin-bottom: 26px;
+      gap: 12px;
+      margin-bottom: 18px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
     }
 
-    .webmcp-live-left {
+    .card-header-left {
       display: flex;
       align-items: center;
       gap: 12px;
     }
 
-    .pulse-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: var(--google-green);
-      box-shadow: 0 0 0 4px rgba(30, 142, 62, 0.2);
-    }
-
-    /* Form Sections */
-    .survey-section {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 26px 24px;
-      margin-bottom: 22px;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .section-header {
+    .card-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
       display: flex;
       align-items: center;
-      gap: 10px;
-      margin-bottom: 18px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid var(--border);
+      justify-content: center;
+      font-size: 20px;
+      background: var(--google-blue-light);
+      color: var(--google-blue);
     }
 
-    .section-num {
-      background: var(--google-blue);
-      color: #fff;
+    .card-title {
+      font-size: 20px;
       font-weight: 700;
-      font-size: 13px;
-      padding: 4px 10px;
-      border-radius: var(--radius-full);
+      color: var(--text-primary);
     }
 
-    .section-title {
-      font-size: 18px;
+    /* Embedded Google Form Iframe Wrapper */
+    .iframe-container {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: #ffffff;
+    }
+
+    .iframe-container iframe {
+      width: 100%;
+      height: 780px;
+      border: none;
+    }
+
+    /* Interactive Survey Form Grid */
+    .form-section-title {
+      font-size: 16px;
       font-weight: 700;
+      color: var(--google-blue);
+      margin: 22px 0 12px;
+      padding-bottom: 6px;
+      border-bottom: 2px solid var(--google-blue-light);
     }
 
     .form-group {
-      margin-bottom: 22px;
-    }
-
-    .form-group:last-child {
-      margin-bottom: 0;
+      margin-bottom: 18px;
     }
 
     .form-label {
       display: block;
+      font-size: 14px;
       font-weight: 600;
-      font-size: 14.5px;
-      margin-bottom: 8px;
       color: var(--text-primary);
+      margin-bottom: 8px;
     }
 
-    .form-sublabel {
-      display: block;
-      font-size: 12.5px;
-      color: var(--text-secondary);
-      margin-bottom: 10px;
+    .input-text, .input-textarea, .input-select {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: #ffffff;
+      color: var(--text-primary);
+      font-size: 14px;
+      font-family: inherit;
     }
 
-    /* Rating Stars / Scale Pills */
+    .input-textarea {
+      min-height: 95px;
+      resize: vertical;
+    }
+
     .scale-row {
       display: flex;
       gap: 10px;
@@ -368,14 +399,13 @@
     .scale-pill {
       flex: 1;
       min-width: 110px;
-      text-align: center;
-      padding: 12px 10px;
-      border: 1.5px solid var(--border);
+      padding: 10px 12px;
+      border: 1px solid var(--border);
       border-radius: var(--radius-sm);
-      background: var(--bg-page);
+      background: #ffffff;
+      text-align: center;
       cursor: pointer;
       transition: all 0.15s ease;
-      user-select: none;
     }
 
     .scale-pill:hover {
@@ -384,136 +414,59 @@
     }
 
     .scale-pill.selected {
-      border-color: var(--google-blue);
       background: var(--google-blue);
+      border-color: var(--google-blue);
       color: #ffffff;
       font-weight: 700;
-      box-shadow: var(--shadow-sm);
     }
 
-    .scale-pill .num {
-      font-size: 18px;
-      font-weight: 700;
-      display: block;
-      margin-bottom: 2px;
-    }
-
-    .scale-pill .desc {
-      font-size: 11.5px;
-      opacity: 0.9;
-    }
-
-    /* Choice Cards & Checkbox Pills */
-    .choice-grid {
+    .checkbox-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 10px;
     }
 
-    .choice-card {
+    .check-card {
       display: flex;
       align-items: flex-start;
       gap: 10px;
-      padding: 12px 14px;
-      border: 1.5px solid var(--border);
+      padding: 11px 14px;
+      border: 1px solid var(--border);
       border-radius: var(--radius-sm);
-      background: var(--bg-page);
+      background: #ffffff;
       cursor: pointer;
-      transition: all 0.15s ease;
+      font-size: 13.5px;
     }
 
-    .choice-card:hover {
-      border-color: var(--google-blue);
-    }
-
-    .choice-card:has(input:checked) {
+    .check-card:hover {
       border-color: var(--google-blue);
       background: var(--google-blue-light);
     }
 
-    .choice-card input {
-      margin-top: 3px;
-      accent-color: var(--google-blue);
-      transform: scale(1.15);
-    }
-
-    .choice-card span {
-      font-size: 13.5px;
-      font-weight: 500;
-    }
-
-    .input-text, .input-textarea {
-      width: 100%;
-      padding: 11px 14px;
-      border: 1.5px solid var(--border);
-      border-radius: var(--radius-sm);
-      background: var(--bg-page);
-      color: var(--text-primary);
-      font-family: inherit;
-      font-size: 14px;
-      transition: border-color 0.15s;
-    }
-
-    .input-text:focus, .input-textarea:focus {
-      outline: none;
-      border-color: var(--google-blue);
-    }
-
-    .input-textarea {
-      min-height: 92px;
-      resize: vertical;
-    }
-
-    /* Output Summary Drawer */
-    #response-drawer {
-      display: none;
-      background: var(--bg-card);
-      border: 2px solid var(--google-green);
-      border-radius: var(--radius-md);
-      padding: 24px;
-      margin-top: 24px;
-      box-shadow: var(--shadow-md);
-    }
-
-    .code-box {
+    pre {
       background: var(--bg-code);
-      color: #f8fafc;
-      padding: 16px;
+      color: #e2e8f0;
+      padding: 14px 16px;
       border-radius: var(--radius-sm);
-      font-size: 12.5px;
       overflow-x: auto;
-      white-space: pre-wrap;
-      margin-top: 12px;
-      max-height: 360px;
+      font-size: 12.5px;
+      line-height: 1.5;
+      margin: 10px 0;
     }
 
-    /* Modal for Google Form Configurable Link / Apps Script */
-    .modal-backdrop {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(15, 23, 42, 0.65);
-      backdrop-filter: blur(4px);
-      z-index: 2000;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-
-    .modal-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      max-width: 680px;
-      width: 100%;
-      padding: 28px;
-      box-shadow: var(--shadow-md);
+    footer {
+      text-align: center;
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      font-size: 13px;
+      color: var(--text-secondary);
     }
   </style>
 </head>
 <body>
 
-  <!-- Unified Top Navigation Bar -->
+  <!-- Unified 4-Page Sticky Header (Identical Across All Pages) -->
   <header class="top-nav">
     <div class="nav-container">
       <a href="index.html" class="brand-group">
@@ -523,10 +476,9 @@
 
       <nav class="nav-pills" aria-label="Workshop Pages">
         <a href="index.html" class="nav-pill" data-i18n="navHub">1. Pre-Workshop Setup Hub</a>
-        <a href="workshop_guide.html" class="nav-pill" data-i18n="navGuide">2. Step-by-Step Workshop Guide</a>
+        <a href="workshop_guide.html" class="nav-pill" data-i18n="navGuide">2. Slide Deck &amp; Step-by-Step Guide</a>
         <a href="extension_guide.html" class="nav-pill" data-i18n="navFieldGuide">3. Extension &amp; Built-in AI Field Guide</a>
-        <a href="partner_resources.html" class="nav-pill" data-i18n="navResources">4. Partner Links &amp; Feedback Hub</a>
-        <a href="survey.html" class="nav-pill active" data-i18n="navSurvey">5. Post-Workshop Survey</a>
+        <a href="survey.html" class="nav-pill active" data-i18n="navSurvey">4. Post-Workshop Survey</a>
       </nav>
 
       <div class="header-actions">
@@ -536,527 +488,234 @@
   </header>
 
   <main class="container">
-    <!-- Hero Card -->
+
+    <!-- Unified Hero Split Card (With Attached QR Code Image) -->
     <section class="hero-card">
-      <div class="hero-badges">
-        <span class="badge badge-blue" data-i18n="heroBadge1">📊 Google Partner Summit 2026</span>
-        <span class="badge badge-green" data-i18n="heroBadge2">⏱️ ~3 Minutes / 所要時間 約3分</span>
-        <span class="badge badge-purple" data-i18n="heroBadge3">🤖 Live WebMCP Tool Enabled</span>
+      <div class="hero-left">
+        <div class="hero-badge-row">
+          <span class="hero-badge">
+            <span>📊</span> <span data-i18n="heroBadge1">Google Partner Summit 2026 • Official Survey</span>
+          </span>
+          <span class="hero-badge badge-green">
+            <span>⏱️</span> <span data-i18n="heroBadge2">~2 Minutes / 所要時間 約2分</span>
+          </span>
+          <span class="hero-badge badge-purple">
+            <span>🤖</span> <span>Chrome 155.0.8052.0+ WebMCP Tool Enabled</span>
+          </span>
+        </div>
+        <h1 class="hero-title" data-i18n="heroTitle">Post-Workshop Survey &amp; Origin Trial Sign-Up</h1>
+        <p class="hero-subtitle" data-i18n="heroSubtitle">
+          Thank you for attending <strong>"Architecting Web Applications for the Agentic Era: Built-in AI &amp; WebMCP"</strong>! Scan the QR code with your smartphone, open the official Google Form in a new tab, or fill it out directly below to request Chrome 154–156 Origin Trial support and <code>developers.google.com</code> Case Study co-authoring.
+        </p>
+        <div class="hero-cta-row">
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSe3S_Ys-9ddXlh3q67ZQMsNNaIxsJbGekNogwPH5VlMXhgTfQ/viewform" target="_blank" rel="noopener" class="btn-primary">
+            <span>📝</span>
+            <span data-i18n="btnOpenGoogleForm">Open Official Google Form (New Tab) ↗</span>
+          </a>
+          <a href="#embedded-google-form" class="btn-secondary">
+            <span>👇</span>
+            <span data-i18n="btnJumpEmbedded">Fill Embedded Google Form Below</span>
+          </a>
+          <button type="button" class="btn-secondary" onclick="testAgentAutoFill()">
+            <span>🤖</span>
+            <span data-i18n="btnTestAgent">Simulate WebMCP Agent Submission</span>
+          </button>
+        </div>
       </div>
-      <h1 class="hero-title" data-i18n="heroTitle">Post-Workshop Feedback &amp; Origin Trial Survey</h1>
-      <p class="hero-subtitle" data-i18n="heroSubtitle">
-        Thank you for joining "Architecting Web Applications for the Agentic Era: Built-in AI &amp; WebMCP"! Your feedback directly shapes Chrome 154–156 engineering priorities, qualifies your team for Google WEC Origin Trial support, and unlocks official <code>developers.google.com</code> Case Study co-authoring.
-      </p>
-      <div class="hero-cta-row">
-        <button type="button" class="btn-primary" onclick="openOfficialGoogleForm()">
-          <span>📝</span>
-          <span data-i18n="btnOpenGoogleForm">Open Official Google Form (External) ↗</span>
-        </button>
-        <a href="#interactive-survey-form" class="btn-secondary">
-          <span>⚡</span>
-          <span data-i18n="btnFillInteractive">Or Fill Interactive Survey Below (With WebMCP Support)</span>
-        </a>
+
+      <!-- Attached QR Code Image Box -->
+      <div class="hero-qr-box">
+        <img src="survey_qr.png" alt="Scan QR Code for Official Post-Workshop Survey" />
+        <div style="font-size: 12.5px; font-weight: 700; color: var(--text-primary);" data-i18n="qrCaption">
+          📱 Scan with Mobile Camera
+        </div>
+        <div style="font-size: 11px; color: var(--text-secondary);">
+          Official Partner Summit Survey
+        </div>
       </div>
     </section>
 
-    <!-- Live WebMCP Bonus Banner -->
-    <div class="webmcp-live-banner">
-      <div class="webmcp-live-left">
-        <span class="pulse-dot"></span>
-        <div>
-          <strong style="font-size: 14px;" data-i18n="webmcpBannerTitle">Bonus: This Survey Page is a Live WebMCP Application!</strong>
-          <div style="font-size: 12.5px; color: var(--text-secondary);" data-i18n="webmcpBannerDesc">
-            Registered tool: <code>submit_workshop_feedback</code> on <code>document.modelContext</code>. Open your Track B Side Panel Agent and prompt: <em>"Submit a 5-star workshop feedback for my company!"</em>
+    <!-- Card 1: Embedded Live Google Form -->
+    <section class="card" id="embedded-google-form">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-icon">📋</div>
+          <div>
+            <h2 class="card-title" data-i18n="card1Title">1. Official Google Form (Direct In-Page Submission)</h2>
+            <div style="font-size: 13px; color: var(--text-secondary);" data-i18n="card1Sub">
+              Responses are recorded directly in Google Forms &amp; Google Sheets. You can also open it in a full browser tab.
+            </div>
           </div>
         </div>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSe3S_Ys-9ddXlh3q67ZQMsNNaIxsJbGekNogwPH5VlMXhgTfQ/viewform" target="_blank" rel="noopener" class="btn-secondary" style="padding: 7px 14px; font-size: 12.5px;">
+          <span>↗ Open Full Screen</span>
+        </a>
       </div>
-      <button type="button" class="btn-secondary" style="font-size: 12.5px; padding: 7px 13px;" onclick="testAgentAutoFill()">
-        <span data-i18n="btnTestWebMCP">🤖 Simulate AI Agent Tool Call</span>
-      </button>
-    </div>
 
-    <!-- Interactive Bilingual Form -->
-    <form id="interactive-survey-form" onsubmit="handleSurveySubmit(event)">
-      <!-- Participant Info -->
-      <section class="survey-section">
-        <div class="section-header">
-          <span class="section-num">0</span>
-          <h2 class="section-title" data-i18n="sec0Title">Participant Context (Optional / 任意)</h2>
+      <div class="iframe-container">
+        <iframe
+          src="https://docs.google.com/forms/d/e/1FAIpQLSe3S_Ys-9ddXlh3q67ZQMsNNaIxsJbGekNogwPH5VlMXhgTfQ/viewform?embedded=true"
+          title="Google Partner Summit 2026: WebMCP & Built-in AI Workshop Survey">
+          Loading Official Google Form…
+        </iframe>
+      </div>
+    </section>
+
+    <!-- Card 2: Interactive WebMCP Agent Survey & Chrome 155.0.8052.0+ Demo -->
+    <section class="card" id="interactive-webmcp-survey">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-icon" style="background: var(--google-purple-light); color: var(--google-purple);">🤖</div>
+          <div>
+            <h2 class="card-title" data-i18n="card2Title">2. Interactive WebMCP Survey Tool (`submit_workshop_feedback`)</h2>
+            <div style="font-size: 13px; color: var(--text-secondary);">
+              Demonstrates Chrome 155.0.8052.0+ JavaScript object arguments (PRs <a href="https://github.com/webmachinelearning/webmcp/pull/246" target="_blank" rel="noopener" style="color:var(--google-blue); font-weight:600;">#246</a> &amp; <a href="https://github.com/webmachinelearning/webmcp/pull/251" target="_blank" rel="noopener" style="color:var(--google-blue); font-weight:600;">#251</a>) — your Track B AI Agent can invoke <code>document.modelContext.executeTool('submit_workshop_feedback', { ... })</code> directly on this page!
+            </div>
+          </div>
         </div>
+        <span class="hero-badge badge-purple" id="webmcp-tool-status">WebMCP Tool Active</span>
+      </div>
+
+      <form id="interactive-survey-form" onsubmit="event.preventDefault(); handleSurveySubmit();">
+        <div class="form-section-title" data-i18n="sec1Title">Part 1: Workshop Satisfaction &amp; Chrome 155+ WebMCP API Clarity</div>
 
         <div class="form-group">
-          <label class="form-label" for="q-company" data-i18n="qCompanyLabel">Q0.1: Organization / Company Name (貴社名)</label>
+          <label class="form-label" data-i18n="qCompanyLabel">Company / Organization Name (Optional)</label>
           <input type="text" id="q-company" name="company" class="input-text" placeholder="e.g., Rakuten, Mercari, note, pixiv, CyberAgent, LINE Yahoo" />
         </div>
 
         <div class="form-group">
-          <label class="form-label" data-i18n="qRoleLabel">Q0.2: Primary Engineering Role (主な担当職種・ロール)</label>
-          <div class="choice-grid">
-            <label class="choice-card">
-              <input type="radio" name="role" value="Frontend / Web Application Engineer" checked />
-              <span data-i18n="roleOpt1">Frontend / Web Application Engineer (フロントエンドエンジニア)</span>
-            </label>
-            <label class="choice-card">
-              <input type="radio" name="role" value="AI / ML / LLM Integration Engineer" />
-              <span data-i18n="roleOpt2">AI / ML / LLM Integration Engineer (AI・LLM統合エンジニア)</span>
-            </label>
-            <label class="choice-card">
-              <input type="radio" name="role" value="Software Architect / Tech Lead / EM" />
-              <span data-i18n="roleOpt3">Software Architect / Tech Lead / EM (アーキテクト / テックリード)</span>
-            </label>
-            <label class="choice-card">
-              <input type="radio" name="role" value="Product Manager / UX Designer" />
-              <span data-i18n="roleOpt4">Product Manager / UX Designer (PM / UXデザイナー)</span>
-            </label>
-          </div>
-        </div>
-      </section>
-
-      <!-- Section 1: CSAT & Pace -->
-      <section class="survey-section">
-        <div class="section-header">
-          <span class="section-num">1</span>
-          <h2 class="section-title" data-i18n="sec1Title">Overall Workshop Satisfaction (CSAT &amp; Pace)</h2>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" data-i18n="q1_1Label">Q1.1: Overall Workshop Satisfaction (CSAT) / 本ワークショップ全体の総合満足度を教えてください</label>
+          <label class="form-label" data-i18n="qCsatLabel">1. Overall Workshop Satisfaction (1 = Dissatisfied, 5 = Very Satisfied)</label>
           <input type="hidden" id="q-csat" name="csat" value="5" />
           <div class="scale-row" id="csat-scale">
-            <div class="scale-pill" data-val="1" onclick="selectScale('csat', 1)">
-              <span class="num">1 ★</span>
-              <span class="desc" data-i18n="scale1">Very Dissatisfied / 不満</span>
-            </div>
-            <div class="scale-pill" data-val="2" onclick="selectScale('csat', 2)">
-              <span class="num">2 ★★</span>
-              <span class="desc" data-i18n="scale2">Dissatisfied / やや不満</span>
-            </div>
-            <div class="scale-pill" data-val="3" onclick="selectScale('csat', 3)">
-              <span class="num">3 ★★★</span>
-              <span class="desc" data-i18n="scale3">Neutral / 普通</span>
-            </div>
-            <div class="scale-pill" data-val="4" onclick="selectScale('csat', 4)">
-              <span class="num">4 ★★★★</span>
-              <span class="desc" data-i18n="scale4">Satisfied / 満足</span>
-            </div>
-            <div class="scale-pill selected" data-val="5" onclick="selectScale('csat', 5)">
-              <span class="num">5 ★★★★★</span>
-              <span class="desc" data-i18n="scale5">Extremely Satisfied / 非常に満足</span>
-            </div>
+            <div class="scale-pill" data-val="1" onclick="selectScale('csat', 1)">1 • Low</div>
+            <div class="scale-pill" data-val="2" onclick="selectScale('csat', 2)">2 • Fair</div>
+            <div class="scale-pill" data-val="3" onclick="selectScale('csat', 3)">3 • Good</div>
+            <div class="scale-pill" data-val="4" onclick="selectScale('csat', 4)">4 • Great</div>
+            <div class="scale-pill selected" data-val="5" onclick="selectScale('csat', 5)">5 • Excellent ⭐</div>
           </div>
         </div>
 
         <div class="form-group">
-          <label class="form-label" data-i18n="q1_2Label">Q1.2: Workshop Pace &amp; Time Allocation (135 mins) / 進行スピード・時間配分はいかがでしたか？</label>
-          <div class="choice-grid">
-            <label class="choice-card">
-              <input type="radio" name="pace" value="Just right — balanced pace" checked />
-              <span data-i18n="paceOpt1">Just right — balanced pace across concepts and coding (適切だった)</span>
+          <label class="form-label" data-i18n="qTrackLabel">2. Which Hands-On Track Did You Explore?</label>
+          <select id="q-track" name="track" class="input-select">
+            <option value="Track A: Zero-Permission WebMCP Tool Injector">Track A: Zero-Permission WebMCP Tool Injector (world: "MAIN")</option>
+            <option value="Track B: Local Gemini Nano Side Panel AI Agent">Track B: Local Gemini Nano Side Panel AI Agent</option>
+            <option value="Both Track A and Track B" selected>Both Track A &amp; Track B / 両方のトラック</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" data-i18n="qOtLabel">3. Chrome 154–156 Origin Trial Consultation &amp; Case Study Interest</label>
+          <div class="checkbox-grid">
+            <label class="check-card">
+              <input type="checkbox" name="interests" value="Chrome 154-156 Origin Trial 1-on-1 Consultation" checked />
+              <span>Request 1-on-1 Google WEC Consultation for Chrome 154–156 Origin Trial</span>
             </label>
-            <label class="choice-card">
-              <input type="radio" name="pace" value="Slightly too fast" />
-              <span data-i18n="paceOpt2">Slightly too fast — wanted more hands-on debugging time (やや速すぎた)</span>
-            </label>
-            <label class="choice-card">
-              <input type="radio" name="pace" value="Slightly too slow" />
-              <span data-i18n="paceOpt3">Slightly too slow — wanted more advanced patterns (やや遅すぎた)</span>
+            <label class="check-card">
+              <input type="checkbox" name="interests" value="developers.google.com Official Case Study" checked />
+              <span>Interested in co-authoring an official <code>developers.google.com</code> Case Study</span>
             </label>
           </div>
         </div>
 
         <div class="form-group">
-          <label class="form-label" data-i18n="q1_4Label">Q1.4: Clarity of Chrome 154+ WebMCP API Updates / Chrome 154以降の最新API仕様（registerTool単一API、SPAライフサイクル、スキーマ設計）の明確さ</label>
-          <input type="hidden" id="q-clarity" name="clarity" value="5" />
-          <div class="scale-row" id="clarity-scale">
-            <div class="scale-pill" data-val="1" onclick="selectScale('clarity', 1)"><span class="num">1</span><span class="desc">Unclear</span></div>
-            <div class="scale-pill" data-val="2" onclick="selectScale('clarity', 2)"><span class="num">2</span><span class="desc">Somewhat</span></div>
-            <div class="scale-pill" data-val="3" onclick="selectScale('clarity', 3)"><span class="num">3</span><span class="desc">Moderate</span></div>
-            <div class="scale-pill" data-val="4" onclick="selectScale('clarity', 4)"><span class="num">4</span><span class="desc">Clear</span></div>
-            <div class="scale-pill selected" data-val="5" onclick="selectScale('clarity', 5)"><span class="num">5</span><span class="desc">Crystal Clear</span></div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Section 2: Hands-On & Modules -->
-      <section class="survey-section">
-        <div class="section-header">
-          <span class="section-num">2</span>
-          <h2 class="section-title" data-i18n="sec2Title">Hands-On Experience &amp; Workshop Modules</h2>
+          <label class="form-label" data-i18n="qFeedbackLabel">4. Direct Feedback for Chrome WebMCP Engineering Team</label>
+          <textarea id="q-feedback" name="feedback" class="input-textarea" placeholder="Share any feedback on Chrome 155.0.8052.0+ executeTool(name, argsObject), SPA router integration, or outputSchema typing..."></textarea>
         </div>
 
-        <div class="form-group">
-          <label class="form-label" data-i18n="q2_1Label">Q2.1: Which Extension Track did you build during the workshop? / どちらの拡張機能トラックを実装しましたか？</label>
-          <div class="choice-grid">
-            <label class="choice-card">
-              <input type="radio" name="track" value="Track A: Zero-Permission Tool Injector" />
-              <span data-i18n="trackOptA">Track A: Zero-Permission WebMCP Tool Injector (ゼロ権限ツール注入)</span>
-            </label>
-            <label class="choice-card">
-              <input type="radio" name="track" value="Track B: Local Gemini Nano Side Panel Agent" />
-              <span data-i18n="trackOptB">Track B: Local Gemini Nano Side Panel Agent (ローカルGemini Nanoエージェント)</span>
-            </label>
-            <label class="choice-card">
-              <input type="radio" name="track" value="Both Track A & Track B" checked />
-              <span data-i18n="trackOptBoth">Both Track A &amp; Track B (両方のトラックを実装・検証した)</span>
-            </label>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" data-i18n="q2_2Label">Q2.2: Most Valuable Workshop Modules (Select all that apply / 複数選択可)</label>
-          <div class="choice-grid">
-            <label class="choice-card">
-              <input type="checkbox" name="modules" value="Google Store Repair Case Study (-56.2% Tokens)" checked />
-              <span data-i18n="modOpt1">Google Store Repair Case Study (-56.2% Token Reduction &amp; 3-Tool Architecture)</span>
-            </label>
-            <label class="choice-card">
-              <input type="checkbox" name="modules" value="1-Click AI Prompts Cheat Sheet" checked />
-              <span data-i18n="modOpt2">1-Click AI Prompts Cheat Sheet (Gemini / Claude / Jetski Prompt Templates)</span>
-            </label>
-            <label class="choice-card">
-              <input type="checkbox" name="modules" value="Live Adversarial Red-Teaming" checked />
-              <span data-i18n="modOpt3">Live Adversarial Red-Teaming (red_team_evaluator.js &amp; Injection Defense)</span>
-            </label>
-            <label class="choice-card">
-              <input type="checkbox" name="modules" value="Kasper's VACO 5-Point Evaluation Methodology" checked />
-              <span data-i18n="modOpt4">Kasper's 5-Point Evaluation Methodology (VACO / Verb-Action-Constraint-Object)</span>
-            </label>
-            <label class="choice-card">
-              <input type="checkbox" name="modules" value="Production Guardrails (Tier 2/3, outputSchema, AbortSignal)" />
-              <span data-i18n="modOpt5">Production Guardrails (Human-in-the-Loop Tier 2/3, outputSchema, AbortSignal)</span>
-            </label>
-            <label class="choice-card">
-              <input type="checkbox" name="modules" value="Interactive Protocol & State Machine Visualizer" />
-              <span data-i18n="modOpt6">Interactive Protocol &amp; State Machine Visualizer (protocol_animation.html)</span>
-            </label>
-          </div>
-        </div>
-      </section>
-
-      <!-- Section 3: Production Roadmap & Origin Trial -->
-      <section class="survey-section">
-        <div class="section-header">
-          <span class="section-num">3</span>
-          <h2 class="section-title" data-i18n="sec3Title">Production Roadmap &amp; Chrome 154–156 Origin Trial</h2>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" data-i18n="q3_1Label">Q3.1: Timeline for evaluating or adopting WebMCP (document.modelContext) / 導入・検証タイムライン</label>
-          <div class="choice-grid">
-            <label class="choice-card">
-              <input type="radio" name="timeline" value="Immediate PoC / Prototyping (1-3 months)" checked />
-              <span data-i18n="timeOpt1">Immediate PoC / Prototyping (Within 1–3 months / 直近1〜3ヶ月以内に検証開始)</span>
-            </label>
-            <label class="choice-card">
-              <input type="radio" name="timeline" value="H2 2026 Roadmap Evaluation (3-6 months)" />
-              <span data-i18n="timeOpt2">H2 2026 Roadmap Evaluation (Within 3–6 months / 下半期ロードマップで検討)</span>
-            </label>
-            <label class="choice-card">
-              <input type="radio" name="timeline" value="2027 Long-Term Exploration" />
-              <span data-i18n="timeOpt3">2027 Long-Term Exploration (2027年以降の中長期テーマとしてリサーチ)</span>
-            </label>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" data-i18n="q3_2Label">Q3.2: Target Critical User Journeys (CUJs) for WebMCP Tools (対象ユースケース — 複数選択可)</label>
-          <div class="choice-grid">
-            <label class="choice-card">
-              <input type="checkbox" name="cujs" value="Multi-Constraint Search & Faceted Filtering" checked />
-              <span data-i18n="cujOpt1">Multi-Constraint Search &amp; Faceted Filtering (複数条件検索・高度な絞り込み)</span>
-            </label>
-            <label class="choice-card">
-              <input type="checkbox" name="cujs" value="Customer Support & Self-Service Repair Flows" checked />
-              <span data-i18n="cujOpt2">Customer Support &amp; Self-Service Repair Flows (サポート・トラブル診断・予約)</span>
-            </label>
-            <label class="choice-card">
-              <input type="checkbox" name="cujs" value="E-Commerce Cart, Booking & Checkout (Tier 2/3)" />
-              <span data-i18n="cujOpt3">E-Commerce Cart, Booking &amp; Checkout (Human-in-the-Loop カート・決済)</span>
-            </label>
-            <label class="choice-card">
-              <input type="checkbox" name="cujs" value="Creator & Merchant Authoring Tools" />
-              <span data-i18n="cujOpt4">Creator &amp; Merchant Authoring Tools (記事執筆・商品出品・メタデータ自動入力)</span>
-            </label>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" data-i18n="q3_3Label">Q3.3: Would your team like direct technical support from Google WEC for the Chrome 154–156 Origin Trial?</label>
-          <div class="choice-grid">
-            <label class="choice-card">
-              <input type="radio" name="otSupport" value="Yes — 1-on-1 architecture & Origin Trial consultation" checked />
-              <span data-i18n="otOpt1">Yes — We would love 1-on-1 architecture &amp; Origin Trial consultation (個別相談を希望)</span>
-            </label>
-            <label class="choice-card">
-              <input type="radio" name="otSupport" value="Maybe — Share documentation & updates first" />
-              <span data-i18n="otOpt2">Maybe — Please share Origin Trial documentation first (まずは資料共有を希望)</span>
-            </label>
-            <label class="choice-card">
-              <input type="radio" name="otSupport" value="No thank you — Exploring independently" />
-              <span data-i18n="otOpt3">No thank you — Exploring independently for now (自社内で検証を進める)</span>
-            </label>
-          </div>
-        </div>
-      </section>
-
-      <!-- Section 4: Official Case Study Partnership -->
-      <section class="survey-section">
-        <div class="section-header">
-          <span class="section-num">4</span>
-          <h2 class="section-title" data-i18n="sec4Title">Official Case Study Partnership (developers.google.com)</h2>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" data-i18n="q4_1Label">Q4.1: Interest in co-authoring an official engineering case study on developers.google.com with Google WEC</label>
-          <div class="choice-grid">
-            <label class="choice-card">
-              <input type="radio" name="caseStudy" value="Yes — Interested in discussing a joint developers.google.com Case Study" checked />
-              <span data-i18n="csOpt1">Yes — Interested in discussing a joint developers.google.com Case Study (公式共同事例に関心あり)</span>
-            </label>
-            <label class="choice-card">
-              <input type="radio" name="caseStudy" value="Interested once PoC / baseline metrics are ready" />
-              <span data-i18n="csOpt2">Interested once our PoC / baseline metrics are ready (PoCの数値が出た段階で相談したい)</span>
-            </label>
-            <label class="choice-card">
-              <input type="radio" name="caseStudy" value="Unsure — Need internal PR/Engineering alignment" />
-              <span data-i18n="csOpt3">Unsure — Need to consult PR / Engineering leadership first (社内確認が必要)</span>
-            </label>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" for="q-email" data-i18n="q4_2Label">Q4.2: Contact Email for Origin Trial &amp; Case Study Follow-Up (任意・フォローアップ連絡先)</label>
-          <input type="email" id="q-email" name="email" class="input-text" placeholder="engineer@partner.co.jp (Optional / 任意)" />
-        </div>
-      </section>
-
-      <!-- Section 5: Direct Feedback for Chrome Engineering -->
-      <section class="survey-section">
-        <div class="section-header">
-          <span class="section-num">5</span>
-          <h2 class="section-title" data-i18n="sec5Title">Direct Feedback for Chrome WebMCP Engineering</h2>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" for="q-feedback" data-i18n="q5_1Label">Q5.1: Feature requests for Chrome WebMCP (API design, SPA router integration, outputSchema, DevTools debugging)</label>
-          <textarea id="q-feedback" name="feedback" class="input-textarea" placeholder="Share any API feedback, SPA lifecycle requests, or DevTools inspector ideas directly with the Chrome team..."></textarea>
-        </div>
-
-        <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 16px;">
+        <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
           <button type="submit" class="btn-primary">
-            <span>🚀</span>
-            <span data-i18n="btnSubmitSurvey">Generate &amp; Copy Survey Response / Submit Feedback</span>
-          </button>
-          <button type="button" class="btn-secondary" onclick="openOfficialGoogleForm()">
             <span>📋</span>
-            <span data-i18n="btnOpenGoogleFormAlt">Submit via Official Google Form Instead ↗</span>
+            <span data-i18n="btnGenerateSummary">Generate &amp; Copy Feedback Summary (JSON + Markdown)</span>
           </button>
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSe3S_Ys-9ddXlh3q67ZQMsNNaIxsJbGekNogwPH5VlMXhgTfQ/viewform" target="_blank" rel="noopener" class="btn-secondary">
+            <span>📝</span>
+            <span>Open Official Google Form ↗</span>
+          </a>
         </div>
-      </section>
-    </form>
+      </form>
 
-    <!-- Formatted Output Summary Drawer -->
-    <div id="response-drawer" aria-live="polite">
-      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-        <h3 style="color: var(--google-green); font-size: 18px;" data-i18n="drawerTitle">✅ Survey Response Ready! (Copied to Clipboard)</h3>
-        <button type="button" class="btn-secondary" onclick="copySurveyPayload()" style="padding: 6px 14px; font-size: 12.5px;">
-          <span>📋 Copy Summary Again</span>
-        </button>
+      <div id="survey-output-container" style="display:none; margin-top: 18px;">
+        <div style="font-size: 13.5px; font-weight: 700; color: var(--google-green); margin-bottom: 6px;">
+          ✅ Structured Feedback Copied to Clipboard &amp; Returned via WebMCP Envelope:
+        </div>
+        <pre id="survey-output-pre"></pre>
       </div>
-      <p style="font-size: 13.5px; color: var(--text-secondary); margin-top: 6px;" data-i18n="drawerSubtitle">
-        Your structured Markdown + JSON response has been copied to your clipboard and logged to <code>window.lastWebMCPSurveySubmission</code>. You can paste it directly into your team's Slack/Chat channel or the official Google Form.
-      </p>
-      <pre class="code-box" id="response-output-box"></pre>
-    </div>
+    </section>
+
   </main>
 
-  <!-- Official Google Form Modal (Configurable URL + 1-Click Generator Info) -->
-  <div class="modal-backdrop" id="google-form-modal">
-    <div class="modal-card">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
-        <h3 style="font-size: 18px;" data-i18n="modalTitle">Official Google Form &amp; 1-Click Generator</h3>
-        <button type="button" class="btn-secondary" style="padding: 4px 10px;" onclick="closeGoogleFormModal()">✕</button>
-      </div>
-      <p style="font-size: 13.5px; color: var(--text-secondary); margin-bottom: 14px;" data-i18n="modalDesc">
-        Workshop organizers can paste the live Google Form URL below (generated in 1 click using the included Google Apps Script in <code>POST_WORKSHOP_SURVEY_BLUEPRINT.md</code>).
-      </p>
-      <div class="form-group">
-        <label class="form-label" for="custom-google-form-url">Live Google Form URL</label>
-        <input type="url" id="custom-google-form-url" class="input-text" value="https://docs.google.com/forms/d/e/1FAIpQLSe3S_Ys-9ddXlh3q67ZQMsNNaIxsJbGekNogwPH5VlMXhgTfQ/viewform" />
-      </div>
-      <div style="display: flex; gap: 10px; justify-content: flex-end;">
-        <button type="button" class="btn-secondary" onclick="closeGoogleFormModal()">Cancel</button>
-        <button type="button" class="btn-primary" onclick="launchConfiguredGoogleForm()">Open Google Form in New Tab ↗</button>
-      </div>
+  <footer>
+    <div class="container">
+      <p>Google Partner Summit 2026 • Web Ecosystem Consulting (WEC) • 100% External-Safe Partner Resource</p>
     </div>
-  </div>
+  </footer>
 
   <script>
-    // --- Bilingual Dictionary (EN + JA) ---
     const I18N = {
       en: {
         navHub: "1. Pre-Workshop Setup Hub",
-        navGuide: "2. Step-by-Step Workshop Guide",
+        navGuide: "2. Slide Deck & Step-by-Step Guide",
         navFieldGuide: "3. Extension & Built-in AI Field Guide",
-        navResources: "4. Partner Links & Feedback Hub",
-        navSurvey: "5. Post-Workshop Survey",
-        heroBadge1: "📊 Google Partner Summit 2026",
-        heroBadge2: "⏱️ ~3 Minutes",
-        heroBadge3: "🤖 Live WebMCP Tool Enabled",
-        heroTitle: "Post-Workshop Feedback & Origin Trial Survey",
-        heroSubtitle: "Thank you for joining 'Architecting Web Applications for the Agentic Era: Built-in AI & WebMCP'! Your feedback directly shapes Chrome 154–156 engineering priorities, qualifies your team for Google WEC Origin Trial support, and unlocks official developers.google.com Case Study co-authoring.",
-        btnOpenGoogleForm: "Open Official Google Form (External) ↗",
-        btnFillInteractive: "Or Fill Interactive Survey Below (With WebMCP Support)",
-        webmcpBannerTitle: "Bonus: This Survey Page is a Live WebMCP Application!",
-        webmcpBannerDesc: "Registered tool: submit_workshop_feedback on document.modelContext. Open your Track B Side Panel Agent and prompt: 'Submit a 5-star workshop feedback for my company!'",
-        btnTestWebMCP: "🤖 Simulate AI Agent Tool Call",
-        sec0Title: "Participant Context (Optional)",
-        qCompanyLabel: "Q0.1: Organization / Company Name",
-        qRoleLabel: "Q0.2: Primary Engineering Role",
-        roleOpt1: "Frontend / Web Application Engineer",
-        roleOpt2: "AI / ML / LLM Integration Engineer",
-        roleOpt3: "Software Architect / Tech Lead / Engineering Manager",
-        roleOpt4: "Product Manager / UX Designer",
-        sec1Title: "Section 1: Overall Workshop Satisfaction (CSAT & Pace)",
-        q1_1Label: "Q1.1: Overall Workshop Satisfaction (CSAT)",
-        scale1: "Very Dissatisfied",
-        scale2: "Dissatisfied",
-        scale3: "Neutral",
-        scale4: "Satisfied",
-        scale5: "Extremely Satisfied",
-        q1_2Label: "Q1.2: Workshop Pace & Time Allocation (135 mins)",
-        paceOpt1: "Just right — balanced pace across concepts and coding",
-        paceOpt2: "Slightly too fast — wanted more hands-on debugging time",
-        paceOpt3: "Slightly too slow — wanted more advanced patterns",
-        q1_4Label: "Q1.4: Clarity of Chrome 154+ WebMCP API Updates (registerTool, SPA lifecycle, outputSchema)",
-        sec2Title: "Section 2: Hands-On Experience & Workshop Modules",
-        q2_1Label: "Q2.1: Which Extension Track did you build during the workshop?",
-        trackOptA: "Track A: Zero-Permission WebMCP Tool Injector",
-        trackOptB: "Track B: Local Gemini Nano Side Panel Agent",
-        trackOptBoth: "Both Track A & Track B",
-        q2_2Label: "Q2.2: Most Valuable Workshop Modules (Select all that apply)",
-        modOpt1: "Google Store Repair Case Study (-56.2% Token Reduction & 3-Tool Architecture)",
-        modOpt2: "1-Click AI Prompts Cheat Sheet (Gemini / Claude / Jetski Prompt Templates)",
-        modOpt3: "Live Adversarial Red-Teaming (red_team_evaluator.js & Injection Defense)",
-        modOpt4: "Kasper's 5-Point Evaluation Methodology (VACO / Verb-Action-Constraint-Object)",
-        modOpt5: "Production Guardrails (Human-in-the-Loop Tier 2/3, outputSchema, AbortSignal)",
-        modOpt6: "Interactive Protocol & State Machine Visualizer (protocol_animation.html)",
-        sec3Title: "Section 3: Production Roadmap & Chrome 154–156 Origin Trial",
-        q3_1Label: "Q3.1: Timeline for evaluating or adopting WebMCP (document.modelContext)",
-        timeOpt1: "Immediate PoC / Prototyping (Q2–Q3 2026 / Within 1–3 months)",
-        timeOpt2: "H2 2026 Roadmap Evaluation (Within 3–6 months)",
-        timeOpt3: "2027 Long-Term Exploration",
-        q3_2Label: "Q3.2: Target Critical User Journeys (CUJs) for WebMCP Tools",
-        cujOpt1: "Multi-Constraint Search & Faceted Filtering",
-        cujOpt2: "Customer Support, Diagnostics & Self-Service Repair Flows",
-        cujOpt3: "E-Commerce Cart, Booking & Checkout (Human-in-the-Loop Tier 2/3)",
-        cujOpt4: "Creator & Merchant Authoring Tools (Drafting, Tagging, Publishing)",
-        q3_3Label: "Q3.3: Would your team like direct technical support from Google WEC for the Chrome 154–156 Origin Trial?",
-        otOpt1: "Yes — We would love 1-on-1 architecture & Origin Trial consultation",
-        otOpt2: "Maybe — Please share Origin Trial documentation & updates first",
-        otOpt3: "No thank you — Exploring independently for now",
-        sec4Title: "Section 4: Official Case Study Partnership (developers.google.com)",
-        q4_1Label: "Q4.1: Interest in co-authoring an official engineering case study on developers.google.com with Google WEC",
-        csOpt1: "Yes — Interested in discussing a joint developers.google.com Case Study",
-        csOpt2: "Interested once our PoC / baseline metrics are ready",
-        csOpt3: "Unsure — Need to consult PR / Engineering leadership first",
-        q4_2Label: "Q4.2: Contact Email for Origin Trial & Case Study Follow-Up (Optional)",
-        sec5Title: "Section 5: Direct Feedback for Chrome WebMCP Engineering",
-        q5_1Label: "Q5.1: Feature requests for Chrome WebMCP (API design, SPA router integration, outputSchema, DevTools)",
-        btnSubmitSurvey: "Generate & Copy Survey Response / Submit Feedback",
-        btnOpenGoogleFormAlt: "Submit via Official Google Form Instead ↗",
-        drawerTitle: "✅ Survey Response Ready! (Copied to Clipboard)",
-        drawerSubtitle: "Your structured Markdown + JSON response has been copied to your clipboard and logged to window.lastWebMCPSurveySubmission."
+        navSurvey: "4. Post-Workshop Survey",
+        heroBadge1: "Google Partner Summit 2026 • Official Survey",
+        heroBadge2: "~2 Minutes / 所要時間 約2分",
+        heroTitle: "Post-Workshop Survey & Origin Trial Sign-Up",
+        heroSubtitle: "Thank you for attending \"Architecting Web Applications for the Agentic Era: Built-in AI & WebMCP\"! Scan the QR code with your smartphone, open the official Google Form in a new tab, or fill it out directly below to request Chrome 154–156 Origin Trial support and developers.google.com Case Study co-authoring.",
+        btnOpenGoogleForm: "Open Official Google Form (New Tab) ↗",
+        btnJumpEmbedded: "Fill Embedded Google Form Below",
+        btnTestAgent: "Simulate WebMCP Agent Submission",
+        qrCaption: "📱 Scan with Mobile Camera",
+        card1Title: "1. Official Google Form (Direct In-Page Submission)",
+        card1Sub: "Responses are recorded directly in Google Forms & Google Sheets. You can also open it in a full browser tab.",
+        card2Title: "2. Interactive WebMCP Survey Tool (submit_workshop_feedback)",
+        sec1Title: "Part 1: Workshop Satisfaction & Chrome 155+ WebMCP API Clarity",
+        qCompanyLabel: "Company / Organization Name (Optional)",
+        qCsatLabel: "1. Overall Workshop Satisfaction (1 = Dissatisfied, 5 = Very Satisfied)",
+        qTrackLabel: "2. Which Hands-On Track Did You Explore?",
+        qOtLabel: "3. Chrome 154–156 Origin Trial Consultation & Case Study Interest",
+        qFeedbackLabel: "4. Direct Feedback for Chrome WebMCP Engineering Team",
+        btnGenerateSummary: "Generate & Copy Feedback Summary (JSON + Markdown)"
       },
       ja: {
-        navHub: "1. 事前セットアップHub",
-        navGuide: "2. ステップ別実践ガイド",
-        navFieldGuide: "3. 拡張機能・Built-in AI 実装ガイド",
-        navResources: "4. パートナーリンク＆フィードバックHub",
-        navSurvey: "5. 事後アンケート",
-        heroBadge1: "📊 Google Partner Summit 2026",
-        heroBadge2: "⏱️ 所要時間 約3分",
-        heroBadge3: "🤖 WebMCP ライブツール搭載",
-        heroTitle: "ワークショップ参加後アンケート & Origin Trial 相談フォーム",
-        heroSubtitle: "本日は『Built-in AI & WebMCP 実践ワークショップ』にご参加いただき誠にありがとうございました！皆様からのご回答は Chrome 154–156 開発チームへ直接フィードバックされるほか、Google WEC チームによる Origin Trial 個別サポートや developers.google.com 公式共同事例のご案内に活用させていただきます。",
-        btnOpenGoogleForm: "公式 Google フォームを開く (外部リンク) ↗",
-        btnFillInteractive: "または下のインタラクティブアンケートに回答する (WebMCP対応)",
-        webmcpBannerTitle: "ボーナス：このアンケートページ自体が WebMCP 対応アプリになっています！",
-        webmcpBannerDesc: "document.modelContext に submit_workshop_feedback ツールが登録されています。Track B のサイドパネルエージェントから「5つ星の評価でアンケートを送信して！」と指示してみてください。",
-        btnTestWebMCP: "🤖 AI エージェントによるツール呼び出しをシミュレート",
-        sec0Title: "参加者情報（任意）",
-        qCompanyLabel: "Q0.1: 貴社名（任意）",
-        qRoleLabel: "Q0.2: 主な担当職種・ロール",
-        roleOpt1: "フロントエンド / Webアプリケーションエンジニア",
-        roleOpt2: "AI・機械学習・LLM統合エンジニア",
-        roleOpt3: "アーキテクト / テックリード / エンジニアリングマネージャー",
-        roleOpt4: "プロダクトマネージャー / UXデザイナー",
-        sec1Title: "第1部：ワークショップ全体の満足度と進行ペース",
-        q1_1Label: "Q1.1: 本ワークショップ全体の総合満足度 (CSAT) を教えてください",
-        scale1: "非常に不満",
-        scale2: "やや不満",
-        scale3: "普通",
-        scale4: "満足",
-        scale5: "非常に満足・強く推奨する",
-        q1_2Label: "Q1.2: 進行スピード・時間配分（135分）についていかがでしたか？",
-        paceOpt1: "適切だった — 概念解説とハンズオン実装のバランスが良かった",
-        paceOpt2: "やや速すぎた — ハンズオンのデバッグ時間がもう少し欲しかった",
-        paceOpt3: "やや遅すぎた — より高度な応用パターンまで進みたかった",
-        q1_4Label: "Q1.4: Chrome 154以降の最新WebMCP API仕様（registerTool単一API、SPAライフサイクル、スキーマ設計）の明確さ",
-        sec2Title: "第2部：ハンズオン体験および各モジュールの評価",
-        q2_1Label: "Q2.1: ハンズオンでどちらの拡張機能トラックを実装・検証しましたか？",
-        trackOptA: "Track A: ゼロ権限で既存ページへWebMCPツールを動的注入する拡張機能",
-        trackOptB: "Track B: Chrome Built-in AI (Gemini Nano) と連携するサイドパネルエージェント",
-        trackOptBoth: "Track A・Track B の両方を実装・検証した",
-        q2_2Label: "Q2.2: 特に有益だったモジュールやリソースをすべて選択してください（複数選択可）",
-        modOpt1: "Google Store 修理予約の事例研究（トークン56.2%削減と3ツール設計パターン）",
-        modOpt2: "1クリックで使えるAIプロンプト集（ツール設計・JSON Schema生成・監査プロンプト）",
-        modOpt3: "敵対的レッドチーミング実演（red_team_evaluator.js とプロンプトインジェクション防御）",
-        modOpt4: "Kasperの5項目ツール評価手法および VACO ツール命名・設計基準",
-        modOpt5: "本番運用ガードレール（Human-in-the-Loop 承認フロー・outputSchema・AbortSignal）",
-        modOpt6: "インタラクティブ・プロトコル＆ステートマシン可視化ツール (protocol_animation.html)",
-        sec3Title: "第3部：本番導入ロードマップと Chrome 154–156 Origin Trial",
-        q3_1Label: "Q3.1: 貴社プロダクトにおける WebMCP (document.modelContext) の検証・導入タイムライン",
-        timeOpt1: "直近1〜3ヶ月以内にPoC・プロトタイプ検証を開始したい",
-        timeOpt2: "2026年下半期のロードマップで導入・検証を検討したい",
-        timeOpt3: "2027年以降の中長期テーマとしてリサーチを継続したい",
-        q3_2Label: "Q3.2: 貴社サービスで WebMCP ツール化の優先度が高いユーザージャーニー（CUJ）（複数選択可）",
-        cujOpt1: "複数条件での商品・コンテンツ検索および高度な絞り込みフィルタリング",
-        cujOpt2: "カスタマーサポート・トラブル診断・自己解決/修理予約フロー",
-        cujOpt3: "ECカート追加・予約・決済確認などのHuman-in-the-Loopトランザクション",
-        cujOpt4: "クリエイター・出品者向けの記事作成・出品補助・メタデータ自動入力",
-        q3_3Label: "Q3.3: Chrome 154–156 Origin Trial への参加にあたり、Google WEC チームからの直接的な技術サポート（アーキテクチャ相談・PoC伴走）を希望されますか？",
-        otOpt1: "はい — 個別のアーキテクチャ相談・Origin Trial導入サポートを希望する",
-        otOpt2: "検討中 — まずはOrigin Trialの技術ドキュメントや最新情報を受け取りたい",
-        otOpt3: "いいえ — 現時点では自社内での検証を中心に進める",
-        sec4Title: "第4部：Google 公式エンジニアリング事例（Case Study）共同発表について",
-        q4_1Label: "Q4.1: 貴社での WebMCP または Built-in AI の検証成果について、developers.google.com での Google 公式共同事例としての発表にご関心はありますか？",
-        csOpt1: "はい — 公式ケーススタディの共同執筆・公開について詳しく話を聞きたい",
-        csOpt2: "興味あり — PoCの検証結果やベースライン指標が出た段階で相談したい",
-        csOpt3: "未定 — 広報やエンジニアリング責任者への確認が必要",
-        q4_2Label: "Q4.2: フォローアップ用の連絡先メールアドレス（任意：Origin Trial・公式事例のご連絡用）",
-        sec5Title: "第5部：Chrome WebMCP 開発チームへの直接フィードバック",
-        q5_1Label: "Q5.1: WebMCP API仕様への改善要望、SPAルーター統合、outputSchema、Chrome DevTools デバッグ機能などのご要望（自由記述）",
-        btnSubmitSurvey: "アンケート回答を生成してコピー / 送信する",
-        btnOpenGoogleFormAlt: "公式 Google フォームから回答する ↗",
-        drawerTitle: "✅ アンケート回答が生成されました！（クリップボードにコピー済み）",
-        drawerSubtitle: "Markdown + JSON 形式のアンケート回答がクリップボードにコピーされました。このまま Slack / Chat や Google フォームへ貼り付けて共有できます。"
+        navHub: "1. 事前セットアップハブ",
+        navGuide: "2. スライド＆ステップバイステップガイド",
+        navFieldGuide: "3. 拡張機能・Built-in AI 実践ガイド",
+        navSurvey: "4. ワークショップ事後アンケート",
+        heroBadge1: "Google Partner Summit 2026 • 公式事後アンケート",
+        heroBadge2: "所要時間 約2分 / ~2 Minutes",
+        heroTitle: "ワークショップ事後アンケート & Origin Trial 参加申込",
+        heroSubtitle: "「Architecting Web Applications for the Agentic Era: Built-in AI & WebMCP」にご参加いただきありがとうございました！スマートフォンのカメラで右記のQRコードを読み取るか、下のGoogleフォームから直接ご回答いただき、Chrome 154–156 Origin Trial 技術支援および developers.google.com 公式事例共同執筆にお申し込みいただけます。",
+        btnOpenGoogleForm: "公式 Google フォームを別タブで開く ↗",
+        btnJumpEmbedded: "ページ内の埋め込みフォームで回答する",
+        btnTestAgent: "WebMCP エージェント自動回答をシミュレート",
+        qrCaption: "📱 スマホカメラでQRスキャン",
+        card1Title: "1. 公式 Google フォーム（ページ内から直接送信可能）",
+        card1Sub: "ご回答内容は Google フォームおよびスプレッドシートへ直接記録されます。別タブで全画面表示も可能です。",
+        card2Title: "2. WebMCP エージェント対応アンケートツール (submit_workshop_feedback)",
+        sec1Title: "パート1：ワークショップ満足度 & Chrome 155+ WebMCP API 理解度",
+        qCompanyLabel: "貴社名・ご所属チーム名（任意）",
+        qCsatLabel: "1. ワークショップ全体の満足度（1 = 不満、5 = 非常に満足）",
+        qTrackLabel: "2. 取り組んだハンズオントラック",
+        qOtLabel: "3. Chrome 154–156 Origin Trial 1on1相談 & 公式導入事例への関心",
+        qFeedbackLabel: "4. Chrome WebMCP エンジニアリングチームへのご要望・フィードバック",
+        btnGenerateSummary: "フィードバック要約を生成＆コピー (JSON + Markdown)"
       }
     };
 
     function setLanguage(lang) {
-      localStorage.setItem('webmcp_lang', lang);
+      try { localStorage.setItem('webmcp_lang', lang); } catch (e) {}
       const dict = I18N[lang] || I18N.en;
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
-        if (dict[key]) {
-          el.textContent = dict[key];
-        }
+        if (dict[key]) el.textContent = dict[key];
       });
     }
 
     function toggleLanguage() {
-      const current = localStorage.getItem('webmcp_lang') || 'en';
+      let current = 'en';
+      try { current = localStorage.getItem('webmcp_lang') || 'en'; } catch (e) {}
       setLanguage(current === 'ja' ? 'en' : 'ja');
     }
 
@@ -1068,143 +727,74 @@
       });
     }
 
-    function collectSurveyData() {
+    function collectSurveyPayload(customArgs) {
       const form = document.getElementById('interactive-survey-form');
-      const formData = new FormData(form);
-      const modules = formData.getAll('modules');
-      const cujs = formData.getAll('cujs');
+      const fd = new FormData(form);
       return {
+        status: 'OK',
+        specVersion: 'Chrome 155.0.8052.0+ (PRs #246 & #251 JS Object Input)',
         timestamp: new Date().toISOString(),
-        workshop: "Google Partner Summit 2026: Built-in AI & WebMCP",
-        company: formData.get('company') || 'Anonymous Partner',
-        role: formData.get('role'),
-        csat: Number(formData.get('csat') || 5),
-        pace: formData.get('pace'),
-        clarity: Number(formData.get('clarity') || 5),
-        trackBuilt: formData.get('track'),
-        valuableModules: modules,
-        adoptionTimeline: formData.get('timeline'),
-        targetCUJs: cujs,
-        originTrialSupportRequested: formData.get('otSupport'),
-        caseStudyInterest: formData.get('caseStudy'),
-        contactEmail: formData.get('email') || '',
-        chromeEngineeringFeedback: formData.get('feedback') || ''
+        company: customArgs?.company || fd.get('company') || 'Partner Summit Attendee',
+        csat: Number(customArgs?.csat || fd.get('csat') || 5),
+        track: customArgs?.track || fd.get('track'),
+        interests: customArgs?.interests || fd.getAll('interests'),
+        feedback: customArgs?.feedback || fd.get('feedback') || 'N/A',
+        officialGoogleFormUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSe3S_Ys-9ddXlh3q67ZQMsNNaIxsJbGekNogwPH5VlMXhgTfQ/viewform'
       };
     }
 
-    function formatMarkdownSummary(payload) {
-      return `### 📊 Google Partner Summit 2026 — WebMCP Workshop Survey Response
-- **Company / Organization**: ${payload.company}
-- **Role**: ${payload.role}
-- **Overall CSAT**: ${payload.csat} / 5 ★ | **Chrome 154+ API Clarity**: ${payload.clarity} / 5
-- **Pace**: ${payload.pace}
-- **Track Built**: ${payload.trackBuilt}
-- **Most Valuable Modules**: ${payload.valuableModules.join(', ')}
-- **Adoption Timeline**: ${payload.adoptionTimeline}
-- **Target CUJs**: ${payload.targetCUJs.join(', ')}
-- **Origin Trial Support (WEC)**: ${payload.originTrialSupportRequested}
-- **Official Case Study Interest**: ${payload.caseStudyInterest}
-- **Contact Email**: ${payload.contactEmail || 'N/A'}
-- **Chrome Engineering Feedback**: ${payload.chromeEngineeringFeedback || 'None provided'}
-
-\`\`\`json
-${JSON.stringify(payload, null, 2)}
-\`\`\``;
-    }
-
-    function handleSurveySubmit(e) {
-      if (e) e.preventDefault();
-      const payload = collectSurveyData();
-      window.lastWebMCPSurveySubmission = payload;
-      const summary = formatMarkdownSummary(payload);
-      const box = document.getElementById('response-output-box');
-      box.textContent = summary;
-      const drawer = document.getElementById('response-drawer');
-      drawer.style.display = 'block';
-      drawer.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(summary).catch(() => {});
+    function handleSurveySubmit(customArgs) {
+      const payload = collectSurveyPayload(customArgs);
+      const outBox = document.getElementById('survey-output-container');
+      const outPre = document.getElementById('survey-output-pre');
+      outPre.textContent = JSON.stringify(payload, null, 2);
+      outBox.style.display = 'block';
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(JSON.stringify(payload, null, 2));
       }
       return payload;
     }
 
-    function copySurveyPayload() {
-      const box = document.getElementById('response-output-box');
-      if (navigator.clipboard && box.textContent) {
-        navigator.clipboard.writeText(box.textContent);
-      }
-    }
-
-    function openOfficialGoogleForm() {
-      window.open('https://docs.google.com/forms/d/e/1FAIpQLSe3S_Ys-9ddXlh3q67ZQMsNNaIxsJbGekNogwPH5VlMXhgTfQ/viewform', '_blank', 'noopener,noreferrer');
-    }
-
-    function closeGoogleFormModal() {
-      document.getElementById('google-form-modal').style.display = 'none';
-    }
-
-    function launchConfiguredGoogleForm() {
-      const url = document.getElementById('custom-google-form-url').value.trim();
-      if (url) {
-        window.open(url, '_blank', 'noopener,noreferrer');
-      }
-      closeGoogleFormModal();
-    }
-
     function testAgentAutoFill() {
-      document.getElementById('q-company').value = "Partner Enterprise Engineering (Agent Demo)";
+      document.getElementById('q-company').value = 'Enterprise Partner Engineering (WebMCP Agent Demo)';
       selectScale('csat', 5);
-      selectScale('clarity', 5);
-      document.getElementById('q-feedback').value = "Submitted via WebMCP document.modelContext.registerTool('submit_workshop_feedback')! The single registerTool API and outputSchema typing work seamlessly.";
+      document.getElementById('q-feedback').value = 'Executed via Chrome 155.0.8052.0+ executeTool("submit_workshop_feedback", { company, csat: 5 }) with native JavaScript object arguments (PRs #246 & #251)!';
       handleSurveySubmit();
     }
 
-    // --- Live WebMCP Tool Registration (document.modelContext / navigator.modelContext) ---
-    function registerSurveyWebMCPTool() {
+    // Register Live WebMCP Tool (Supporting Chrome 155.0.8052.0+ JS Object Args & Chrome 154 Fallback)
+    (async function registerSurveyTool() {
       const mc = navigator.modelContext || document.modelContext;
-      if (!mc || typeof mc.registerTool !== 'function') {
-        console.info('[WebMCP Survey] document.modelContext not active in this browser session — UI interactive mode ready.');
-        return;
-      }
+      if (!mc || typeof mc.registerTool !== 'function') return;
       try {
-        mc.registerTool({
+        await mc.registerTool({
           name: 'submit_workshop_feedback',
-          description: 'Submits the participant post-workshop survey for the Google Partner Summit 2026 Built-in AI & WebMCP workshop, including CSAT rating, Origin Trial interest, and developers.google.com Case Study partnership interest.',
+          description: 'Submits post-workshop feedback for the Google Partner Summit 2026 Built-in AI & WebMCP workshop.',
           inputSchema: {
             type: 'object',
             properties: {
-              company: { type: 'string', description: 'Partner company name (e.g. Rakuten, Mercari, note, pixiv, CyberAgent, LINE Yahoo)' },
-              csat: { type: 'integer', minimum: 1, maximum: 5, description: 'Overall workshop satisfaction rating from 1 to 5' },
-              trackBuilt: { type: 'string', enum: ['Track A: Zero-Permission Tool Injector', 'Track B: Local Gemini Nano Side Panel Agent', 'Both Track A & Track B'] },
-              originTrialSupport: { type: 'boolean', description: 'Whether the team wants Google WEC consultation for the Chrome 154-156 Origin Trial' },
-              caseStudyInterest: { type: 'boolean', description: 'Whether the partner is interested in co-authoring an official developers.google.com Case Study' },
-              feedback: { type: 'string', description: 'Direct technical feedback for the Chrome WebMCP engineering team' }
-            },
-            required: ['csat']
+              company: { type: 'string', description: 'Partner company name' },
+              csat: { type: 'integer', minimum: 1, maximum: 5, description: 'Overall satisfaction score 1-5' },
+              track: { type: 'string', description: 'Hands-on track explored' },
+              feedback: { type: 'string', description: 'Direct engineering feedback' }
+            }
           },
-          async execute(args) {
-            if (args.company) document.getElementById('q-company').value = args.company;
-            if (args.csat) selectScale('csat', Number(args.csat));
-            if (args.feedback) document.getElementById('q-feedback').value = args.feedback;
-            const payload = handleSurveySubmit();
-            return {
-              status: 'success',
-              message: 'Workshop feedback submitted and formatted successfully via WebMCP!',
-              summary: payload
-            };
+          execute: async (args) => {
+            // Normalizes Chrome 155.0.8052.0+ JS object args (PRs #246/#251) and legacy DOMStrings
+            const params = typeof args === 'string' ? JSON.parse(args) : (args || {});
+            return handleSurveySubmit(params);
           }
         });
-        console.info('[WebMCP Survey] Registered tool: submit_workshop_feedback');
       } catch (err) {
-        console.warn('[WebMCP Survey] Tool registration warning:', err);
+        console.warn('[WebMCP Survey Tool]', err);
       }
-    }
+    })();
 
-    window.addEventListener('DOMContentLoaded', () => {
-      const savedLang = localStorage.getItem('webmcp_lang') || 'en';
-      setLanguage(savedLang);
-      registerSurveyWebMCPTool();
-    });
+    (function initLang() {
+      let saved = 'en';
+      try { saved = localStorage.getItem('webmcp_lang') || 'en'; } catch (e) {}
+      setLanguage(saved);
+    })();
   </script>
 </body>
 </html>
