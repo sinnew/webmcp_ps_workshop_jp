@@ -1088,90 +1088,103 @@
             </div>
           </div>
 
-          <!-- Proportional Visual Timeline Progress Bar -->
+          <!-- Proportional Visual Timeline Progress Bar (120 Minutes: 20m + 15m + 35m + 10m + 20m + 10m + 10m) -->
           <div style="display:flex; width:100%; height:10px; border-radius:999px; overflow:hidden; margin-bottom:14px; background:#e8eaed; gap:2px;">
-            <div style="width:12.5%; background:var(--google-blue);" title="00:00 (15m) • 01. What's WebMCP?"></div>
-            <div style="width:12.5%; background:var(--google-green);" title="00:15 (15m) • 02. What's the Benefit?"></div>
-            <div style="width:12.5%; background:var(--google-red);" title="00:30 (15m) • 03. What's the Risk?"></div>
-            <div style="width:29.2%; background:#9334e6;" title="00:45 (35m) • 04. Let's Implement!"></div>
-            <div style="width:8.3%; background:#00897b;" title="01:20 (10m) • ☕ Break Time"></div>
-            <div style="width:25%; background:var(--google-yellow);" title="01:30 (30m) • 05. Red-Team & Evaluate!"></div>
+            <div style="width:16.7%; background:var(--google-blue);" title="00:00 (20m) • Step 01: The Why & Threat Model"></div>
+            <div style="width:12.5%; background:var(--google-green);" title="00:20 (15m) • Step 02: Designing Agentic Journeys"></div>
+            <div style="width:29.2%; background:#9334e6;" title="00:35 (35m) • Step 03: Hands-On Coding Sprint"></div>
+            <div style="width:8.3%; background:#00897b;" title="01:10 (10m) • ☕ Break Time"></div>
+            <div style="width:16.7%; background:var(--google-red);" title="01:20 (20m) • Step 04: Red-Team & Annotations"></div>
+            <div style="width:8.3%; background:var(--google-yellow);" title="01:40 (10m) • Step 05: Automated CI/CD Evals"></div>
+            <div style="width:8.3%; background:#1a73e8;" title="01:50 (10m) • Step 06: Wrap-Up & Origin Trial"></div>
           </div>
 
-          <!-- 6-Stop Horizontal Metro Stepper Grid -->
-          <div style="display:grid; grid-template-columns:repeat(6, minmax(145px, 1fr)); gap:10px; overflow-x:auto; padding-bottom:4px;">
+          <!-- 7-Stop Horizontal Stepper Grid (1:1 Aligned with Step 01–06 + Break) -->
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:10px; padding-bottom:4px;">
 
-            <!-- Stop 1: 00:00 (15m) -->
-            <div style="background:#f8fafc; border:1px solid #dadce0; border-top:4px solid var(--google-blue); border-radius:10px; padding:12px; display:flex; flex-direction:column; justify-content:space-between;">
+            <!-- Step 01: 00:00 (20m) -->
+            <a href="#step-1" style="text-decoration:none; background:#f8fafc; border:1px solid #dadce0; border-top:4px solid var(--google-blue); border-radius:10px; padding:11px; display:flex; flex-direction:column; justify-content:space-between; transition:transform 0.15s ease;">
               <div>
-                <div style="font-family:'Google Sans Code',monospace; font-size:11px; font-weight:700; color:var(--google-blue); margin-bottom:4px;">00:00 (15m)</div>
-                <div style="font-size:14px; font-weight:700; color:var(--text-primary); margin-bottom:4px;">01. What's WebMCP?</div>
-                <div style="font-size:12px; color:var(--text-secondary); line-height:1.35;"><code>API ➔ MCP ➔ WebMCP</code> Protocol Evolution</div>
+                <div style="font-family:'Google Sans Code',monospace; font-size:11px; font-weight:700; color:var(--google-blue); margin-bottom:3px;">00:00 • 20m</div>
+                <div style="font-size:13.5px; font-weight:700; color:var(--text-primary); margin-bottom:4px;">Step 01: The Why &amp; Threat Model</div>
+                <div style="font-size:11.5px; color:var(--text-secondary); line-height:1.35;"><code>API➔MCP➔WebMCP</code>, gStore Case Study &amp; Agent Exploits</div>
               </div>
               <div style="margin-top:8px;">
-                <span style="display:inline-block; font-size:10.5px; font-weight:700; background:#e8f0fe; color:var(--google-blue); padding:2px 8px; border-radius:999px;">Concept</span>
+                <span style="display:inline-block; font-size:10px; font-weight:700; background:#e8f0fe; color:var(--google-blue); padding:2px 7px; border-radius:999px;">Why &amp; Risks</span>
               </div>
-            </div>
+            </a>
 
-            <!-- Stop 2: 00:15 (15m) -->
-            <div style="background:#f8fafc; border:1px solid #dadce0; border-top:4px solid var(--google-green); border-radius:10px; padding:12px; display:flex; flex-direction:column; justify-content:space-between;">
+            <!-- Step 02: 00:20 (15m) -->
+            <a href="#step-2" style="text-decoration:none; background:#f8fafc; border:1px solid #dadce0; border-top:4px solid var(--google-green); border-radius:10px; padding:11px; display:flex; flex-direction:column; justify-content:space-between; transition:transform 0.15s ease;">
               <div>
-                <div style="font-family:'Google Sans Code',monospace; font-size:11px; font-weight:700; color:var(--google-green); margin-bottom:4px;">00:15 (15m)</div>
-                <div style="font-size:14px; font-weight:700; color:var(--text-primary); margin-bottom:4px;">02. What's the Benefit?</div>
-                <div style="font-size:12px; color:var(--text-secondary); line-height:1.35;">gStore Case Study: <strong>-56.2%</strong> tokens, <strong>~30%</strong> faster CUJ</div>
+                <div style="font-family:'Google Sans Code',monospace; font-size:11px; font-weight:700; color:var(--google-green); margin-bottom:3px;">00:20 • 15m</div>
+                <div style="font-size:13.5px; font-weight:700; color:var(--text-primary); margin-bottom:4px;">Step 02: Designing Journeys</div>
+                <div style="font-size:11.5px; color:var(--text-secondary); line-height:1.35;">From CUJs to WebMCP Tools &amp; UI Sync</div>
               </div>
               <div style="margin-top:8px;">
-                <span style="display:inline-block; font-size:10.5px; font-weight:700; background:#e6f4ea; color:var(--google-green); padding:2px 8px; border-radius:999px;">Business Proof</span>
+                <span style="display:inline-block; font-size:10px; font-weight:700; background:#e6f4ea; color:var(--google-green); padding:2px 7px; border-radius:999px;">Architecture</span>
               </div>
-            </div>
+            </a>
 
-            <!-- Stop 3: 00:30 (15m) -->
-            <div style="background:#f8fafc; border:1px solid #dadce0; border-top:4px solid var(--google-red); border-radius:10px; padding:12px; display:flex; flex-direction:column; justify-content:space-between;">
+            <!-- Step 03: 00:35 (35m) -->
+            <a href="#step-3" style="text-decoration:none; background:#f8fafc; border:1px solid #dadce0; border-top:4px solid #9334e6; border-radius:10px; padding:11px; display:flex; flex-direction:column; justify-content:space-between; transition:transform 0.15s ease;">
               <div>
-                <div style="font-family:'Google Sans Code',monospace; font-size:11px; font-weight:700; color:var(--google-red); margin-bottom:4px;">00:30 (15m)</div>
-                <div style="font-size:14px; font-weight:700; color:var(--text-primary); margin-bottom:4px;">03. What's the Risk?</div>
-                <div style="font-size:12px; color:var(--text-secondary); line-height:1.35;">Agent Threat Model: IDOR, Prompt Injection, Silent Checkout</div>
+                <div style="font-family:'Google Sans Code',monospace; font-size:11px; font-weight:700; color:#9334e6; margin-bottom:3px;">00:35 • 35m</div>
+                <div style="font-size:13.5px; font-weight:700; color:var(--text-primary); margin-bottom:4px;">Step 03: Hands-On Coding</div>
+                <div style="font-size:11.5px; color:var(--text-secondary); line-height:1.35;">Track A (Guided) &amp; Track B (1-Click AI Prompts)</div>
               </div>
               <div style="margin-top:8px;">
-                <span style="display:inline-block; font-size:10.5px; font-weight:700; background:#fce8e6; color:var(--google-red); padding:2px 8px; border-radius:999px;">Threat Model</span>
+                <span style="display:inline-block; font-size:10px; font-weight:700; background:#f3e8fd; color:#7627bb; padding:2px 7px; border-radius:999px;">Build Sprint</span>
               </div>
-            </div>
+            </a>
 
-            <!-- Stop 4: 00:45 (35m) -->
-            <div style="background:#f8fafc; border:1px solid #dadce0; border-top:4px solid #9334e6; border-radius:10px; padding:12px; display:flex; flex-direction:column; justify-content:space-between;">
+            <!-- Break Time: 01:10 (10m) -->
+            <a href="#workshop-break-card" style="text-decoration:none; background:#f0fdf4; border:1px solid #bbf7d0; border-top:4px solid #00897b; border-radius:10px; padding:11px; display:flex; flex-direction:column; justify-content:space-between; transition:transform 0.15s ease;">
               <div>
-                <div style="font-family:'Google Sans Code',monospace; font-size:11px; font-weight:700; color:#9334e6; margin-bottom:4px;">00:45 (35m)</div>
-                <div style="font-size:14px; font-weight:700; color:var(--text-primary); margin-bottom:4px;">04. Let's Implement!</div>
-                <div style="font-size:12px; color:var(--text-secondary); line-height:1.35;">Hands-On Coding: Track A &amp; Track B</div>
+                <div style="font-family:'Google Sans Code',monospace; font-size:11px; font-weight:700; color:#00897b; margin-bottom:3px;">01:10 • 10m</div>
+                <div style="font-size:13.5px; font-weight:700; color:var(--text-primary); margin-bottom:4px;">☕ Break Time</div>
+                <div style="font-size:11.5px; color:var(--text-secondary); line-height:1.35;">10-Min Recharge &amp; Stopwatch</div>
               </div>
               <div style="margin-top:8px;">
-                <span style="display:inline-block; font-size:10.5px; font-weight:700; background:#f3e8fd; color:#7627bb; padding:2px 8px; border-radius:999px;">Hands-On Sprint</span>
+                <span style="display:inline-block; font-size:10px; font-weight:700; background:#ccfbf1; color:#0f766e; padding:2px 7px; border-radius:999px;">Intermission</span>
               </div>
-            </div>
+            </a>
 
-            <!-- Stop 5: 01:20 (10m) -->
-            <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-top:4px solid #00897b; border-radius:10px; padding:12px; display:flex; flex-direction:column; justify-content:space-between;">
+            <!-- Step 04: 01:20 (20m) -->
+            <a href="#step-4" style="text-decoration:none; background:#f8fafc; border:1px solid #dadce0; border-top:4px solid var(--google-red); border-radius:10px; padding:11px; display:flex; flex-direction:column; justify-content:space-between; transition:transform 0.15s ease;">
               <div>
-                <div style="font-family:'Google Sans Code',monospace; font-size:11px; font-weight:700; color:#00897b; margin-bottom:4px;">01:20 (10m)</div>
-                <div style="font-size:14px; font-weight:700; color:var(--text-primary); margin-bottom:4px;">☕ Break Time</div>
-                <div style="font-size:12px; color:var(--text-secondary); line-height:1.35;">10-Min Recharge &amp; Extension Check</div>
+                <div style="font-family:'Google Sans Code',monospace; font-size:11px; font-weight:700; color:var(--google-red); margin-bottom:3px;">01:20 • 20m</div>
+                <div style="font-size:13.5px; font-weight:700; color:var(--text-primary); margin-bottom:4px;">Step 04: Red-Team &amp; Guardrails</div>
+                <div style="font-size:11.5px; color:var(--text-secondary); line-height:1.35;">Side-by-Side Risk ↔ WebMCP Property Matrix</div>
               </div>
               <div style="margin-top:8px;">
-                <span style="display:inline-block; font-size:10.5px; font-weight:700; background:#ccfbf1; color:#0f766e; padding:2px 8px; border-radius:999px;">Intermission</span>
+                <span style="display:inline-block; font-size:10px; font-weight:700; background:#fce8e6; color:var(--google-red); padding:2px 7px; border-radius:999px;">Defense Matrix</span>
               </div>
-            </div>
+            </a>
 
-            <!-- Stop 6: 01:30 (30m) -->
-            <div style="background:#f8fafc; border:1px solid #dadce0; border-top:4px solid #f29900; border-radius:10px; padding:12px; display:flex; flex-direction:column; justify-content:space-between;">
+            <!-- Step 05: 01:40 (10m) -->
+            <a href="#step-5" style="text-decoration:none; background:#f8fafc; border:1px solid #dadce0; border-top:4px solid #f29900; border-radius:10px; padding:11px; display:flex; flex-direction:column; justify-content:space-between; transition:transform 0.15s ease;">
               <div>
-                <div style="font-family:'Google Sans Code',monospace; font-size:11px; font-weight:700; color:#b06000; margin-bottom:4px;">01:30 (30m)</div>
-                <div style="font-size:14px; font-weight:700; color:var(--text-primary); margin-bottom:4px;">05. Red-Team &amp; Evaluate!</div>
-                <div style="font-size:12px; color:var(--text-secondary); line-height:1.35;">Security Annotations + 5-Point Rubric</div>
+                <div style="font-family:'Google Sans Code',monospace; font-size:11px; font-weight:700; color:#b06000; margin-bottom:3px;">01:40 • 10m</div>
+                <div style="font-size:13.5px; font-weight:700; color:var(--text-primary); margin-bottom:4px;">Step 05: Automated Evals</div>
+                <div style="font-size:11.5px; color:var(--text-secondary); line-height:1.35;">Google 5-Point Trajectory Rubric &amp; CI/CD</div>
               </div>
               <div style="margin-top:8px;">
-                <span style="display:inline-block; font-size:10.5px; font-weight:700; background:#fef7e0; color:#b06000; padding:2px 8px; border-radius:999px;">Red-Team &amp; QA</span>
+                <span style="display:inline-block; font-size:10px; font-weight:700; background:#fef7e0; color:#b06000; padding:2px 7px; border-radius:999px;">QA &amp; Evals</span>
               </div>
-            </div>
+            </a>
+
+            <!-- Step 06: 01:50 (10m) -->
+            <a href="#step-6" style="text-decoration:none; background:#f8fafc; border:1px solid #dadce0; border-top:4px solid #1a73e8; border-radius:10px; padding:11px; display:flex; flex-direction:column; justify-content:space-between; transition:transform 0.15s ease;">
+              <div>
+                <div style="font-family:'Google Sans Code',monospace; font-size:11px; font-weight:700; color:#1a73e8; margin-bottom:3px;">01:50 • 10m</div>
+                <div style="font-size:13.5px; font-weight:700; color:var(--text-primary); margin-bottom:4px;">Step 06: Wrap-Up &amp; OT</div>
+                <div style="font-size:11.5px; color:var(--text-secondary); line-height:1.35;">Chrome 154–156 Origin Trial &amp; Case Studies</div>
+              </div>
+              <div style="margin-top:8px;">
+                <span style="display:inline-block; font-size:10px; font-weight:700; background:#e8f0fe; color:#1a73e8; padding:2px 7px; border-radius:999px;">Next Steps</span>
+              </div>
+            </a>
 
           </div>
         </div>
