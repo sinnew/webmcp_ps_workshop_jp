@@ -3,171 +3,202 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Developer Field Guide: Built-in AI & WebMCP Extension Gotchas | Google Partner Summit</title>
+  <title>WebMCP Partner Summit 2026 — Extension & Built-in AI Field Guide</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Code:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --google-blue: #1a73e8;
-      --google-blue-hover: #1557b0;
       --google-blue-light: #e8f0fe;
+      --google-blue-hover: #1557b0;
       --google-green: #1e8e3e;
       --google-green-light: #e6f4ea;
       --google-yellow: #f9ab00;
       --google-yellow-light: #fef7e0;
       --google-red: #d93025;
       --google-red-light: #fce8e6;
-      --google-purple: #9334e6;
+      --google-purple: #7627bb;
       --google-purple-light: #f3e8fd;
-      
-      --bg-page: #f8f9fa;
-      --bg-surface: #ffffff;
-      --bg-subtle: #f1f3f4;
-      --text-main: #202124;
-      --text-secondary: #5f6368;
-      --text-muted: #80868b;
-      --border: #dadce0;
-      --border-light: #e8eaed;
-      --code-bg: #1e1e1e;
-      --code-text: #e8eaed;
-      
+
+      --bg-page: #f8fafc;
+      --bg-card: #ffffff;
+      --bg-subtle: #f1f5f9;
+      --bg-code: #0f172a;
+
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+
       --radius-sm: 8px;
       --radius-md: 12px;
       --radius-lg: 16px;
-      --shadow-sm: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
-      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.06);
-      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.05);
-    }
+      --radius-full: 9999px;
 
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg-page: #121212;
-        --bg-surface: #1e1e1e;
-        --bg-subtle: #2d2d2d;
-        --text-main: #e8eaed;
-        --text-secondary: #bdc1c6;
-        --text-muted: #9aa0a6;
-        --border: #3c4043;
-        --border-light: #2d2d2d;
-        --google-blue-light: rgba(26, 115, 232, 0.15);
-        --google-green-light: rgba(30, 142, 62, 0.15);
-        --google-yellow-light: rgba(249, 171, 0, 0.15);
-        --google-red-light: rgba(217, 48, 37, 0.15);
-        --google-purple-light: rgba(147, 52, 230, 0.15);
-        --code-bg: #0d0d0d;
-      }
+      --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+      --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.07);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'Roboto', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background-color: var(--bg-page);
-      color: var(--text-main);
+      color: var(--text-primary);
       line-height: 1.6;
       padding-bottom: 80px;
     }
 
-    h1, h2, h3, h4, .font-display {
-      font-family: 'Google Sans', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+    h1, h2, h3, h4 {
+      font-family: 'Google Sans', 'Inter', sans-serif;
     }
 
-    code, pre, .font-code {
-      font-family: 'Google Sans Code', SFMono-Regular, Consolas, monospace;
+    code, pre {
+      font-family: 'Google Sans Code', monospace;
     }
 
-    .container {
-      max-width: 1040px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
-
-    header {
-      background: var(--bg-surface);
+    /* Unified Sticky Top Navigation Bar (Identical Across All 4 Pages) */
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
-      padding: 24px 0;
-      margin-bottom: 32px;
+      padding: 12px 24px;
       box-shadow: var(--shadow-sm);
     }
 
-    .nav-bar {
+    .nav-container {
+      max-width: 1120px;
+      margin: 0 auto;
       display: flex;
+      align-items: center;
       justify-content: space-between;
-      align-items: center;
       flex-wrap: wrap;
-      gap: 16px;
+      gap: 12px;
     }
 
-    .btn-back {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      text-decoration: none;
-      color: var(--google-blue);
-      font-weight: 500;
-      font-size: 14px;
-      padding: 8px 14px;
-      border-radius: var(--radius-sm);
-      background: var(--google-blue-light);
-      transition: all 0.2s ease;
-    }
-    .btn-back:hover {
-      background: var(--google-blue);
-      color: #ffffff;
-    }
-
-    .lang-switcher {
+    .brand-group {
       display: flex;
-      background: var(--bg-subtle);
-      border-radius: 20px;
-      padding: 3px;
-      border: 1px solid var(--border);
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text-primary);
+      font-weight: 700;
+      font-size: 16px;
+      font-family: 'Google Sans', sans-serif;
     }
-    .lang-btn {
-      border: none;
-      background: none;
-      padding: 6px 14px;
-      border-radius: 16px;
+
+    .nav-pills {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: var(--bg-subtle);
+      padding: 4px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+
+    .nav-pill {
+      text-decoration: none;
       font-size: 13px;
       font-weight: 600;
-      cursor: pointer;
       color: var(--text-secondary);
-      transition: all 0.2s;
-    }
-    .lang-btn.active {
-      background: var(--bg-surface);
-      color: var(--google-blue);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+      padding: 6px 14px;
+      border-radius: 999px;
+      transition: all 0.15s ease;
     }
 
-    .hero-banner {
-      background: linear-gradient(135deg, rgba(26, 115, 232, 0.08) 0%, rgba(147, 52, 230, 0.08) 100%);
+    .nav-pill:hover {
+      color: var(--text-primary);
+    }
+
+    .nav-pill.active {
+      background: var(--google-blue);
+      color: #ffffff;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .lang-toggle {
+      background: var(--bg-card);
+      color: var(--text-primary);
       border: 1px solid var(--border);
-      border-left: 5px solid var(--google-blue);
-      border-radius: var(--radius-md);
-      padding: 24px 28px;
-      margin-bottom: 32px;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .lang-toggle:hover {
+      border-color: var(--google-blue);
+      color: var(--google-blue);
+    }
+
+    .container {
+      max-width: 1120px;
+      margin: 28px auto;
+      padding: 0 20px;
+    }
+
+    /* Unified Hero Card */
+    .hero-card {
+      background: linear-gradient(135deg, #ffffff 0%, #f0f6ff 60%, #e8f0fe 100%);
+      border: 1px solid #d2e3fc;
+      border-radius: var(--radius-lg);
+      padding: 32px 28px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 24px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--google-blue-light);
+      color: var(--google-blue);
+      border: 1px solid rgba(26, 115, 232, 0.25);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      margin-bottom: 12px;
     }
 
     .hero-title {
-      font-size: 26px;
+      font-size: 28px;
       font-weight: 700;
-      color: var(--text-main);
+      color: var(--text-primary);
       margin-bottom: 8px;
+      line-height: 1.25;
+      letter-spacing: -0.3px;
     }
 
-    .hero-desc {
+    .hero-subtitle {
       font-size: 15px;
       color: var(--text-secondary);
+      max-width: 860px;
       line-height: 1.6;
     }
 
+    /* Card Containers */
     .card {
-      background: var(--bg-surface);
+      background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
-      padding: 28px;
+      padding: 24px;
       margin-bottom: 24px;
       box-shadow: var(--shadow-sm);
     }
@@ -175,156 +206,109 @@
     .card-header {
       display: flex;
       align-items: center;
-      gap: 12px;
-      margin-bottom: 18px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid var(--border-light);
+      gap: 10px;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
     }
 
     .card-icon {
-      font-size: 24px;
+      font-size: 22px;
     }
 
     .card-title {
       font-size: 20px;
       font-weight: 700;
-      color: var(--text-main);
+      color: var(--text-primary);
     }
 
     .comparison-grid {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
       gap: 20px;
       margin-top: 16px;
     }
 
-    @media (max-width: 768px) {
-      .comparison-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
     .track-card {
       border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
+      border-radius: var(--radius-md);
       padding: 20px;
       background: var(--bg-subtle);
-      min-width: 0;
-      overflow: hidden;
     }
 
-    .track-card.track-a {
-      border-top: 4px solid var(--google-green);
-    }
-
-    .track-card.track-b {
-      border-top: 4px solid var(--google-blue);
-    }
+    .track-card.track-a { border-top: 4px solid var(--google-green); }
+    .track-card.track-b { border-top: 4px solid var(--google-blue); }
 
     .track-badge {
       display: inline-block;
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.5px;
       padding: 4px 10px;
-      border-radius: 20px;
-      margin-bottom: 12px;
+      border-radius: var(--radius-full);
+      margin-bottom: 10px;
     }
 
-    .track-a .track-badge {
-      background: var(--google-green-light);
-      color: var(--google-green);
-    }
-
-    .track-b .track-badge {
-      background: var(--google-blue-light);
-      color: var(--google-blue);
-    }
-
-    .gotcha-alert {
-      background: var(--google-yellow-light);
-      border: 1px solid #f9ab00;
-      border-left: 4px solid #f9ab00;
-      border-radius: var(--radius-sm);
-      padding: 14px 18px;
-      margin: 16px 0;
-      font-size: 14px;
-      color: #3c4043;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      .gotcha-alert {
-        background: rgba(249, 171, 0, 0.15);
-        color: #fef7e0;
-      }
-    }
-
-    .gotcha-title {
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 4px;
-      color: #b06000;
-    }
-    @media (prefers-color-scheme: dark) {
-      .gotcha-title { color: #f9ab00; }
-    }
+    .track-a .track-badge { background: var(--google-green-light); color: var(--google-green); }
+    .track-b .track-badge { background: var(--google-blue-light); color: var(--google-blue); }
 
     pre {
-      background: var(--code-bg);
-      color: var(--code-text);
-      padding: 16px;
+      background: var(--bg-code);
+      color: #e2e8f0;
+      padding: 14px 16px;
       border-radius: var(--radius-sm);
       overflow-x: auto;
-      max-width: 100%;
-      font-size: 13px;
+      font-size: 12.5px;
       line-height: 1.5;
-      margin: 12px 0;
-      border: 1px solid rgba(255,255,255,0.08);
+      margin: 10px 0;
       position: relative;
     }
 
     .copy-btn {
       position: absolute;
-      top: 10px;
-      right: 10px;
-      background: rgba(255,255,255,0.15);
-      border: 1px solid rgba(255,255,255,0.25);
+      top: 8px;
+      right: 8px;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.25);
       color: #fff;
+      padding: 4px 10px;
       font-size: 11px;
-      padding: 4px 8px;
-      border-radius: 4px;
+      border-radius: 5px;
       cursor: pointer;
-      transition: all 0.2s;
     }
-    .copy-btn:hover {
-      background: rgba(255,255,255,0.3);
+
+    .gotcha-alert {
+      background: var(--google-yellow-light);
+      border: 1.5px solid var(--google-yellow);
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+      margin-top: 18px;
+      font-size: 13.5px;
+      color: var(--text-primary);
+    }
+
+    .gotcha-title {
+      font-weight: 700;
+      color: #b06000;
+      font-size: 15px;
+      margin-bottom: 6px;
     }
 
     table.gotcha-table {
       width: 100%;
       border-collapse: collapse;
-      margin: 16px 0;
+      margin: 12px 0;
       font-size: 13px;
-      table-layout: fixed;
+      background: #ffffff;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
     }
 
     table.gotcha-table th, table.gotcha-table td {
       border: 1px solid var(--border);
-      padding: 10px 12px;
+      padding: 9px 12px;
       text-align: left;
-      word-break: break-word;
-      overflow-wrap: break-word;
-    }
-
-    table.gotcha-table th:first-child, table.gotcha-table td:first-child {
-      width: 36%;
-    }
-
-    table.gotcha-table th:last-child, table.gotcha-table td:last-child {
-      width: 64%;
     }
 
     table.gotcha-table th {
@@ -332,413 +316,367 @@
       font-weight: 700;
     }
 
-    .tag-badge {
-      display: inline-block;
-      font-size: 11px;
-      font-weight: 600;
-      padding: 2px 8px;
-      border-radius: 12px;
-      font-family: 'Google Sans Code', monospace;
+    .gotcha-item {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      margin-bottom: 14px;
+      background: var(--bg-subtle);
     }
-    .tag-green { background: var(--google-green-light); color: var(--google-green); }
-    .tag-red { background: var(--google-red-light); color: var(--google-red); }
-    .tag-blue { background: var(--google-blue-light); color: var(--google-blue); }
+
+    .gotcha-item h3 {
+      font-size: 15.5px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+    }
+
+    .gotcha-item p {
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
   </style>
 </head>
 <body>
 
-  <!-- Navigation Header -->
-  <header>
-    <div class="container">
-      <div class="nav-bar">
-        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-          <a href="index.html" class="btn-back">
-            <span>←</span> <span data-i18n="backHub">1. Setup Hub</span>
-          </a>
-          <a href="workshop_guide.html" class="btn-back" style="background:var(--google-blue); color:#ffffff;">
-            <span>📑</span> <span>2. Slide Deck &amp; Step-by-Step Guide</span>
-          </a>
-        </div>
-        <div style="font-weight: 700; font-size: 15px; color: var(--text-secondary);">
-          Google Partner Summit 2026 • Developer Reference
-        </div>
-        <div class="lang-switcher">
-          <button class="lang-btn active" id="btn-lang-en">EN</button>
-          <button class="lang-btn" id="btn-lang-ja">日本語</button>
-        </div>
+  <!-- Unified 4-Page Sticky Header (Identical Across All Pages) -->
+  <header class="top-nav">
+    <div class="nav-container">
+      <a href="index.html" class="brand-group">
+        <span style="font-size: 22px;">⚡</span>
+        <span>WebMCP Partner Summit 2026</span>
+      </a>
+
+      <nav class="nav-pills" aria-label="Workshop Pages">
+        <a href="index.html" class="nav-pill" data-i18n="navHub">1. Pre-Workshop Setup Hub</a>
+        <a href="workshop_guide.html" class="nav-pill" data-i18n="navGuide">2. Step-by-Step Workshop Guide</a>
+        <a href="extension_guide.html" class="nav-pill active" data-i18n="navFieldGuide">3. Extension &amp; Built-in AI Field Guide</a>
+        <a href="survey.html" class="nav-pill" data-i18n="navSurvey">4. Post-Workshop Survey</a>
+        <a href="partner_resources.html" class="nav-pill" data-i18n="navResources">5. Partner Links Hub</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="lang-toggle" id="btn-lang-toggle" onclick="toggleLanguage()">🇯🇵 日本語 / EN</button>
       </div>
     </div>
   </header>
 
   <main class="container">
-
     <!-- Hero Banner -->
-    <div class="hero-banner">
-      <h1 class="hero-title" data-i18n="heroTitle">🛠️ Chrome Extension & Built-in AI Field Guide</h1>
-      <p class="hero-desc" data-i18n="heroDesc">
-        Essential architecture patterns, Manifest V3 permission rules, and critical gotchas for building WebMCP tool injectors and local Gemini Nano autonomous browser agents.
+    <section class="hero-card">
+      <div class="hero-badge">
+        <span>🛠️</span> <span data-i18n="heroBadge">Keyword Field Guide • MV3 &amp; Built-in AI</span>
+      </div>
+      <h1 class="hero-title" data-i18n="heroTitle">Chrome Extension &amp; Built-in AI Field Guide</h1>
+      <p class="hero-subtitle" data-i18n="heroDesc">
+        Keyword cheat sheet for Manifest V3 permissions (Track A vs. Track B), on-device Gemini Nano (LanguageModel) gotchas, and WebMCP UI synchronization rules.
       </p>
-    </div>
+    </section>
 
     <!-- Section 1: Permissions Matrix (Track A vs Track B) -->
     <section class="card">
       <div class="card-header">
         <span class="card-icon">🔑</span>
-        <h2 class="card-title" data-i18n="sec1Title">Manifest V3 Permissions: Track A vs. Track B</h2>
+        <h2 class="card-title" data-i18n="sec1Title">1. Manifest V3 Architecture: Track A vs. Track B</h2>
       </div>
-      <p style="font-size:14.5px; color:var(--text-secondary);" data-i18n="sec1Desc">
-        Compare the permission scope and architecture between declarative tool injection and full-stack side panel agent actuation:
+      <p style="font-size:14px; color:var(--text-secondary);" data-i18n="sec1Desc">
+        Compare permission scope and architecture between declarative tool injection (Track A) and full-stack Side Panel agents (Track B):
       </p>
 
       <div class="comparison-grid">
         <!-- Track A Card -->
         <div class="track-card track-a">
           <span class="track-badge" data-i18n="trackABadge">Track A: Tool Injector (Fast-Track)</span>
-          <h3 style="font-size:17px; margin-bottom:8px;" data-i18n="trackATitle">Declarative Content Script Injection</h3>
-          <p style="font-size:13.5px; color:var(--text-secondary); margin-bottom:12px;" data-i18n="trackADesc">
-            Injects WebMCP tool contracts (<code>document.modelContext.registerTool</code>) directly into target web pages. You inspect, validate schemas, and execute tools using Google's official WebMCP Tool Inspector Extension.
+          <h3 style="font-size:17px; margin-bottom:6px;" data-i18n="trackATitle">Declarative Content Script Injection</h3>
+          <p style="font-size:13.5px; color:var(--text-secondary); margin-bottom:10px;" data-i18n-html="trackADesc">
+            Injects WebMCP tools (<code>document.modelContext.registerTool</code>) directly into web pages. Zero host permissions required.
           </p>
 
-          <div style="font-weight:600; font-size:13px; margin-top:14px; margin-bottom:4px;" data-i18n="trackAManifest">Track A manifest.json:</div>
+          <div style="font-weight:700; font-size:12.5px; margin-top:10px;" data-i18n="trackAManifest">Track A manifest.json:</div>
           <pre><code>{
   "manifest_version": 3,
   "name": "WebMCP Injector",
   "version": "1.0",
   "content_scripts": [{
-    "matches": ["https://*.rakuten.co.jp/*", "https://*.note.com/*", "http://localhost:*/*"],
+    "matches": ["https://*.example-store.com/*", "http://localhost:*/*"],
     "js": ["tools.js"],
     "world": "MAIN",
     "run_at": "document_idle"
   }]
 }<button class="copy-btn" onclick="copyCode(this)">Copy</button></code></pre>
-          <div style="font-size:12px; color:var(--google-green); font-weight:600;" data-i18n="trackANote">
-            ✅ Key Setting: <code>"world": "MAIN"</code> ensures tools register in the page's actual JS context rather than extension isolation.
+          <div style="font-size:12.5px; color:var(--google-green); font-weight:700;" data-i18n-html="trackANote">
+            ✅ Must-Have: <code>"world": "MAIN"</code> registers tools in the page's actual JS context rather than isolated extension world.
           </div>
         </div>
 
         <!-- Track B Card -->
         <div class="track-card track-b">
           <span class="track-badge" data-i18n="trackBBadge">Track B: Full-Stack AI Agent (Advanced)</span>
-          <h3 style="font-size:17px; margin-bottom:8px;" data-i18n="trackBTitle">Permissions ARE Mandatory</h3>
-          <p style="font-size:13.5px; color:var(--text-secondary); margin-bottom:12px;" data-i18n="trackBDesc">
-            If your extension hosts an interactive chat UI in Chrome's Side Panel powered by local Gemini Nano and programmatically actuates the page:
+          <h3 style="font-size:17px; margin-bottom:6px;" data-i18n="trackBTitle">Explicit Permissions Required</h3>
+          <p style="font-size:13.5px; color:var(--text-secondary); margin-bottom:10px;" data-i18n="trackBDesc">
+            Hosts a Side Panel chat UI powered by local Gemini Nano that inspects and invokes WebMCP tools on the active tab:
           </p>
 
           <table class="gotcha-table">
-            <tr>
-              <th>Permission</th>
-              <th>Meaning & For What</th>
-            </tr>
-            <tr>
-              <td><code>"sidePanel"</code></td>
-              <td><strong>Side Panel API:</strong> Displays <code>sidepanel.html</code> companion chat UI</td>
-            </tr>
-            <tr>
-              <td><code>"tabs"</code></td>
-              <td><strong>Tab metadata:</strong> Gets active tab ID to target tool execution</td>
-            </tr>
-            <tr>
-              <td><code>"scripting"</code></td>
-              <td><strong>Code injection:</strong> Runs tools in page via <code>executeScript</code></td>
-            </tr>
-            <tr>
-              <td><code>host_permissions</code></td>
-              <td><strong>Domain authority:</strong> Allows side panel clicks to run scripts</td>
-            </tr>
+            <thead>
+              <tr>
+                <th data-i18n="tblTh1">Permission</th>
+                <th data-i18n="tblTh2">Why It Is Required</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>"sidePanel"</code></td>
+                <td data-i18n-html="tblTd1"><strong>Side Panel API:</strong> Displays <code>sidepanel.html</code> chat UI</td>
+              </tr>
+              <tr>
+                <td><code>"tabs"</code></td>
+                <td data-i18n-html="tblTd2"><strong>Tab ID Lookup:</strong> Targets active tab for tool execution</td>
+              </tr>
+              <tr>
+                <td><code>"scripting"</code></td>
+                <td data-i18n-html="tblTd3"><strong>Script Execution:</strong> Calls tools in page via <code>executeScript</code></td>
+              </tr>
+              <tr>
+                <td><code>host_permissions</code></td>
+                <td data-i18n-html="tblTd4"><strong>Cross-Origin Access:</strong> Required because Side Panel clicks do not trigger <code>activeTab</code></td>
+              </tr>
+            </tbody>
           </table>
 
-          <div style="font-weight:600; font-size:13px; margin-top:14px; margin-bottom:4px;" data-i18n="trackBManifest">Minimal Track B manifest.json:</div>
+          <div style="font-weight:700; font-size:12.5px; margin-top:10px;" data-i18n="trackBManifest">Minimal Track B manifest.json:</div>
           <pre><code>{
   "manifest_version": 3,
   "name": "WebMCP AI Agent",
   "version": "1.0",
   "permissions": ["sidePanel", "tabs", "scripting"],
   "host_permissions": ["&lt;all_urls&gt;"],
-  "background": { "service_worker": "sw.js" },
-  "side_panel": { "default_path": "sidepanel.html" },
-  "action": { "default_title": "Open Agent" }
+  "side_panel": { "default_path": "sidepanel.html" }
 }<button class="copy-btn" onclick="copyCode(this)">Copy</button></code></pre>
         </div>
       </div>
 
       <!-- Gotcha Alert: activeTab Trap -->
       <div class="gotcha-alert">
-        <div class="gotcha-title">⚠️ The `activeTab` Trap in Side Panels (Rule #12)</div>
-        <div>
-          Clicking a button inside an extension Side Panel (e.g., "Submit Prompt") does <strong>NOT</strong> grant <code>activeTab</code> access to the page. <code>activeTab</code> only fires on direct browser chrome actions (toolbar icon click or context menu). If you don't declare <code>"tabs"</code>, <code>"scripting"</code>, and <code>"host_permissions"</code> in Track B, calling <code>chrome.scripting.executeScript()</code> will fail with a security violation!
+        <div class="gotcha-title" data-i18n="gActiveTabTitle">⚠️ Gotcha #1: The `activeTab` Trap in Side Panels</div>
+        <div data-i18n-html="gActiveTabDesc">
+          Clicking a button inside an extension Side Panel does <strong>NOT</strong> grant <code>activeTab</code> access to the page. Always declare <code>"tabs"</code>, <code>"scripting"</code>, and <code>"host_permissions"</code> in Track B!
         </div>
       </div>
     </section>
 
-    <!-- Section 2: Built-in AI (Gemini Nano) Gotchas -->
+    <!-- Section 2: Built-in AI (LanguageModel) Gotchas -->
     <section class="card">
       <div class="card-header">
         <span class="card-icon">🧠</span>
-        <h2 class="card-title" data-i18n="sec2Title">Built-in AI (`LanguageModel`) Gotchas for Agents</h2>
+        <h2 class="card-title" data-i18n="sec2Title">2. Built-in AI (`LanguageModel` API) Critical Gotchas</h2>
       </div>
 
-      <!-- Gotcha 1: Namespace -->
-      <div style="margin-bottom:20px;">
-        <h3 style="font-size:16px; font-weight:700; margin-bottom:6px;">1. Chrome 154+ Requirement &amp; Breaking API Changes</h3>
-        <p style="font-size:14px; color:var(--text-secondary); margin-bottom:8px;">
-          Recent WebMCP specification breaking changes require <strong>Chrome Canary 154+</strong> (e.g., <code>registerTool()</code> returning a Promise, unstringified <code>inputSchema</code> object serialization in <code>getTools()</code>, and the native <code>DevTools &gt; Application &gt; WebMCP</code> inspector panel). Also ensure you use the top-level <code>LanguageModel</code> global rather than legacy <code>window.ai</code>:
+      <div class="gotcha-item">
+        <h3 data-i18n="s2g1Title">1. Chrome Canary 154+ Required & Top-Level `LanguageModel` Global</h3>
+        <p data-i18n-html="s2g1Desc">
+          Use <strong>Chrome Canary 154+</strong> for async <code>registerTool()</code> Promises and native <code>DevTools &gt; Application &gt; WebMCP</code> panel. Use top-level <code>LanguageModel.create()</code> instead of legacy <code>window.ai</code>.
         </p>
-        <pre><code>// ❌ DEPRECATED (will fail in Chrome Canary 154+):
-const session = await window.ai.languageModel.create();
-document.modelContext.registerTool({ ... }); // Sync call without await
-
-// ✅ MODERN STANDARD (Chrome 154+):
-const session = await LanguageModel.create({
-  initialPrompts: [{ role: 'system', content: 'You are an agent.' }]
-});
-await document.modelContext.registerTool({ ... }); // Async Promise in Chrome 151+/154+<button class="copy-btn" onclick="copyCode(this)">Copy</button></code></pre>
-      </div>
-
-      <!-- Gotcha 2: Streaming Accumulation -->
-      <div style="margin-bottom:20px;">
-        <h3 style="font-size:16px; font-weight:700; margin-bottom:6px;">2. Streaming Yields Delta Chunks (Append, Don't Overwrite!)</h3>
-        <p style="font-size:14px; color:var(--text-secondary); margin-bottom:8px;">
-          When consuming <code>session.promptStreaming()</code>, chunks are <strong>delta tokens</strong>, not the full accumulated response:
-        </p>
-        <pre><code>let fullText = '';
-for await (const chunk of session.promptStreaming(userQuery)) {
-  fullText += chunk; // 👈 APPEND with += (Do NOT do output.textContent = chunk)
-  chatOutput.textContent = fullText;
-}<button class="copy-btn" onclick="copyCode(this)">Copy</button></code></pre>
-      </div>
-
-      <!-- Gotcha 3: Memory Leaks -->
-      <div style="margin-bottom:20px;">
-        <h3 style="font-size:16px; font-weight:700; margin-bottom:6px;">3. Freeing GPU Resources (`session.destroy()`)</h3>
-        <p style="font-size:14px; color:var(--text-secondary); margin-bottom:8px;">
-          Each active Gemini Nano session holds significant VRAM/DRAM on the attendee's laptop. Always destroy sessions on conversation reset:
-        </p>
-        <pre><code>if (currentSession) {
-  currentSession.destroy();
-  currentSession = null;
-}<button class="copy-btn" onclick="copyCode(this)">Copy</button></code></pre>
-      </div>
-    </section>
-
-    <!-- Section 3: WebMCP & Agent Function Calling -->
-    <section class="card">
-      <div class="card-header">
-        <span class="card-icon">⚡</span>
-        <h2 class="card-title" data-i18n="sec3Title">WebMCP & Function Calling Bridge Gotchas</h2>
-      </div>
-
-      <!-- Gotcha 1: Main World executeScript -->
-      <div style="margin-bottom:20px;">
-        <h3 style="font-size:16px; font-weight:700; margin-bottom:6px;">1. Calling WebMCP Tools from the Side Panel</h3>
-        <p style="font-size:14px; color:var(--text-secondary); margin-bottom:8px;">
-          When your Side Panel agent decides to call a WebMCP tool on the active page, you must specify <code>world: "MAIN"</code> in <code>executeScript</code>:
-        </p>
-        <pre><code>// In sidepanel.js: Execute tool on the active tab
-const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-
-const [{ result }] = await chrome.scripting.executeScript({
-  target: { tabId: tab.id },
-  world: 'MAIN', // 👈 MANDATORY! WebMCP document.modelContext lives in MAIN world!
-  func: async (toolName, toolArgs) => {
-    const tools = await document.modelContext.getTools();
-    const targetTool = tools.find(t => t.name === toolName);
-    if (!targetTool) throw new Error(`Tool ${toolName} not found`);
-    return await targetTool.execute(toolArgs);
-  },
-  args: [toolCallName, toolCallArguments]
+        <pre><code>const session = await LanguageModel.create({
+  systemPrompt: "You are an in-browser WebMCP agent."
 });<button class="copy-btn" onclick="copyCode(this)">Copy</button></code></pre>
       </div>
 
-      <!-- Gotcha 2: 1.5 KB Token Budget -->
-      <div style="margin-bottom:20px;">
-        <h3 style="font-size:16px; font-weight:700; margin-bottom:6px;">2. The 1.5 KB Token Budget Rule (Preventing Context Overflow)</h3>
-        <p style="font-size:14px; color:var(--text-secondary); margin-bottom:8px;">
-          Gemini Nano has a compact ~4K token context window. If your tool returns a raw 30 KB database record, the model will hallucinate or crash. Always strip outputs:
+      <div class="gotcha-item">
+        <h3 data-i18n="s2g2Title">2. Streaming Yields Delta Chunks (`+=` Append, Do Not Overwrite!)</h3>
+        <p data-i18n-html="s2g2Desc">
+          <code>session.promptStreaming()</code> yields <strong>delta tokens</strong> per iteration. Always append with <code>+=</code> instead of overwriting with <code>=</code>.
         </p>
-        <pre><code>// In tools.js: Lean, budgeted response
-execute: async ({ query }) => {
-  const rawResults = await fetch(`/api/search?q=${query}`).then(r => r.json());
-  
-  // ✅ Keep under 1.5 KB: Paginate and return only essential decision fields
-  return JSON.stringify({
-    total_matches: rawResults.length,
-    items: rawResults.slice(0, 3).map(item => ({
-      id: item.id,
-      title: item.title,
-      price_jpy: item.price,
-      in_stock: item.inStock
-    }))
-  });
+        <pre><code>for await (const delta of session.promptStreaming(userPrompt)) {
+  outputEl.textContent += delta; // ✅ Append delta token
 }<button class="copy-btn" onclick="copyCode(this)">Copy</button></code></pre>
       </div>
 
-      <!-- Gotcha 3: React Prototype Setter & requestSubmit -->
-      <div style="margin-bottom:20px;">
-        <h3 style="font-size:16px; font-weight:700; margin-bottom:6px;">3. Form Submissions: Use `form.requestSubmit()` (Modern Web Guidance)</h3>
-        <p style="font-size:14px; color:var(--text-secondary); margin-bottom:8px;">
-          Avoid simulating robotic clicks on submit buttons or synthetic Enter key events. Modern Web Guidance recommends native <code>form.requestSubmit()</code>, which properly runs HTML form validation and triggers framework handlers:
-        </p>
-        <pre><code>const form = input.closest('form');
-if (form && typeof form.requestSubmit === 'function') {
-  form.requestSubmit(); // ✅ Baseline standard: validates and submits cleanly
-} else {
-  input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
-}<button class="copy-btn" onclick="copyCode(this)">Copy</button></code></pre>
-      </div>
-
-      <!-- Gotcha 4: AbortSignal Cancellation -->
-      <div style="margin-bottom:20px;">
-        <h3 style="font-size:16px; font-weight:700; margin-bottom:6px;">4. Graceful Cancellation with `AbortSignal` (MWG Standard)</h3>
-        <p style="font-size:14px; color:var(--text-secondary); margin-bottom:8px;">
-          WebMCP passes <code>{ signal }</code> as the second argument to <code>execute</code>. Forward it to in-flight <code>fetch()</code> requests so cancelled agent queries don't waste network resources:
-        </p>
-        <pre><code>execute: async ({ query }, { signal }) => {
-  if (signal?.aborted) return 'Aborted';
-
-  // ✅ Forward signal to fetch: cancels immediately if user stops the agent
-  const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`, { signal });
-  const data = await res.json();
-  return JSON.stringify(data.slice(0, 3));
-}<button class="copy-btn" onclick="copyCode(this)">Copy</button></code></pre>
-      </div>
-
-      <!-- Gotcha 5: Native <dialog> for HITL -->
-      <div style="margin-bottom:20px;">
-        <h3 style="font-size:16px; font-weight:700; margin-bottom:6px;">5. Native `&lt;dialog&gt;` for Human-in-the-Loop Confirmation</h3>
-        <p style="font-size:14px; color:var(--text-secondary); margin-bottom:8px;">
-          Do NOT build ad-hoc <code>&lt;div&gt;</code> overlays with custom <code>z-index</code> hacks. MWG mandates native <code>&lt;dialog&gt;</code> with <code>.showModal()</code> for built-in focus trapping, top-layer rendering, and verified <code>event.isTrusted</code> clicks:
-        </p>
-        <pre><code>const dialog = document.getElementById('hitl-dialog');
-dialog.showModal(); // ✅ Native top-layer modal, traps focus, supports Escape
-
-confirmBtn.addEventListener('click', (event) => {
-  if (!event.isTrusted) return; // 🛡️ Verifies genuine physical user click!
-  dialog.close('confirmed');
-}, { once: true });<button class="copy-btn" onclick="copyCode(this)">Copy</button></code></pre>
-      </div>
-
-      <!-- Gotcha 6: Ghost Browser Trap & UI Reflection -->
-      <div>
-        <h3 style="font-size:16px; font-weight:700; margin-bottom:6px;">6. The "Ghost Browser" Trap: Why Client UI Reflection is Mandatory</h3>
-        <p style="font-size:14px; color:var(--text-secondary); margin-bottom:8px;">
-          Do <strong>not</strong> build WebMCP tools that bypass the DOM and silently invoke backend APIs. In interactive co-browsing, the viewport is the shared mental canvas between the human and the agent:
-        </p>
-        <div style="background:var(--bg-subtle); border-left:4px solid var(--google-blue); padding:12px 16px; border-radius:var(--radius-sm); font-size:13.5px; margin-bottom:12px;">
-          <strong>Example (Account Registration):</strong> If an agent registers an account purely via <code>fetch('/api/register')</code>, the on-screen form remains blank. If backend validation fails (e.g., password complexity, duplicate email), the user never sees inline field errors or red highlights. Crucially, Chrome's native Password Manager, Autofill, and Passkey creation are completely bypassed because they listen to standard DOM events and form submissions (<code>form.requestSubmit()</code>).
-        </div>
-        <p style="font-size:13.5px; color:var(--text-secondary);">
-          <strong>Architectural Rule:</strong>
-          <br>• <strong>Frontend WebMCP (DOM & Client State Sync):</strong> Mandatory for interactive co-browsing (form completion, catalog filters, seat selection, checkout) so users see live validation, progress, and visual feedback.
-          <br>• <strong>Headless Backend AI:</strong> Suitable only for offline, asynchronous, or batch tasks (overnight reconciliation, bulk indexing) where no human is actively viewing the screen.
+      <div class="gotcha-item">
+        <h3 data-i18n="s2g3Title">3. Always Free GPU VRAM (`session.destroy()`)</h3>
+        <p data-i18n-html="s2g3Desc">
+          Each Gemini Nano session consumes laptop VRAM/RAM. Always call <code>session.destroy()</code> when resetting or closing the chat.
         </p>
       </div>
     </section>
 
-    <!-- Section 4: Chrome 154-156 Origin Trial & Enterprise Case Study Program (Slide 16 Sync) -->
-    <section class="section-card" style="border-left: 4px solid var(--google-blue);">
+    <!-- Section 3: WebMCP & UI Sync Gotchas -->
+    <section class="card">
       <div class="card-header">
-        <span class="card-icon">🚀</span>
-        <h2 class="card-title">Chrome 154–156 Origin Trial &amp; WEC Co-Authoring Program</h2>
+        <span class="card-icon">⚡</span>
+        <h2 class="card-title" data-i18n="sec3Title">3. WebMCP Execution & UI Synchronization Gotchas</h2>
       </div>
-      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:16px; font-size:13.5px; color:var(--text-secondary);">
-        <div style="padding:14px; background:var(--bg-subtle); border-radius:var(--radius-sm); border:1px solid var(--border);">
-          <div style="font-weight:700; color:var(--text-primary); margin-bottom:4px;">📅 Release Stage: Chrome 154+ / 156 OT</div>
-          <div>Chrome Stable is now on <strong>M154</strong>. The official WebMCP Origin Trial is active through the end of the year (<strong>Chrome 156</strong>), enabling enterprise partners to deploy and test behind experiment flags.</div>
-        </div>
-        <div style="padding:14px; background:var(--bg-subtle); border-radius:var(--radius-sm); border:1px solid var(--border);">
-          <div style="font-weight:700; color:var(--text-primary); margin-bottom:4px;">🛠️ Native DevTools WebMCP Panel</div>
-          <div>In Chrome Canary 154+, open <code>DevTools (F12) &gt; Application &gt; WebMCP</code> (left sidebar) to inspect registered tools and monitor real-time agent tool calls natively alongside Google's official WebMCP Tool Inspector extension.</div>
-        </div>
-        <div style="padding:14px; background:var(--bg-subtle); border-radius:var(--radius-sm); border:1px solid var(--border);">
-          <div style="font-weight:700; color:var(--text-primary); margin-bottom:4px;">📝 Publish on developers.google.com</div>
-          <div>Partner with Google Web Ecosystem Consultants (WEC) for joint architectural reviews and co-author official enterprise WebMCP case studies published on <strong>developers.google.com</strong>.</div>
-        </div>
+
+      <div class="gotcha-item">
+        <h3 data-i18n="s3g1Title">1. Calling WebMCP Tools from Side Panel (`world: "MAIN"`)</h3>
+        <p data-i18n-html="s3g1Desc">
+          To call page-registered WebMCP tools from an extension Side Panel, execute inside <code>world: "MAIN"</code>:
+        </p>
+        <pre><code>const [res] = await chrome.scripting.executeScript({
+  target: { tabId: activeTab.id },
+  world: "MAIN",
+  func: async (name, args) => {
+    const tool = (await document.modelContext.getTools()).find(t => t.name === name);
+    return await tool.execute(args);
+  },
+  args: [toolName, toolArgs]
+});<button class="copy-btn" onclick="copyCode(this)">Copy</button></code></pre>
+      </div>
+
+      <div class="gotcha-item">
+        <h3 data-i18n="s3g2Title">2. Enforce the <= 1.5 KB Token Budget Rule</h3>
+        <p data-i18n-html="s3g2Desc">
+          Gemini Nano has a ~4K token window. Never return raw 30 KB API responses—filter outputs to top 3–5 items (&lt;= 1.5 KB JSON).
+        </p>
+      </div>
+
+      <div class="gotcha-item">
+        <h3 data-i18n="s3g3Title">3. Avoid the "Ghost Browser" Trap — Always Sync Visible UI</h3>
+        <p data-i18n-html="s3g3Desc">
+          Never silently call <code>fetch('/api/submit')</code> while leaving the on-screen UI blank! Always update visible DOM state and use <code>form.requestSubmit()</code> or native <code>&lt;dialog&gt;</code> so Chrome Autofill, Password Manager, and user trust remain intact.
+        </p>
       </div>
     </section>
-
-    <!-- Footer -->
-    <div style="text-align: center; margin-top: 40px; color: var(--text-muted); font-size: 13px;">
-      Google Partner Summit 2026 • Google Web Ecosystem Consulting
-    </div>
-
   </main>
 
   <script>
-    // Copy code snippet helper
-    function copyCode(btn) {
-      const code = btn.parentElement.querySelector('code').innerText.replace('Copy', '').trim();
-      navigator.clipboard.writeText(code).then(() => {
-        const originalText = btn.textContent;
-        btn.textContent = 'Copied!';
-        btn.style.background = '#1e8e3e';
-        setTimeout(() => {
-          btn.textContent = originalText;
-          btn.style.background = '';
-        }, 1800);
-      });
+    function safeGetLang() {
+      try {
+        return localStorage.getItem('webmcp_lang') || 'en';
+      } catch (e) {
+        return 'en';
+      }
     }
 
-    // Bilingual translations
+    function safeSetLang(lang) {
+      try {
+        localStorage.setItem('webmcp_lang', lang);
+      } catch (e) {}
+    }
+
+    let currentLang = safeGetLang();
+
+    function copyCode(btn) {
+      const code = btn.parentElement.textContent.replace('Copy', '').replace('Copied!', '').replace('コピー', '').replace('コピー完了!', '').trim();
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(code);
+      }
+      btn.textContent = currentLang === 'ja' ? 'コピー完了!' : 'Copied!';
+      setTimeout(() => { btn.textContent = currentLang === 'ja' ? 'コピー' : 'Copy'; }, 1500);
+    }
+
     const i18n = {
       en: {
-        backHub: "Back to Workshop Hub",
-        heroTitle: "🛠️ Chrome Extension & Built-in AI Field Guide",
-        heroDesc: "Essential architecture patterns, Manifest V3 permission rules, and critical gotchas for building WebMCP tool injectors and local Gemini Nano autonomous browser agents.",
-        sec1Title: "Manifest V3 Architecture: Track A vs. Track B",
-        sec1Desc: "Compare the permission scope and architecture between declarative tool injection and full-stack side panel agent actuation:",
+        navHub: "1. Pre-Workshop Setup Hub",
+        navGuide: "2. Step-by-Step Workshop Guide",
+        navFieldGuide: "3. Extension & Built-in AI Field Guide",
+        navSurvey: "4. Post-Workshop Survey",
+        navResources: "5. Partner Links Hub",
+        heroBadge: "Keyword Field Guide • MV3 & Built-in AI",
+        heroTitle: "Chrome Extension & Built-in AI Field Guide",
+        heroDesc: "Keyword cheat sheet for Manifest V3 permissions (Track A vs. Track B), on-device Gemini Nano (LanguageModel) gotchas, and WebMCP UI synchronization rules.",
+        sec1Title: "1. Manifest V3 Architecture: Track A vs. Track B",
+        sec1Desc: "Compare permission scope and architecture between declarative tool injection (Track A) and full-stack Side Panel agents (Track B):",
         trackABadge: "Track A: Tool Injector (Fast-Track)",
         trackATitle: "Declarative Content Script Injection",
-        trackADesc: "Injects WebMCP tool contracts (document.modelContext.registerTool) directly into target web pages. You inspect, validate schemas, and execute tools using Google's official WebMCP Tool Inspector Extension.",
+        trackADesc: `Injects WebMCP tools (<code>document.modelContext.registerTool</code>) directly into web pages. Zero host permissions required.`,
         trackAManifest: "Track A manifest.json:",
-        trackANote: "✅ Key Setting: \"world\": \"MAIN\" ensures tools register in the page's actual JS context rather than extension isolation.",
+        trackANote: `✅ Must-Have: <code>"world": "MAIN"</code> registers tools in the page's actual JS context rather than isolated extension world.`,
         trackBBadge: "Track B: Full-Stack AI Agent (Advanced)",
-        trackBTitle: "Permissions ARE Mandatory",
-        trackBDesc: "If your extension hosts an interactive chat UI in Chrome's Side Panel powered by local Gemini Nano and programmatically actuates the page:",
-        trackBManifest: "Minimal Track B manifest.json:",
-        sec2Title: "Built-in AI (LanguageModel) Gotchas for Agents",
-        sec3Title: "WebMCP & Function Calling Bridge Gotchas"
+        trackBTitle: "Side Panel UI + Service Worker + Gemini Nano",
+        trackBDesc: `Full conversational agent in Chrome Side Panel capable of inspecting and invoking WebMCP tools across active tabs.`,
+        trackBManifest: "Track B manifest.json:",
+        trackBNote: `✅ Required Permissions: <code>sidePanel</code>, <code>scripting</code>, <code>activeTab</code>, and <code>host_permissions</code>.`,
+        gActiveTabTitle: "⚠️ Gotcha #1: The `activeTab` Trap in Side Panels",
+        gActiveTabDesc: `Clicking a button inside an extension Side Panel does <strong>NOT</strong> grant <code>activeTab</code> access to the page. Always declare <code>"tabs"</code>, <code>"scripting"</code>, and <code>"host_permissions"</code> in Track B!`,
+        sec2Title: "2. Built-in AI (Gemini Nano / LanguageModel API) Critical Gotchas",
+        g1Title: "1. Namespace Changed: `window.LanguageModel` (Not `window.ai.languageModel`)",
+        g1Desc: `Chrome 138+ moved the Prompt API to the global <code>LanguageModel</code> object. Always feature-detect both:`,
+        g2Title: "2. Mandatory User Gesture for Model Download (`create()`)",
+        g2Desc: `Calling <code>LanguageModel.create()</code> on background startup fails if the model isn't cached. Always trigger first session creation inside a user click handler (e.g., "Start Agent" button) and monitor download progress:`,
+        g3Title: "3. Structured Output via `responseConstraint` JSON Schema",
+        g3Desc: `Never parse free-form markdown when selecting tools. Pass a JSON Schema to <code>prompt(input, { responseConstraint: schema })</code> to guarantee valid JSON tool calls.`,
+        sec3Title: "3. WebMCP Tool Execution & UI Synchronization Rules",
+        s3g1Title: "1. How Side Panel Extensions Call WebMCP Tools (`world: \"MAIN\"`)",
+        s3g1Desc: `To invoke WebMCP tools from a Side Panel extension, execute inside the active tab's <code>MAIN</code> world:`,
+        s3g2Title: "2. Keep Tool Outputs Under 1.5 KB (Token Budget Rule)",
+        s3g2Desc: `Gemini Nano has a ~4K context window. Never return raw DOM or 50+ items from a WebMCP tool. Slice results to the top 3–5 matching items (&lt;1.5 KB JSON).`,
+        s3g3Title: "3. Avoid the 'Ghost Browser' Trap — Synchronize the UI!",
+        s3g3Desc: `Never execute silent background <code>fetch()</code> calls that leave the user staring at an unchanged screen. Always update visible UI state, populate form inputs, and call <code>form.requestSubmit()</code> or show a native <code>&lt;dialog&gt;</code> confirmation.`
       },
       ja: {
-        backHub: "ワークショップハブに戻る",
-        heroTitle: "🛠️ Chrome拡張機能 ＆ Built-in AI 開発フィールドガイド",
-        heroDesc: "WebMCPツール注入拡張機能およびGemini Nanoを活用した自律型ブラウザエージェントを構築するための必須アーキテクチャ、Manifest V3権限設計、および実装上の注意点まとめ。",
-        sec1Title: "Manifest V3 アーキテクチャ：Track A vs. Track B",
-        sec1Desc: "宣言的なツール注入（Track A）とSide Panel自律エージェント（Track B）の権限スコープとアーキテクチャの比較：",
-        trackABadge: "Track A: ツール注入（クイック検証）",
-        trackATitle: "宣言的 Content Script による注入",
-        trackADesc: "WebMCPツール（document.modelContext.registerTool）をWebページに直接注入します。Google公式のWebMCP Inspector拡張機能を使ってスキーマ検証および手動実行を行います。",
-        trackAManifest: "Track A manifest.json：",
-        trackANote: "✅ 最重要設定：\"world\": \"MAIN\" を指定することで、拡張機能の隔離環境ではなくページのメインJSコンテキストで登録されます！",
-        trackBBadge: "Track B: フルスタックAIエージェント（上級）",
-        trackBTitle: "権限（Permissions）が必須です",
-        trackBDesc: "Side Panel上にGemini NanoチャットUIを構築し、アクティブタブをプログラムから操作・ツール実行する場合：",
-        trackBManifest: "最小限の Track B manifest.json：",
-        sec2Title: "エージェント構築における Built-in AI (LanguageModel) の注意点",
-        sec3Title: "WebMCP ＆ ファンクションコーリング連携の注意点"
+        navHub: "1. 事前セットアップHub",
+        navGuide: "2. ステップ別実践ガイド",
+        navFieldGuide: "3. 拡張機能・Built-in AI 実装ガイド",
+        navSurvey: "4. 参加後アンケート (After Survey)",
+        navResources: "5. パートナーリンクHub",
+        heroBadge: "キーワード実践ガイド • MV3 & Built-in AI",
+        heroTitle: "Chrome 拡張機能 ＆ Built-in AI 実装フィールドガイド",
+        heroDesc: "Manifest V3 の権限設計（Track A vs Track B）、オンデバイス Gemini Nano（LanguageModel API）の実装上の落とし穴、WebMCPツールと画面UIの同期ルールを厳選解説。",
+        sec1Title: "1. Manifest V3 アーキテクチャ比較：Track A vs. Track B",
+        sec1Desc: "ツール注入型（Track A）とフルスタックSide Panelエージェント型（Track B）の権限スコープと構成の違い：",
+        trackABadge: "Track A: ツールインジェクター（最速導入）",
+        trackATitle: "宣言的 Content Script によるツール注入",
+        trackADesc: `Webページへ直接 WebMCP ツール（<code>document.modelContext.registerTool</code>）を注入します。追加のホスト権限は不要です。`,
+        trackAManifest: "Track A manifest.json:",
+        trackANote: `✅ 最重要ポイント: <code>"world": "MAIN"</code> を指定し、拡張機能の隔離空間ではなくページのメインJSコンテキストへ登録します。`,
+        trackBBadge: "Track B: フルスタックAIエージェント（発展）",
+        trackBTitle: "Side Panel UI + Service Worker + Gemini Nano",
+        trackBDesc: `Chrome Side Panel 内の対話型AIエージェントから、アクティブタブのWebMCPツールを動的に検索・呼び出します。`,
+        trackBManifest: "Track B manifest.json:",
+        trackBNote: `✅ 必須権限: <code>sidePanel</code>、<code>scripting</code>、<code>activeTab</code>、および対象ページの <code>host_permissions</code>。`,
+        gActiveTabTitle: "⚠️ 注意点 #1：Side Panel における `activeTab` の落とし穴",
+        gActiveTabDesc: `Side Panel内のボタンをクリックしても、ページに対する <code>activeTab</code> 権限は<strong>付与されません</strong>。Track Bでは必ず <code>"tabs"</code>、<code>"scripting"</code>、<code>"host_permissions"</code> を明記してください！`,
+        sec2Title: "2. Built-in AI（Gemini Nano / LanguageModel API）実装の落とし穴",
+        g1Title: "1. 名前空間の変更：`window.LanguageModel`（旧 `window.ai.languageModel` ではない）",
+        g1Desc: `Chrome 138以降、Prompt APIはグローバルな <code>LanguageModel</code> オブジェクトに移行しました。必ず両方をフォールバック検知してください：`,
+        g2Title: "2. モデル初回ダウンロードにはユーザージェスチャー（クリック）が必須",
+        g2Desc: `モデル未キャッシュ時にバックグラウンドで <code>LanguageModel.create()</code> を呼ぶと失敗します。必ずボタンクリックイベント内でセッションを作成し、進捗を表示してください：`,
+        g3Title: "3. `responseConstraint` JSON Schema による確実な構造化出力",
+        g3Desc: `ツール選択時に自由記述テキストを正規表現パースするのは危険です。<code>prompt(input, { responseConstraint: schema })</code> にJSON Schemaを渡して100%有効なJSON出力を強制してください。`,
+        sec3Title: "3. WebMCP ツール実行 ＆ 画面UI同期の鉄則",
+        s3g1Title: "1. Side Panel から WebMCP ツールを呼び出す方法（`world: \"MAIN\"`）",
+        s3g1Desc: `Side PanelからアクティブタブのWebMCPツールを実行する際は、<code>executeScript</code> に必ず <code>world: "MAIN"</code> を指定してください：`,
+        s3g2Title: "2. 1.5 KB トークン予算ルール（コンテキスト溢れ防止）",
+        s3g2Desc: `Gemini Nanoのコンテキスト長は約4Kトークンです。巨大な生JSONをそのまま返さず、必ず上位3〜5件（1.5 KB以内）に絞って返却してください。`,
+        s3g3Title: "3. 「ゴーストブラウザ」の罠を防ぐ — 画面UIへの即時反映が必須",
+        s3g3Desc: `画面DOMを更新せず裏側で <code>fetch('/api/submit')</code> だけを叩くツールはNGです！必ず画面上のフォームやUI状態を同期更新し、<code>form.requestSubmit()</code> やネイティブ <code>&lt;dialog&gt;</code> を使用してChrome自動入力・パスワード管理・ユーザーの視覚的信頼を維持してください。`
       }
     };
 
-    const btnEn = document.getElementById('btn-lang-en');
-    const btnJa = document.getElementById('btn-lang-ja');
+    function applyLanguage(lang) {
+      currentLang = lang;
+      safeSetLang(lang);
+      document.documentElement.lang = lang;
 
-    function setLanguage(lang) {
+      const btn = document.getElementById('btn-lang-toggle');
+      if (btn) {
+        btn.textContent = lang === 'ja' ? '🇺🇸 English / JA' : '🇯🇵 日本語 / EN';
+      }
+
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
+        if (i18n[lang] && i18n[lang][key]) {
+          el.textContent = i18n[lang][key];
+        }
+      });
+      document.querySelectorAll('[data-i18n-html]').forEach(el => {
+        const key = el.getAttribute('data-i18n-html');
         if (i18n[lang] && i18n[lang][key]) {
           el.innerHTML = i18n[lang][key];
         }
       });
-      if (lang === 'ja') {
-        btnJa.classList.add('active');
-        btnEn.classList.remove('active');
-      } else {
-        btnEn.classList.add('active');
-        btnJa.classList.remove('active');
-      }
     }
 
-    btnEn.addEventListener('click', () => setLanguage('en'));
-    btnJa.addEventListener('click', () => setLanguage('ja'));
+    function toggleLanguage() {
+      applyLanguage(currentLang === 'en' ? 'ja' : 'en');
+    }
+
+    applyLanguage(currentLang);
+    document.addEventListener('DOMContentLoaded', () => {
+      applyLanguage(currentLang);
+    });
   </script>
 </body>
 </html>

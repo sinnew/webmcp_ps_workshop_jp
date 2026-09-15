@@ -603,10 +603,13 @@
           <span>📅</span> <span>Partner Summit 2026</span>
         </span>
         <a href="workshop_guide.html" style="text-decoration:none; font-size:13px; font-weight:700; color:#ffffff; background:var(--google-blue); padding:5px 14px; border-radius:var(--radius-full); display:inline-flex; align-items:center; gap:6px; box-shadow:0 2px 5px rgba(26,115,232,0.25); transition:all 0.2s;">
-          <span>📑</span> <span>2. Slide Deck &amp; Step-by-Step Guide ↗</span>
+          <span>📑</span> <span>2. Step-by-Step Workshop Guide ↗</span>
         </a>
         <a href="extension_guide.html" style="text-decoration:none; font-size:13px; font-weight:600; color:var(--google-purple); background:var(--google-purple-light); padding:5px 14px; border-radius:var(--radius-full); display:inline-flex; align-items:center; gap:6px; transition:all 0.2s;">
           <span>🛠️</span> <span data-i18n="navFieldGuide">3. Extension &amp; AI Field Guide ↗</span>
+        </a>
+        <a href="survey.html" style="text-decoration:none; font-size:13px; font-weight:700; color:var(--google-green); background:var(--google-green-light); padding:5px 14px; border-radius:var(--radius-full); display:inline-flex; align-items:center; gap:6px; transition:all 0.2s;">
+          <span>📊</span> <span data-i18n="navSurvey">4. Post-Workshop Survey ↗</span>
         </a>
       </div>
       <div class="lang-switcher">
@@ -961,10 +964,10 @@ npx -y modern-web-guidance@latest retrieve "popover-api-dialog"</pre>
 
       <!-- Modern Web Guidance Verification Guide -->
       <div style="margin-top: 20px; padding: 16px; background: var(--bg-surface); border-radius: 8px; border: 1px solid var(--border-color);">
-        <h3 style="font-size: 15px; font-weight: 600; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+        <h3 style="font-size: 15px; font-weight: 600; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;" data-i18n="mwgConfirmTitle">
           <span>✅</span> How to Confirm Your Installation
         </h3>
-        <ul style="font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-left: 20px;">
+        <ul style="font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-left: 20px;" data-i18n-html="mwgConfirmList">
           <li>
             <strong>1. Quick Terminal Check (Ground Truth):</strong> Run <code style="background:var(--bg-main); padding:2px 6px; border-radius:4px;">npx modern-web-guidance@latest search "animate a dialog"</code>. If working, it immediately returns matching JSON guide metadata (e.g. <code>animate-to-from-top-layer</code>).
           </li>
@@ -982,7 +985,7 @@ npx -y modern-web-guidance@latest retrieve "popover-api-dialog"</pre>
       </div>
 
       <div style="margin-top:16px; font-size:13px;">
-        📖 <a href="https://developer.chrome.com/docs/modern-web-guidance/get-started" target="_blank" rel="noopener" style="color:var(--google-blue); text-decoration:none; font-weight:500;">
+        📖 <a href="https://developer.chrome.com/docs/modern-web-guidance/get-started" target="_blank" rel="noopener" style="color:var(--google-blue); text-decoration:none; font-weight:500;" data-i18n="mwgDocsLink">
           Read Modern Web Guidance Documentation on developer.chrome.com ↗
         </a>
       </div>
@@ -1037,34 +1040,34 @@ npx -y modern-web-guidance@latest retrieve "popover-api-dialog"</pre>
       <div style="display: flex; align-items: center; gap: 16px; max-width: 720px;">
         <span style="font-size: 34px;">🔍</span>
         <div>
-          <div style="font-weight: 700; font-size: 16px; color: var(--text-main);">
+          <div style="font-weight: 700; font-size: 16px; color: var(--text-main);" data-i18n="inspectorBannerTitle">
             Official WebMCP Model Context Tool Inspector Extension
           </div>
-          <div style="font-size: 13.5px; color: var(--text-secondary); margin-top: 4px; line-height: 1.4;">
+          <div style="font-size: 13.5px; color: var(--text-secondary); margin-top: 4px; line-height: 1.4;" data-i18n-html="inspectorBannerDesc">
             Install Google's official DevRel extension from the Chrome Web Store. It enables 1-click inspection, schema validation, and manual test execution of any <code>document.modelContext</code> tools registered on your active tab (Essential for Track A attendees).
           </div>
         </div>
       </div>
       <a href="https://chromewebstore.google.com/detail/webmcp-model-context-tool/gbpdfapgefenggkahomfgkhfehlcenpd?pli=1" target="_blank" rel="noopener" class="btn-diag" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px; background: var(--google-blue); color: #fff; font-size: 13.5px; padding: 10px 18px; border-radius: 8px; font-weight: 600; box-shadow: var(--shadow-sm);">
-        <span>📥 Install from Chrome Web Store ↗</span>
+        <span data-i18n="inspectorBannerBtn">📥 Install from Chrome Web Store ↗</span>
       </a>
     </div>
 
-    <!-- Recommended: Slide Deck & Step-by-Step Workshop Guide -->
+    <!-- Recommended: Step-by-Step Workshop Guide -->
     <div style="background: linear-gradient(135deg, #e8f0fe 0%, #f8f9fa 100%); border: 1px solid #dadce0; border-left: 4px solid var(--google-blue); border-radius: 12px; padding: 18px 22px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; box-shadow: var(--shadow-sm);">
       <div style="display: flex; align-items: center; gap: 16px; max-width: 720px;">
         <span style="font-size: 34px;">📑</span>
         <div>
-          <div style="font-weight: 700; font-size: 16px; color: var(--text-main);">
-            Slide Deck &amp; Step-by-Step Workshop Guide (All 20 Slides + 1-Click Prompts)
+          <div style="font-weight: 700; font-size: 16px; color: var(--text-main);" data-i18n="workshopBannerTitle">
+            Step-by-Step Workshop Guide (Interactive Companion + 1-Click Prompts)
           </div>
-          <div style="font-size: 13.5px; color: var(--text-secondary); margin-top: 4px; line-height: 1.4;">
-            Follow the entire presentation deck interactively across 6 collapsible modules: Google Store (gStore) repair case study, 1-click copy &amp; paste AI prompts, adversarial red-teaming, VACO evals, and Chrome 154+ Origin Trial guardrails.
-          </div>
+          <p style="font-size:13.5px; color:var(--text-secondary); margin-bottom:14px;" data-i18n="workshopBannerDesc">
+            Follow the entire workshop interactively across 6 collapsible modules: Google Store (gStore) repair case study, 1-click copy &amp; paste AI prompts, adversarial red-teaming, trajectory evals, and Chrome 154+ Origin Trial guardrails.
+          </p>
         </div>
       </div>
       <a href="workshop_guide.html" class="btn-diag" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px; background: var(--google-blue); color: #fff; font-size: 13.5px; padding: 10px 18px; border-radius: 8px; font-weight: 600; box-shadow: var(--shadow-sm);">
-        <span>📑 Open Slide Guide ↗</span>
+        <span data-i18n="workshopBannerBtn">📑 Open Workshop Guide ↗</span>
       </a>
     </div>
 
@@ -1073,16 +1076,16 @@ npx -y modern-web-guidance@latest retrieve "popover-api-dialog"</pre>
       <div style="display: flex; align-items: center; gap: 16px; max-width: 720px;">
         <span style="font-size: 34px;">🛠️</span>
         <div>
-          <div style="font-weight: 700; font-size: 16px; color: var(--text-main);">
+          <div style="font-weight: 700; font-size: 16px; color: var(--text-main);" data-i18n="fieldGuideBannerTitle">
             Developer Field Guide: Extension Plumbing &amp; Built-in AI Gotchas
           </div>
-          <div style="font-size: 13.5px; color: var(--text-secondary); margin-top: 4px; line-height: 1.4;">
+          <div style="font-size: 13.5px; color: var(--text-secondary); margin-top: 4px; line-height: 1.4;" data-i18n-html="fieldGuideBannerDesc">
             Track A (declarative content scripts) vs. Track B (Side Panel AI agent) architecture, <code>world: "MAIN"</code> execution, streaming delta accumulation, and Modern Web Guidance standards.
           </div>
         </div>
       </div>
       <a href="extension_guide.html" class="btn-diag" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px; background: var(--google-purple); color: #fff; font-size: 13.5px; padding: 10px 18px; border-radius: 8px; font-weight: 600; box-shadow: var(--shadow-sm);">
-        <span>📖 Open Field Guide ↗</span>
+        <span data-i18n="fieldGuideBannerBtn">📖 Open Field Guide ↗</span>
       </a>
     </div>
 
@@ -1179,21 +1182,21 @@ npx -y modern-web-guidance@latest retrieve "popover-api-dialog"</pre>
       </div>
     </section>
 
-    <!-- Section 8: Chrome Origin Trial & Enterprise Case Study Program (Slide 16 Sync) -->
+    <!-- Section 8: Chrome Origin Trial & Enterprise Case Study Program -->
     <section class="card" style="border-left: 4px solid var(--google-blue);">
-      <h2 class="font-display" style="font-size:18px; font-weight:700; margin-bottom:12px; display:flex; align-items:center; gap:8px;">
+      <h2 class="font-display" style="font-size:18px; font-weight:700; margin-bottom:12px; display:flex; align-items:center; gap:8px;" data-i18n="s8Heading">
         <span>🚀</span> Chrome 154–156 Origin Trial &amp; WEC Co-Authoring Program
       </h2>
       <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:16px; font-size:13.5px; color:var(--text-secondary);">
-        <div style="padding:12px; background:var(--bg-subtle); border-radius:8px; border:1px solid var(--border);">
+        <div style="padding:12px; background:var(--bg-subtle); border-radius:8px; border:1px solid var(--border);" data-i18n-html="s8Card1">
           <div style="font-weight:700; color:var(--text-primary); margin-bottom:4px;">📅 Release Stage: Chrome 154+ / 156 OT</div>
           <div>Chrome Stable is now on <strong>M154</strong>. The official WebMCP Origin Trial is active through the end of the year (<strong>Chrome 156</strong>), enabling production testing behind experiment flags.</div>
         </div>
-        <div style="padding:12px; background:var(--bg-subtle); border-radius:8px; border:1px solid var(--border);">
+        <div style="padding:12px; background:var(--bg-subtle); border-radius:8px; border:1px solid var(--border);" data-i18n-html="s8Card2">
           <div style="font-weight:700; color:var(--text-primary); margin-bottom:4px;">🛠️ Native DevTools WebMCP Panel</div>
           <div>In Chrome Canary 154+, open <code>DevTools (F12) &gt; Application &gt; WebMCP</code> (left sidebar) to inspect registered tools and monitor real-time agent tool calls natively.</div>
         </div>
-        <div style="padding:12px; background:var(--bg-subtle); border-radius:8px; border:1px solid var(--border);">
+        <div style="padding:12px; background:var(--bg-subtle); border-radius:8px; border:1px solid var(--border);" data-i18n-html="s8Card3">
           <div style="font-weight:700; color:var(--text-primary); margin-bottom:4px;">📝 Publish on developers.google.com</div>
           <div>Partner with Google Web Ecosystem Consultants (WEC) to co-author official enterprise WebMCP case studies published on <strong>developers.google.com</strong>.</div>
         </div>
@@ -1241,11 +1244,27 @@ npx -y modern-web-guidance@latest retrieve "popover-api-dialog"</pre>
         mwgHeading: "⚡ Modern Web Guidance (MWG) Installation Hub",
         mwgDesc: "Install Google's official Modern Web Guidance skills into your AI agent or IDE so it generates modern, standards-compliant web code.",
         mwgCursorDesc: "Install Modern Web Guidance into Cursor to automatically inject modern web baseline standards into Cursor Composer and Agent:",
+        mwgConfirmTitle: "✅ How to Confirm Your Installation",
+        mwgConfirmList: `<li><strong>1. Quick Terminal Check (Ground Truth):</strong> Run <code style="background:var(--bg-main); padding:2px 6px; border-radius:4px;">npx modern-web-guidance@latest search "animate a dialog"</code>. If working, it immediately returns matching JSON guide metadata (e.g. <code>animate-to-from-top-layer</code>).</li><li><strong>2. In-Agent Test Prompt:</strong> In Cursor Composer, Claude Code, or Copilot, ask: <br><em style="color:var(--text-main); font-style:italic;">"Using Modern Web Guidance, how should I animate a modal dialog entering the top layer?"</em><br>A properly configured agent will query MWG and suggest native modern APIs (<code>&lt;dialog closedby&gt;</code>, <code>@starting-style</code>, <code>transition-behavior: allow-discrete</code>) rather than legacy JavaScript polyfills.</li><li><strong>3. Agent Activation Tip:</strong> If your agent does not trigger guidance automatically, simply append <code>"use modern-web-guidance"</code> to the end of your prompt, or use slash command syntax if supported (e.g. <code>/modern-web-guidance</code>).</li>`,
+        mwgDocsLink: "Read Modern Web Guidance Documentation on developer.chrome.com ↗",
         mcpHeading: "🛠️ Chrome DevTools MCP Server Setup",
         mcpDesc: "Connects your external AI coding assistant directly into Chrome Canary via Chrome DevTools Protocol (CDP) for live inspection, screenshot captures, console logs, and DOM validation.",
+        inspectorBannerTitle: "Official WebMCP Model Context Tool Inspector Extension",
+        inspectorBannerDesc: "Install Google's official DevRel extension from the Chrome Web Store. It enables 1-click inspection, schema validation, and manual test execution of any <code>document.modelContext</code> tools registered on your active tab (Essential for Track A attendees).",
+        inspectorBannerBtn: "📥 Install from Chrome Web Store ↗",
+        workshopBannerTitle: "Step-by-Step Workshop Guide (Interactive Companion + 1-Click Prompts)",
+        workshopBannerDesc: "Follow the entire workshop interactively across 6 collapsible modules: Google Store (gStore) repair case study, 1-click copy & paste AI prompts, adversarial red-teaming, trajectory evals, and Chrome 154+ Origin Trial guardrails.",
+        workshopBannerBtn: "📑 Open Workshop Guide ↗",
+        fieldGuideBannerTitle: "Developer Field Guide: Extension Plumbing & Built-in AI Gotchas",
+        fieldGuideBannerDesc: "Track A (declarative content scripts) vs. Track B (Side Panel AI agent) architecture, <code>world: \"MAIN\"</code> execution, streaming delta accumulation, and Modern Web Guidance standards.",
+        fieldGuideBannerBtn: "📖 Open Field Guide ↗",
         consoleHeading: "🧪 In-Browser Live Verification Console",
         consoleDesc: "Run live tests in this browser tab to verify WebMCP tool registration and local Gemini Nano inference.",
-        downloadsHeading: "📦 Workshop Downloads & Reference Links"
+        downloadsHeading: "📦 Workshop Downloads & Reference Links",
+        s8Heading: "🚀 Chrome 154–156 Origin Trial & WEC Co-Authoring Program",
+        s8Card1: `<div style="font-weight:700; color:var(--text-primary); margin-bottom:4px;">📅 Release Stage: Chrome 154+ / 156 OT</div><div>Chrome Stable is now on <strong>M154</strong>. The official WebMCP Origin Trial is active through the end of the year (<strong>Chrome 156</strong>), enabling production testing behind experiment flags.</div>`,
+        s8Card2: `<div style="font-weight:700; color:var(--text-primary); margin-bottom:4px;">🛠️ Native DevTools WebMCP Panel</div><div>In Chrome Canary 154+, open <code>DevTools (F12) &gt; Application &gt; WebMCP</code> (left sidebar) to inspect registered tools and monitor real-time agent tool calls natively.</div>`,
+        s8Card3: `<div style="font-weight:700; color:var(--text-primary); margin-bottom:4px;">📝 Publish on developers.google.com</div><div>Partner with Google Web Ecosystem Consultants (WEC) to co-author official enterprise WebMCP case studies published on <strong>developers.google.com</strong>.</div>`
       },
       ja: {
         heroTitle: "Built-in AI & WebMCP ワークショップ参加者用環境設定ハブ",
@@ -1277,11 +1296,27 @@ npx -y modern-web-guidance@latest retrieve "popover-api-dialog"</pre>
         mwgHeading: "⚡ Modern Web Guidance (MWG) インストールハブ",
         mwgDesc: "Google 公式の Modern Web Guidance スキルをお使いの AI コーディングツール（IDE/CLI）に導入し、最新のウェブ標準に準拠したコード生成を実現します。",
         mwgCursorDesc: "Cursor に Modern Web Guidance をインストールし、Composer や Agent に最新ウェブ標準を自動適用します：",
+        mwgConfirmTitle: "✅ インストールの動作確認方法",
+        mwgConfirmList: `<li><strong>1. ターミナル確認 (Ground Truth):</strong> <code style="background:var(--bg-main); padding:2px 6px; border-radius:4px;">npx modern-web-guidance@latest search "animate a dialog"</code> を実行します。正常に動作していれば、一致する JSON ガイドメタデータ（例: <code>animate-to-from-top-layer</code>）が即座に返されます。</li><li><strong>2. エージェント内テストプロンプト:</strong> Cursor Composer、Claude Code、または Copilot で次のように質問してください：<br><em style="color:var(--text-main); font-style:italic;">"Using Modern Web Guidance, how should I animate a modal dialog entering the top layer?"</em><br>適切に設定されたエージェントは MWG を参照し、レガシーな JavaScript ポリフィルではなく最新のネイティブ API（<code>&lt;dialog closedby&gt;</code>、<code>@starting-style</code>、<code>transition-behavior: allow-discrete</code>）を提案します。</li><li><strong>3. 起動のヒント:</strong> エージェントが自動的に MWG を適用しない場合は、プロンプトの末尾に <code>"use modern-web-guidance"</code> を追加するか、スラッシュコマンド（<code>/modern-web-guidance</code>）を使用してください。</li>`,
+        mwgDocsLink: "developer.chrome.com で Modern Web Guidance ドキュメントを読む ↗",
         mcpHeading: "🛠️ Chrome DevTools MCP サーバーのセットアップ",
         mcpDesc: "外部の AI コーディングアシスタントを Chrome Canary に直接接続し、CDP 経由でリアルタイムのインスペクション、スクリーンショット取得、DOM 検証を行います。",
+        inspectorBannerTitle: "公式 WebMCP Model Context Tool Inspector 拡張機能",
+        inspectorBannerDesc: "Chrome Web Store から Google 公式 DevRel 拡張機能をインストールしてください。アクティブなタブに登録された <code>document.modelContext</code> ツールのワンクリック検査、JSON Schema 検証、および手動テスト実行が可能です（Track A 参加者必須）。",
+        inspectorBannerBtn: "📥 Chrome Web Store からインストール ↗",
+        workshopBannerTitle: "ステップ・バイ・ステップ ワークショップガイド（対話型ガイド + ワンクリック・プロンプト）",
+        workshopBannerDesc: "全 6 つの折りたたみモジュールでワークショップを対話的に進行できます：Google Store (gStore) 修理フロー事例、コピー＆ペースト可能な AI プロンプト、Adversarial Red-Teaming、軌跡評価、および Chrome 154+ Origin Trial ガイド。",
+        workshopBannerBtn: "📑 ワークショップガイドを開く ↗",
+        fieldGuideBannerTitle: "開発者フィールドガイド：拡張機能アーキテクチャ & Built-in AI 実装時の落とし穴",
+        fieldGuideBannerDesc: "Track A（宣言的 Content Script）vs. Track B（Side Panel AI エージェント）アーキテクチャ、<code>world: \"MAIN\"</code> 実行、ストリーミングデルタ蓄積、Modern Web Guidance 標準について解説します。",
+        fieldGuideBannerBtn: "📖 フィールドガイドを開く ↗",
         consoleHeading: "🧪 ブラウザ内リアルタイム検証コンソール",
         consoleDesc: "このブラウザタブ内で WebMCP ツールの登録およびオンデバイス Gemini Nano の推論を直接テストできます。",
-        downloadsHeading: "📦 ワークショップ関連ダウンロード & 参照リンク"
+        downloadsHeading: "📦 ワークショップ関連ダウンロード & 参照リンク",
+        s8Heading: "🚀 Chrome 154–156 Origin Trial & WEC 共同執筆プログラム",
+        s8Card1: `<div style="font-weight:700; color:var(--text-primary); margin-bottom:4px;">📅 リリース段階: Chrome 154+ / 156 OT</div><div>Chrome Stable は現在 <strong>M154</strong> です。公式 WebMCP Origin Trial は今年末（<strong>Chrome 156</strong>）まで実施されており、フラグ配下での本番環境検証が可能です。</div>`,
+        s8Card2: `<div style="font-weight:700; color:var(--text-primary); margin-bottom:4px;">🛠️ ネイティブ DevTools WebMCP パネル</div><div>Chrome Canary 154+ では、<code>DevTools (F12) &gt; Application &gt; WebMCP</code>（左サイドバー）を開くことで、登録済みのツールとリアルタイムのエージェント呼び出しを直接検査できます。</div>`,
+        s8Card3: `<div style="font-weight:700; color:var(--text-primary); margin-bottom:4px;">📝 developers.google.com での事例公開</div><div>Google Web Ecosystem Consultants (WEC) と連携し、<strong>developers.google.com</strong> に公式 WebMCP エンタープライズ事例（Case Study）を共同執筆・公開できます。</div>`
       }
     };
 
@@ -1330,6 +1365,7 @@ npx -y modern-web-guidance@latest retrieve "popover-api-dialog"</pre>
 
     function setLanguage(lang) {
       currentLang = lang;
+      localStorage.setItem('webmcp_lang', lang);
       document.getElementById('btn-lang-en')?.classList.toggle('active', lang === 'en');
       document.getElementById('btn-lang-ja')?.classList.toggle('active', lang === 'ja');
 
@@ -1338,6 +1374,12 @@ npx -y modern-web-guidance@latest retrieve "popover-api-dialog"</pre>
         const key = el.getAttribute('data-i18n');
         if (dict[key]) {
           el.textContent = dict[key];
+        }
+      });
+      document.querySelectorAll('[data-i18n-html]').forEach((el) => {
+        const key = el.getAttribute('data-i18n-html');
+        if (dict[key]) {
+          el.innerHTML = dict[key];
         }
       });
       if (hasRunDiagnostics) {
@@ -1936,6 +1978,10 @@ npx -y modern-web-guidance@latest retrieve "popover-api-dialog"</pre>
       initChecklist();
       initTabs();
       renderInitialDiagUI();
+      const savedLang = localStorage.getItem('webmcp_lang');
+      if (savedLang === 'ja' || savedLang === 'en') {
+        setLanguage(savedLang);
+      }
     });
   </script>
 </body>
