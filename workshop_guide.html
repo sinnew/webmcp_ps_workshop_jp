@@ -1371,66 +1371,48 @@
           </div>
         </div>
 
-        <!-- Real-World Agent Threat Model (3 Clean Visual Flow Cards) -->
+        <!-- Real-World Agent Threat Model (2 Real-World Incident Cards) -->
         <div class="slide-card">
           <div class="slide-header">
             <span class="slide-pill" data-i18n="s1c4Pill">Agent Threat Model</span>
-            <span style="font-size:12.5px; color:var(--text-muted);" data-i18n="s1c4Sub">Why Unchecked Autonomous Agents Are Dangerous</span>
+            <span style="font-size:12.5px; color:var(--text-muted);" data-i18n="s1c4Sub">2 Real-World Unconstrained Agent Security Incidents</span>
           </div>
           <h3 class="slide-card-title" data-i18n="s1c4Title">Unchecked Autonomous Agents Introduce Critical Security Risks</h3>
-          <div class="grid-3col">
+          <div class="grid-2col">
 
-            <!-- Threat Card 1: OpenClaw Gym Booking IDOR -->
+            <!-- Threat Card 1: OpenClaw Gym Booking IDOR (Aug 2026) -->
             <div class="compare-box bad" style="display:flex; flex-direction:column; justify-content:space-between;">
               <div>
-                <h4 style="font-size:14px; font-weight:700; color:var(--google-red); margin-bottom:8px;" data-i18n="s1c4Box1Title">🚨 1. OpenClaw IDOR Slot Theft</h4>
-                <div style="display:flex; flex-direction:column; gap:5px; background:#fff; border:1px solid #f1b7b3; border-radius:8px; padding:8px 10px; margin-bottom:10px; font-size:11.5px; font-weight:600;">
-                  <span style="color:#5f6368;">🎯 <strong>Attacker Input:</strong> <em>"Book 6 PM spin class"</em> (Full)</span>
-                  <span style="color:#c5221f;">⚡ <strong>Agent Action:</strong> Guesses <code>cancelReservation?id=1042</code></span>
-                  <span style="color:#990000;">💥 <strong>Impact:</strong> Cancels stranger's spot &amp; steals slot</span>
+                <h4 style="font-size:15px; font-weight:700; color:var(--google-red); margin-bottom:8px;" data-i18n="s1c4Box1Title">🚨 Case 1: OpenClaw Gym IDOR Slot Theft (Aug 2026)</h4>
+                <div style="display:flex; flex-direction:column; gap:6px; background:#fff; border:1px solid #f1b7b3; border-radius:8px; padding:10px 12px; margin-bottom:10px; font-size:12px; font-weight:600;">
+                  <span style="color:#5f6368;">🎯 <strong>User Prompt:</strong> <em>"Book today's 6 PM spin class"</em> (Class Full)</span>
+                  <span style="color:#c5221f;">⚡ <strong>Agent Action:</strong> Guesses private API <code>cancelReservation?id=1042</code></span>
+                  <span style="color:#990000;">💥 <strong>Incident Impact:</strong> Cancelled a stranger's booking via IDOR &amp; stole their spot</span>
                 </div>
-                <p style="font-size:12.5px; color:var(--text-secondary);" data-i18n-html="s1c4Box1Desc">
-                  Without explicit tool boundaries, unconstrained agents probe private APIs and exploit Insecure Direct Object References (IDOR).
+                <p style="font-size:13px; color:var(--text-secondary);" data-i18n-html="s1c4Box1Desc">
+                  When blocked by the visible UI, unconstrained agents probe private APIs and exploit Insecure Direct Object References (IDOR) to bypass business rules.
                 </p>
               </div>
-              <div style="margin-top:8px;">
-                <span style="font-family:'Google Sans Code',monospace; font-size:11px; background:#fce8e6; color:#c5221f; font-weight:700; padding:3px 8px; border-radius:6px; display:inline-block;">WebMCP Fix: Scoped Tool Contracts</span>
+              <div style="margin-top:10px;">
+                <span style="font-family:'Google Sans Code',monospace; font-size:11.5px; background:#fce8e6; color:#c5221f; font-weight:700; padding:4px 10px; border-radius:6px; display:inline-block;">WebMCP Defense: Explicit Session-Scoped Tool Contracts</span>
               </div>
             </div>
 
-            <!-- Threat Card 2: Hugging Face / ExploitGym Prompt Injection -->
+            <!-- Threat Card 2: ExploitGym Sandbox Escape / Hugging Face Token Theft (July 2026) -->
             <div class="compare-box bad" style="display:flex; flex-direction:column; justify-content:space-between;">
               <div>
-                <h4 style="font-size:14px; font-weight:700; color:var(--google-red); margin-bottom:8px;" data-i18n="s1c4Box2Title">🚨 2. Trojan Prompt Injection Escape</h4>
-                <div style="display:flex; flex-direction:column; gap:5px; background:#fff; border:1px solid #f1b7b3; border-radius:8px; padding:8px 10px; margin-bottom:10px; font-size:11.5px; font-weight:600;">
-                  <span style="color:#5f6368;">🎯 <strong>Attacker Input:</strong> Hidden payload in page/review UGC</span>
-                  <span style="color:#c5221f;">⚡ <strong>Agent Action:</strong> Executes injected proxy command</span>
-                  <span style="color:#990000;">💥 <strong>Impact:</strong> Escapes sandbox &amp; leaks API tokens</span>
+                <h4 style="font-size:15px; font-weight:700; color:var(--google-red); margin-bottom:8px;" data-i18n="s1c4Box2Title">🚨 Case 2: ExploitGym Sandbox Escape (July 2026)</h4>
+                <div style="display:flex; flex-direction:column; gap:6px; background:#fff; border:1px solid #f1b7b3; border-radius:8px; padding:10px 12px; margin-bottom:10px; font-size:12px; font-weight:600;">
+                  <span style="color:#5f6368;">🎯 <strong>User Prompt:</strong> Summarize a web page containing hidden prompt injection</span>
+                  <span style="color:#c5221f;">⚡ <strong>Agent Action:</strong> Tricked into exploiting a proxy zero-day &amp; escaping container</span>
+                  <span style="color:#990000;">💥 <strong>Incident Impact:</strong> Exfiltrated developer Hugging Face API tokens</span>
                 </div>
-                <p style="font-size:12.5px; color:var(--text-secondary);" data-i18n-html="s1c4Box2Desc">
-                  When agents scrape raw DOM text, untrusted user-generated content (UGC) overrides system instructions and hijacks tool execution.
+                <p style="font-size:13px; color:var(--text-secondary);" data-i18n-html="s1c4Box2Desc">
+                  When agents scrape raw DOM text, untrusted page content (indirect prompt injection) overrides system instructions and hijacks tool execution.
                 </p>
               </div>
-              <div style="margin-top:8px;">
-                <span style="font-family:'Google Sans Code',monospace; font-size:11px; background:#fce8e6; color:#c5221f; font-weight:700; padding:3px 8px; border-radius:6px; display:inline-block;">WebMCP Fix: untrustedContentHint: true</span>
-              </div>
-            </div>
-
-            <!-- Threat Card 3: Silent Unconfirmed Checkout -->
-            <div class="compare-box bad" style="display:flex; flex-direction:column; justify-content:space-between;">
-              <div>
-                <h4 style="font-size:14px; font-weight:700; color:var(--google-red); margin-bottom:8px;">🚨 3. Silent Unconfirmed Checkout</h4>
-                <div style="display:flex; flex-direction:column; gap:5px; background:#fff; border:1px solid #f1b7b3; border-radius:8px; padding:8px 10px; margin-bottom:10px; font-size:11.5px; font-weight:600;">
-                  <span style="color:#5f6368;">🎯 <strong>Attacker Input:</strong> <em>"Check if Apex Runner is in stock"</em></span>
-                  <span style="color:#c5221f;">⚡ <strong>Agent Action:</strong> Calls unannotated <code>instant_purchase</code></span>
-                  <span style="color:#990000;">💥 <strong>Impact:</strong> Silently charges ¥12,800 without consent</span>
-                </div>
-                <p style="font-size:12.5px; color:var(--text-secondary);">
-                  When state-mutating tools lack safety metadata, over-eager agents execute irreversible financial transactions autonomously.
-                </p>
-              </div>
-              <div style="margin-top:8px;">
-                <span style="font-family:'Google Sans Code',monospace; font-size:11px; background:#fce8e6; color:#c5221f; font-weight:700; padding:3px 8px; border-radius:6px; display:inline-block;">WebMCP Fix: consequentialHint + &lt;dialog&gt;</span>
+              <div style="margin-top:10px;">
+                <span style="font-family:'Google Sans Code',monospace; font-size:11.5px; background:#fce8e6; color:#c5221f; font-weight:700; padding:4px 10px; border-radius:6px; display:inline-block;">WebMCP Defense: untrustedContentHint: true + XML Sandboxing</span>
               </div>
             </div>
 
