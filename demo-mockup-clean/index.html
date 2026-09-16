@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Google Partner Summit: Built-in AI & WebMCP Demo Hub</title>
-  <link rel="stylesheet" href="shared/css/base.css?v=20260915">
-  <link rel="stylesheet" href="shared/css/components.css?v=20260915">
+  <link rel="stylesheet" href="shared/css/base.css?v=20260916">
+  <link rel="stylesheet" href="shared/css/components.css?v=20260916">
   <style>
     .hub-hero {
       padding: 56px 0 40px 0;
@@ -295,7 +295,29 @@
         </div>
       </article>
 
-      </div>
+      <!-- 6. Red-Team Lab -->
+      <article class="hub-card" style="border-color:rgba(225,29,72,0.25);">
+        <div class="hub-card-header">
+          <div class="hub-card-title" style="color:var(--brand-redteam);">
+            <span class="service-dot" style="background:var(--brand-redteam);"></span>
+            <span data-ja="WebMCP 脆弱性検証ラボ" data-en="WebMCP Red-Team Lab">WebMCP 脆弱性検証ラボ</span>
+          </div>
+          <span class="badge badge-redteam" data-ja="セキュリティ" data-en="Security">セキュリティ</span>
+        </div>
+        <div class="attendee-list">
+          <span class="attendee-tag">Missing HITL</span>
+          <span class="attendee-tag">Prompt Injection</span>
+          <span class="attendee-tag">PII Leak</span>
+        </div>
+        <div style="margin-top:14px;">
+          </div>
+        <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border-light);display:flex;flex-direction:column;gap:5px;font-size:12px;">
+          <a href="redteam/hitl.html" style="color:var(--text-secondary);text-decoration:none;">⚡ <span data-ja="シナリオ 1: 承認なき課金 (Missing HITL)" data-en="Scenario 1: Missing HITL">シナリオ 1: 承認なき課金 (Missing HITL)</span> &rarr;</a>
+          <a href="redteam/injection.html" style="color:var(--text-secondary);text-decoration:none;">💬 <span data-ja="シナリオ 2: 間接プロンプト注入 (Injection)" data-en="Scenario 2: Prompt Injection">シナリオ 2: 間接プロンプト注入 (Injection)</span> &rarr;</a>
+          <a href="redteam/pii.html" style="color:var(--text-secondary);text-decoration:none;">👤 <span data-ja="シナリオ 3: 個人情報漏洩・送金 (PII & Transfer)" data-en="Scenario 3: PII & Transfer">シナリオ 3: 個人情報漏洩・送金 (PII & Transfer)</span> &rarr;</a>
+        </div>
+      </article>
+    </div>
 
     <!-- Quick Run Info -->
     <div style="background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:20px;margin-top:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
@@ -327,7 +349,7 @@
   </footer>
 
   <div class="webmcp-toast"></div>
-  <script src="./shared/js/i18n.js?v=20260915"></script>
-  <script src="./shared/js/store.js?v=20260915"></script>
+  <script src="./shared/js/i18n.js?v=20260916"></script>
+  <script src="./shared/js/store.js?v=20260916"></script>
   </body>
 </html>
