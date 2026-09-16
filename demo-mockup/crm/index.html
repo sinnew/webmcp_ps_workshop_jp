@@ -8,12 +8,12 @@
   <link rel="stylesheet" href="../shared/css/components.css?v=20260916">
   <style>
     .crm-body {
-      background: #090d16;
-      color: #f8fafc;
+      background: var(--bg-page);
+      color: var(--text-main);
     }
     .crm-header-card {
-      background: #111827;
-      border: 1px solid #1f2937;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
       border-radius: var(--radius-md);
       padding: 20px 24px;
       margin-top: 20px;
@@ -22,6 +22,7 @@
       align-items: center;
       flex-wrap: wrap;
       gap: 16px;
+      box-shadow: var(--shadow-xs);
     }
     .crm-kpi-grid {
       display: grid;
@@ -30,21 +31,22 @@
       margin: 20px 0;
     }
     .crm-kpi-card {
-      background: #111827;
-      border: 1px solid #1f2937;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
       border-radius: var(--radius-md);
       padding: 16px 20px;
+      box-shadow: var(--shadow-xs);
     }
     .kpi-label {
       font-size: 12px;
-      color: #94a3b8;
+      color: var(--text-secondary);
       font-weight: 600;
       margin-bottom: 6px;
     }
     .kpi-value {
       font-size: 24px;
       font-weight: 800;
-      color: #38bdf8;
+      color: var(--google-blue);
     }
     .crm-sections {
       display: grid;
@@ -55,10 +57,11 @@
       .crm-sections { grid-template-columns: 1fr; }
     }
     .timeline-panel {
-      background: #111827;
-      border: 1px solid #1f2937;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
       border-radius: var(--radius-md);
       padding: 20px;
+      box-shadow: var(--shadow-xs);
     }
     .timeline-stream {
       display: flex;
@@ -69,9 +72,9 @@
       margin-top: 14px;
     }
     .stream-event-item {
-      background: #090d16;
-      border: 1px solid #1f2937;
-      border-left: 3px solid #38bdf8;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--google-blue);
       border-radius: var(--radius-xs);
       padding: 10px 14px;
       display: flex;
@@ -84,13 +87,13 @@
       font-weight: 700;
       padding: 2px 6px;
       border-radius: var(--radius-xs);
-      background: rgba(56, 189, 248, 0.15);
-      color: #38bdf8;
+      background: var(--google-blue-light);
+      color: var(--google-blue);
       margin-right: 8px;
     }
     .rule-card {
-      background: #090d16;
-      border: 1px solid #1f2937;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
       border-radius: var(--radius-xs);
       padding: 14px;
       margin-bottom: 10px;

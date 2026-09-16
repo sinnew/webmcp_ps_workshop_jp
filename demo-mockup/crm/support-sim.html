@@ -8,8 +8,8 @@
   <link rel="stylesheet" href="../shared/css/components.css?v=20260916">
   <style>
     .sim-body {
-      background: #090d16;
-      color: #f8fafc;
+      background: var(--bg-page);
+      color: var(--text-main);
     }
     .sim-grid {
       display: grid;
@@ -21,13 +21,14 @@
       .sim-grid { grid-template-columns: 1fr; }
     }
     .chat-container {
-      background: #111827;
-      border: 1px solid #1f2937;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
       border-radius: var(--radius-md);
       padding: 20px;
       display: flex;
       flex-direction: column;
       height: 580px;
+      box-shadow: var(--shadow-xs);
     }
     .chat-messages {
       flex: 1;
@@ -45,26 +46,26 @@
       line-height: 1.55;
     }
     .bubble-user {
-      background: #0284c7;
+      background: var(--google-blue);
       color: #ffffff;
       margin-left: auto;
       border-bottom-right-radius: 2px;
     }
     .bubble-bot {
-      background: #1f2937;
-      color: #f8fafc;
+      background: var(--bg-subtle);
+      color: var(--text-main);
       margin-right: auto;
       border-bottom-left-radius: 2px;
-      border: 1px solid #374151;
+      border: 1px solid var(--border);
     }
     .intent-box {
-      background: #090d16;
-      border: 1px solid #1f2937;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
       border-radius: var(--radius-xs);
       padding: 8px 10px;
       font-size: 11px;
       font-family: var(--font-mono);
-      color: #38bdf8;
+      color: var(--google-blue);
       margin-top: 6px;
     }
     .inquiry-preset-btn {
@@ -197,7 +198,7 @@
         </div>
 
         <form id="chat-form" onsubmit="handleSend(event)" style="display:flex;gap:8px;margin-top:14px;">
-          <input type="text" id="chat-input" placeholder="質問を入力してください..." style="flex:1;background:#090d16;border:1px solid #1f2937;border-radius:var(--radius-xs);padding:10px 14px;color:#f8fafc;font-size:13px;outline:none;" data-ja="質問を入力してください..." data-en="Type your question here...">
+          <input type="text" id="chat-input" placeholder="質問を入力してください..." style="flex:1;background:#ffffff;border:1px solid var(--border);border-radius:var(--radius-xs);padding:10px 14px;color:var(--text-main);font-size:13px;outline:none;" data-ja="質問を入力してください..." data-en="Type your question here...">
           <button type="submit" class="btn" style="background:#0284c7;color:#fff;font-size:13px;padding:0 20px;" data-ja="送信" data-en="Send">送信</button>
         </form>
       </section>
