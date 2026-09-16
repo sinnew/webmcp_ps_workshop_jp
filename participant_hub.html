@@ -1113,7 +1113,7 @@ npx -y modern-web-guidance@latest retrieve "popover-api-dialog"</pre>
 
     <!-- Recommended: Step-by-Step Workshop Guide -->
     <div style="background: linear-gradient(135deg, #e8f0fe 0%, #f8f9fa 100%); border: 1px solid #dadce0; border-left: 4px solid var(--google-blue); border-radius: 12px; padding: 18px 22px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; box-shadow: var(--shadow-sm);">
-      <div style="display: flex; align-items: center; gap: 16px; max-width: 720px;">
+      <div style="display: flex; align-items: center; gap: 16px; max-width: 680px;">
         <span style="font-size: 34px;">📑</span>
         <div>
           <div style="font-weight: 700; font-size: 16px; color: var(--text-main);" data-i18n="workshopBannerTitle">
@@ -1124,9 +1124,14 @@ npx -y modern-web-guidance@latest retrieve "popover-api-dialog"</pre>
           </p>
         </div>
       </div>
-      <a href="workshop_guide.html" class="btn-diag" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px; background: var(--google-blue); color: #fff; font-size: 13.5px; padding: 10px 18px; border-radius: 8px; font-weight: 600; box-shadow: var(--shadow-sm);">
-        <span data-i18n="workshopBannerBtn">📑 Open Workshop Guide ↗</span>
-      </a>
+      <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <a href="workshop_guide.html#step-3" class="btn-diag" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px; background: #1e8e3e; color: #fff; font-size: 13.5px; padding: 10px 16px; border-radius: 8px; font-weight: 600; box-shadow: var(--shadow-sm);">
+          <span data-i18n="workshopBannerStep3Btn">⚡ Step 3: Track A Prompts Cheat Sheet ↗</span>
+        </a>
+        <a href="workshop_guide.html" class="btn-diag" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px; background: var(--google-blue); color: #fff; font-size: 13.5px; padding: 10px 18px; border-radius: 8px; font-weight: 600; box-shadow: var(--shadow-sm);">
+          <span data-i18n="workshopBannerBtn">📑 Open Workshop Guide ↗</span>
+        </a>
+      </div>
     </div>
 
     <!-- Recommended: Developer Field Guide & Gotchas -->
@@ -1297,6 +1302,7 @@ npx -y modern-web-guidance@latest retrieve "popover-api-dialog"</pre>
         inspectorBannerBtn: "📥 Install from Chrome Web Store ↗",
         workshopBannerTitle: "Step-by-Step Workshop Guide (Interactive Companion + 1-Click Prompts)",
         workshopBannerDesc: "Follow the entire workshop interactively across 6 collapsible modules: Google Store (gStore) repair case study, 1-click copy & paste AI prompts, adversarial red-teaming, trajectory evals, and Chrome 154+ Origin Trial guardrails.",
+        workshopBannerStep3Btn: "⚡ Step 3: Track A Prompts Cheat Sheet ↗",
         workshopBannerBtn: "📑 Open Workshop Guide ↗",
         fieldGuideBannerTitle: "Developer Field Guide: Extension Plumbing & Built-in AI Gotchas",
         fieldGuideBannerDesc: "Track A (declarative content scripts) vs. Track B (Side Panel AI agent) architecture, <code>world: \"MAIN\"</code> execution, streaming delta accumulation, and Modern Web Guidance standards.",
@@ -1354,6 +1360,7 @@ npx -y modern-web-guidance@latest retrieve "popover-api-dialog"</pre>
         inspectorBannerBtn: "📥 Chrome Web Store からインストール ↗",
         workshopBannerTitle: "ステップ・バイ・ステップ ワークショップガイド（対話型ガイド + ワンクリック・プロンプト）",
         workshopBannerDesc: "全 6 つの折りたたみモジュールでワークショップを対話的に進行できます：Google Store (gStore) 修理フロー事例、コピー＆ペースト可能な AI プロンプト、Adversarial Red-Teaming、軌跡評価、および Chrome 154+ Origin Trial ガイド。",
+        workshopBannerStep3Btn: "⚡ Step 3: Track A プロンプト・チートシート ↗",
         workshopBannerBtn: "📑 ワークショップガイドを開く ↗",
         fieldGuideBannerTitle: "開発者フィールドガイド：拡張機能アーキテクチャ & Built-in AI 実装時の落とし穴",
         fieldGuideBannerDesc: "Track A（宣言的 Content Script）vs. Track B（Side Panel AI エージェント）アーキテクチャ、<code>world: \"MAIN\"</code> 実行、ストリーミングデルタ蓄積、Modern Web Guidance 標準について解説します。",
