@@ -568,10 +568,12 @@
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 12px;
+      row-gap: 10px;
+      column-gap: 16px;
     }
 
     .brand-group {
+      order: 1;
       display: flex;
       align-items: center;
       gap: 10px;
@@ -582,24 +584,38 @@
       font-family: 'Google Sans', sans-serif;
     }
 
-    .nav-pills {
+    .header-actions {
+      order: 2;
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 8px;
+      margin-left: auto;
+    }
+
+    .nav-pills {
+      order: 3;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 6px;
       background: var(--bg-subtle);
-      padding: 4px;
-      border-radius: 999px;
+      padding: 5px;
+      border-radius: 12px;
       border: 1px solid var(--border);
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
+      overflow-x: auto;
     }
 
     .nav-pill {
+      flex: 1;
+      text-align: center;
+      white-space: nowrap;
       text-decoration: none;
       font-size: 13px;
       font-weight: 600;
       color: var(--text-secondary);
-      padding: 6px 14px;
-      border-radius: 999px;
+      padding: 7px 14px;
+      border-radius: 8px;
       transition: all 0.15s ease;
     }
 
@@ -611,12 +627,6 @@
       background: var(--google-blue);
       color: #ffffff;
       box-shadow: var(--shadow-sm);
-    }
-
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 8px;
     }
 
     .lang-toggle {
@@ -1243,10 +1253,10 @@ npx -y modern-web-guidance@latest retrieve "popover-api-dialog"</pre>
     const i18nData = {
       en: {
         navHub: '1. Pre-Workshop Setup Hub',
-        navGuide: '2. Step-by-Step Workshop Guide',
+        navGuide: '2. Slide Deck & Step-by-Step Guide',
         navFieldGuide: '3. Extension & Built-in AI Field Guide',
         navResources: '4. Partner Links & Feedback Hub',
-        navSurvey: '5. Post-Workshop Survey',
+        navSurvey: '4. Post-Workshop Survey',
         heroTitle: "Built-in AI & WebMCP Participant Setup Hub",
         heroSubtitle: "Welcome! This self-contained setup page provides 100% public download links, flag checklists, agent installation guides, and live on-device browser diagnostics to ensure your laptop is ready for today's session.",
         checkingStatus: "Checking Browser Environment...",
@@ -1301,10 +1311,10 @@ npx -y modern-web-guidance@latest retrieve "popover-api-dialog"</pre>
       },
       ja: {
         navHub: "1. 事前セットアップHub",
-        navGuide: "2. ステップ別実践ガイド",
+        navGuide: "2. ワークショップ進行ガイド",
         navFieldGuide: "3. 拡張機能・Built-in AI 実装ガイド",
         navResources: "4. パートナーリンク＆フィードバックHub",
-        navSurvey: "5. 事後アンケート",
+        navSurvey: "4. 事後アンケート",
         heroTitle: "Built-in AI & WebMCP ワークショップ参加者用環境設定ハブ",
         heroSubtitle: "ご参加ありがとうございます！本ページでは、当日のハンズオンを円滑に行うための公開ダウンロードリンク、Chrome フラグ設定チェックリスト、AI エージェント別設定ガイド、およびお使いのブラウザの動作環境をリアルタイムに自動判定する診断ツールを提供します。",
         checkingStatus: "ブラウザ環境を確認中...",
