@@ -2177,12 +2177,31 @@ Protocol:
 5. Output a Markdown summary table with: Step, Tool Name, Raw Input Passed, Resolved/Hydrated Args, Final \`window.location.href\`, Payload Size, Latency, and Status.`;
 
       const p6Text = `use modern-web-guidance
-Target browser environment: Chrome 154+ (Built-in AI Prompt API + WebMCP).
+Target browser environment: Chrome 154+ with Built-in AI Prompt API Tool Use (chrome://flags/#prompt-api-tool-use enabled, Gemma 4 / Gemini Nano) + WebMCP.
 
-Extend the "${extName}" extension with an optional local on-device Gemini Nano companion agent in \`sidepanel.html\` and \`sidepanel.js\`:
-1. Manifest V3: Ensure permissions \`["sidePanel", "tabs", "scripting"]\`, \`host_permissions: ["${matchPattern}"]\`, and \`"side_panel": { "default_path": "sidepanel/sidepanel.html" }\`.
-2. On-Device AI Session: Initialize Gemini Nano via the top-level \`await LanguageModel.create()\` API and stream tokens using \`session.promptStreaming(userQuery)\`, appending delta chunks (\`+= chunk\`). Destroy sessions on reset (\`session.destroy()\`) to free VRAM.
-3. WebMCP MAIN-World Bridge: When the model invokes a tool on ${hostname}, normalize arguments against \`inputSchema\` before calling \`document.modelContext.executeTool()\` and verify tab URL transitions via \`chrome.tabs.onUpdated\`.`;
+Extend the "${extName}" extension with an autonomous on-device AI Co-Browsing Agent in \`sidepanel.html\` and \`sidepanel.js\` that identifies user intent and ACTUATES registered WebMCP tools on ${hostname} (rather than merely answering questions in text):
+
+1. Manifest V3 Permissions & Scripting Bridge:
+   - Ensure permissions \`["sidePanel", "tabs", "scripting", "storage"]\`, \`host_permissions: ["${matchPattern}"]\`, and \`"side_panel": { "default_path": "sidepanel/sidepanel.html" }\`.
+   - Implement a helper \`getWebMCPToolsFromTab(tabId)\` using \`chrome.scripting.executeScript({ target: { tabId }, world: 'MAIN', func: () => document.modelContext?.getTools() || [] })\` to fetch the live tools registered on ${hostname} (\`search_extension_apis\`, \`navigate_page\`, \`stage_api_to_shelf\`).
+
+2. Prompt API Tool Use Session (\`LanguageModel.create({ tools })\`):
+   - Before prompting, fetch the active tab's WebMCP tools and map each tool into Chrome's Prompt API Function Calling format (\`tools\` array passed to \`await LanguageModel.create({ initialPrompts, tools })\`):
+     * Parse any stringified JSON schemas (\`typeof tool.inputSchema === 'string' ? JSON.parse(tool.inputSchema) : (tool.inputSchema || tool.parameters)\`).
+     * Provide an \`async execute(rawArgs)\` callback on each tool in \`tools\` that normalizes arguments against \`inputSchema\` (resolving aliases & empty \`{}\` fallbacks) and executes \`document.modelContext.executeTool(tool.name, normalizedArgs)\` in the active tab's \`MAIN\` world via \`chrome.scripting.executeScript\`.
+   - Include an explicit System Prompt instructing the model:
+     "You are an autonomous browser actuation agent for ${hostname}. DO NOT merely answer user requests from memory when they ask to find, search, open, navigate, or stage APIs. You MUST call the registered WebMCP tools (\`search_extension_apis\`, \`navigate_page\`, \`stage_api_to_shelf\`) to act on the page and fulfill the user's intent."
+
+3. Resilient Dual-Mode Tool Dispatch (Native Function Calling + Structured JSON Fallback):
+   - Support BOTH execution paths so the agent acts reliably across Gemma 4 and Gemini Nano builds:
+     a) Native Tool Use Callback: When \`session.prompt(userQuery)\` triggers a tool's \`execute(args)\` callback directly via \`#prompt-api-tool-use\`, capture the returned JSON payload and log the tool call in the Side Panel telemetry monitor.
+     b) Structured JSON Tool-Call Interceptor: If \`session.prompt()\` returns a FunctionCall object (\`{ type: 'function-call', name, arguments }\`) or a JSON block (\`{ "tool": "...", "args": {...} }\` / \`{ "name": "...", "arguments": {...} }\`), intercept and parse it, normalize the arguments, and execute \`document.modelContext.executeTool(name, normalizedArgs)\` in the active tab's \`MAIN\` world.
+
+4. Multi-Step Autonomous Co-Browsing Loop & Navigation Sync:
+   - Support multi-step prompts (e.g., "Find the sidePanel API, open its reference page, and stage it to my shelf") in an autonomous agent loop (up to 4 turns):
+     * After executing \`navigate_page\`, wait for \`chrome.tabs.onUpdated\` (\`status === 'complete'\`) on the active tab so the new page finishes loading and \`content/webmcp-tools.js\` re-registers \`document.modelContext\` at \`document_start\`.
+     * Re-fetch \`document.modelContext.getTools()\` from the newly navigated page and feed the tool execution result back into the session so the agent automatically proceeds to the next step (e.g., calling \`stage_api_to_shelf\`) before presenting the final summary to the user.
+   - Destroy sessions on reset (\`session.destroy()\`) to free VRAM.`;
 
       const el1 = document.getElementById('prompt-text-1');
       const el2 = document.getElementById('prompt-text-2');

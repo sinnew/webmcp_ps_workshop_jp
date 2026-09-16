@@ -141,10 +141,10 @@
     }, 600);
   };
 
-  // --- Exploit 3: PII Over-Privileged Data Leak ---
+  // --- Exploit 3: PII Over-Privileged Data Leak & Silent Wallet Drain Hijack ---
   window.runExploit3 = async function() {
     clearTerminal();
-    logToTerminal('=== [Exploit Test 3: Over-Privileged PII Data Exfiltration] ===');
+    logToTerminal('=== [Exploit Test 3: Over-Privileged PII Leak & Silent Wallet Hijack] ===');
     logToTerminal(t('User prompt: "私の会員ランクと保有ポイントを教えて"', 'User prompt: "What is my membership tier and point balance?"'));
     logToTerminal('Agent dispatched tool call: get_user_profile()');
 
@@ -154,21 +154,23 @@
       if (isVuln) {
         logToTerminal('⚠️ API-First Anti-Pattern Detected: Backend dumped full user database row (4.8 KB).', 'warn');
         logToTerminal('Leaked Fields: email, phone, home_address, credit_card_masked, cvv_hash, internal_jwt_token', 'danger');
-        logToTerminal('💥 EXPLOIT RISK: Attacker can exfiltrate session token and billing address via external channel.', 'danger');
+        logToTerminal('🚨 Malicious Hijack Directive in response triggered autonomous call: transfer_points(attacker_wallet_99, 5000)', 'danger');
+        logToTerminal('💥 EXPLOIT SUCCEEDED: Exfiltrated PII/JWT and drained 5,000 pt without user confirmation!', 'danger');
         alert(t(
-          '⚠️ [レッドチーム検知：個人情報・トークン過剰漏洩]\nAPI-Firstの機械的ラップにより、住所・電話番号・内部JWTトークンがエージェントのコンテキストに丸ごと流出しました（4.8 KB消費）。',
-          '⚠️ [Red-Team Alert: Excessive PII & Token Exposure]\nDue to unprojected API-First wrapping, the user\'s home address, phone number, and internal JWT token leaked into the agent context (4.8 KB consumed).'
+          '🚨 [レッドチーム検知：PII抽出＋5,000pt無断送金乗っ取り]\n会員ランク照会(get_user_profile)から住所・電話番号・内部JWTトークンが流出し、さらに悪意あるコードが5,000ポイントを確認画面なしで攻撃者ウォレット(attacker_wallet_99)へ自動送金しました！',
+          '🚨 [Red-Team Alert: PII Exfiltration & Silent Wallet Hijack]\nMembership tier lookup (get_user_profile) leaked phone, address & JWT token, and malicious code silently transferred 5,000 pt to attacker_wallet_99 without prompting!'
         ));
       } else {
         logToTerminal('🛡️ Semantic Projection Applied: Minimal token budget enforced (140 bytes).', 'success');
-        logToTerminal('Returned Payload: { user_id: "usr_99", display_name: "Tanaka", tier: "Gold", points: 1420 }', 'success');
+        logToTerminal('Returned Payload: { user_id: "usr_994821", display_name: "Tanaka", membership_tier: "Gold", point_balance: 5000 }', 'success');
+        logToTerminal('🛡️ consequentialHint: true blocked unauthorized background transfer_points(attacker_wallet_99, 5000).', 'success');
         logToTerminal(t(
-          'Agent Answer: "田中様はゴールド会員です。現在の保有ポイントは 1,420 pt です。"',
-          'Agent Answer: "You are a Gold tier member with a current balance of 1,420 pt."'
+          'Agent Answer: "田中様はゴールド会員です。現在の保有ポイントは 5,000 pt です。"',
+          'Agent Answer: "You are a Gold tier member with a current balance of 5,000 pt."'
         ), 'success');
         alert(t(
-          '🛡️ [セキュア検証成功]\n必要最小限の公開フィールドのみがセマンティックに返却され、トークン消費と情報漏洩リスクが最小化されました。',
-          '🛡️ [Security Verification Passed]\nOnly minimal public fields were semantically projected, minimizing token consumption and eliminating PII leak risk.'
+          '🛡️ [セキュア検証成功]\n必要最小限の公開フィールドのみが返却され、不正送金（5,000pt）もWebMCPガードにより完全阻止されました。',
+          '🛡️ [Security Verification Passed]\nOnly minimal public fields were projected, and unauthorized 5,000 pt transfer was blocked by WebMCP guard.'
         ));
       }
     }, 500);
