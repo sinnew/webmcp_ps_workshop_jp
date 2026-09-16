@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apex Pro Runner v2 | ショッピング (Shopping)</title>
+  <link rel="stylesheet" href="../shared/css/base.css?v=20260915">
+  <link rel="stylesheet" href="../shared/css/components.css?v=20260915">
+  <style>
+    .pdp-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin-top: 28px;
+    }
+    @media (max-width: 860px) {
+      .pdp-grid { grid-template-columns: 1fr; gap: 24px; }
+    }
+    .gallery-main {
+      aspect-ratio: 1;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .pdp-title { font-size: 22px; font-weight: 700; line-height: 1.35; margin-bottom: 8px; }
+    .pdp-price { font-size: 28px; font-weight: 800; color: var(--text-main); margin-bottom: 6px; }
+    .points-box {
+      background: var(--brand-shopping-subtle);
+      border: 1px solid rgba(191,0,0,0.15);
+      border-radius: var(--radius-sm);
+      padding: 12px 16px;
+      margin: 18px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .sku-selector { margin: 20px 0; }
+    .sku-label { font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--text-main); }
+    .sku-pills { display: flex; gap: 6px; flex-wrap: wrap; }
+    .sku-pill {
+      padding: 6px 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 500;
+      background: var(--bg-surface);
+      cursor: pointer;
+    }
+    .sku-pill.active {
+      border-color: var(--text-main);
+      background: var(--bg-subtle);
+      font-weight: 700;
+    }
+    .review-item {
+      border-bottom: 1px solid var(--border);
+      padding: 14px 0;
+    }
+    .review-item:last-child { border-bottom: none; }
+  </style>
+</head>
+<body>
+  
+  <!-- Google Fonts (Partner Hub Aligned: Google Sans, Roboto, Google Sans Code, Noto Sans JP) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Code:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Speculation Rules API for instant multi-page navigation -->
+  <script type="speculationrules">
+  {
+    "prerender": [
+      {
+        "where": { "href_matches": "/*" },
+        "eagerness": "moderate"
+      }
+    ]
+  }
+  </script>
+
+  <header class="global-header">
+    <div class="container header-inner">
+      <div class="brand-group">
+        <a href="../../index.html" class="hub-back-pill" title="Return to Google Partner Summit Workshop Hub">
+          <span data-ja="&larr; パートナーハブ" data-en="&larr; Partner Hub">&larr; パートナーハブ</span>
+        </a>
+        <a href="../index.html" class="brand-link">
+          <span style="color:var(--google-blue);">Google</span>
+          <span style="color:var(--text-main);font-weight:500;" data-ja="デモ検証環境" data-en="Demo Testbed">デモ検証環境</span>
+        </a>
+      </div>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="../shopping/index.html" class="nav-link active"><span data-ja="ショッピング" data-en="Shopping">ショッピング</span></a></li>
+          <li><a href="../blog/index.html" class="nav-link "><span data-ja="ブログ" data-en="Blogging">ブログ</span></a></li>
+          <li><a href="../gallery/index.html" class="nav-link "><span data-ja="ギャラリー" data-en="Gallery">ギャラリー</span></a></li>
+          <li><a href="../crm/index.html" class="nav-link "><span data-ja="CRM・サポート" data-en="CRM & Support">CRM・サポート</span></a></li>
+          <li><a href="../account/register.html" class="nav-link "><span data-ja="アカウント" data-en="Account">アカウント</span></a></li>
+          </ul>
+      </nav>
+
+      <div class="header-actions">
+        <button id="lang-toggle-btn" class="lang-toggle-btn lang-switcher" aria-label="Toggle language" onclick="if(window.i18n) window.i18n.toggleLanguage();">
+          <span class="lang-active">JP</span><span class="lang-inactive">EN</span>
+        </button>
+        <a href="../shopping/cart.html" class="cart-indicator-btn" title="Shopping Cart">
+          <span data-ja="カート" data-en="Cart">カート</span>
+          <span class="cart-badge-count" style="display:none;">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+
+  <main class="container">
+    <div style="font-size:12px;color:var(--text-muted);margin-top:16px;">
+      <a href="index.html" data-ja="ホーム" data-en="Home">ホーム</a> &gt; <span data-ja="ランニングシューズ" data-en="Running Shoes">ランニングシューズ</span>
+    </div>
+
+    <div class="pdp-grid">
+      <!-- Image Gallery -->
+      <div>
+        <div class="gallery-main">
+          <svg width="180" height="180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 17h20M2 12h20M7 8l3 4M17 8l-3 4"/></svg>
+          <span class="badge badge-points" style="position:absolute;top:12px;left:12px;" data-ja="ポイント3倍" data-en="3x Points">ポイント3倍</span>
+        </div>
+      </div>
+
+      <!-- Details -->
+      <div>
+        <h1 class="pdp-title" data-ja="Apex Pro Runner v2 超軽量カーボンプレート搭載モデル" data-en="Apex Pro Runner v2 Carbon Plate Running Shoe">Apex Pro Runner v2 超軽量カーボンプレート搭載モデル</h1>
+        <div style="font-size:13px;color:var(--text-muted);margin-bottom:12px;">★★★★★ 4.8 (142 reviews)</div>
+
+        <div class="pdp-price">
+          ¥12,800 <span style="font-size:13px;font-weight:500;color:var(--text-muted);" data-ja="(税込・送料無料)" data-en="(Tax Included · Free Shipping)">(税込・送料無料)</span>
+        </div>
+
+        <div class="points-box">
+          <div>
+            <div style="font-weight:700;color:var(--brand-shopping);font-size:14px;" data-ja="獲得ポイント: 384 pt (3倍)" data-en="Points to Earn: 384 pts (3x)">獲得ポイント: 384 pt (3倍)</div>
+            <div style="font-size:11px;color:var(--text-muted);" data-ja="クレジットカード決済でさらに+2倍" data-en="+2x more with Credit Card">クレジットカード決済でさらに+2倍</div>
+          </div>
+          <span class="badge" data-ja="特典対象" data-en="Eligible">特典対象</span>
+        </div>
+
+        <!-- Color Selector -->
+        <div class="sku-selector">
+          <div class="sku-label"><span data-ja="カラー" data-en="Color">カラー</span>: <span id="selected-color-label">Black</span></div>
+          <div class="sku-pills" id="color-pills">
+            <button class="sku-pill active" onclick="selectColor(this, 'Black')">Black</button>
+            <button class="sku-pill" onclick="selectColor(this, 'White')">White</button>
+            <button class="sku-pill" onclick="selectColor(this, 'Red')">Red</button>
+          </div>
+        </div>
+
+        <!-- Size Selector -->
+        <div class="sku-selector">
+          <div class="sku-label"><span data-ja="サイズ" data-en="Size">サイズ</span>: <span id="selected-size-label">26.5cm</span></div>
+          <div class="sku-pills" id="size-pills">
+            <button class="sku-pill" onclick="selectSize(this, '25.5cm')">25.5cm</button>
+            <button class="sku-pill" onclick="selectSize(this, '26.0cm')">26.0cm</button>
+            <button class="sku-pill active" onclick="selectSize(this, '26.5cm')">26.5cm</button>
+            <button class="sku-pill" onclick="selectSize(this, '27.0cm')">27.0cm</button>
+            <button class="sku-pill" onclick="selectSize(this, '27.5cm')">27.5cm</button>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div style="display:flex;gap:10px;margin-top:28px;">
+          <button class="btn btn-primary-shopping" style="flex:1;padding:12px;" onclick="handleAddToCart()" data-ja="カートに入れる" data-en="Add to Cart">
+            カートに入れる
+          </button>
+          <a href="cart.html" class="btn btn-secondary" style="flex:1;padding:12px;justify-content:center;" data-ja="今すぐ購入" data-en="Buy Now">
+            今すぐ購入
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Customer Reviews Section -->
+    <section style="margin-top:48px;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:24px;">
+      <h2 style="font-size:16px;font-weight:700;margin-bottom:16px;" data-ja="カスタマーレビュー (4.8)" data-en="Customer Reviews (4.8)">カスタマーレビュー (4.8)</h2>
+
+      <div class="review-item">
+        <div style="font-size:12px;font-weight:700;margin-bottom:4px;">tanaka_runner ★★★★★</div>
+        <p style="font-size:13px;color:var(--text-secondary);" data-ja="カーボンプレートの反発が素晴らしく、フルマラソンのタイムが5分縮まりました。" data-en="The carbon plate energy return is amazing. Cut 5 mins off my marathon time.">カーボンプレートの反発が素晴らしく、フルマラソンのタイムが5分縮まりました。</p>
+      </div>
+
+            <div class="review-item" style="margin-top:12px;">
+        <div style="font-size:12px;font-weight:700;margin-bottom:4px;">sato_2026 ★★★★★</div>
+        <p style="font-size:13px;color:var(--text-secondary);" data-ja="サイズ感は普段履きと同じでピッタリでした。配送も早く大満足です。" data-en="Fits true to size. Fast delivery, very happy.">サイズ感は普段履きと同じでピッタリでした。配送も早く大満足です。</p>
+      </div>
+    </section>
+  </main>
+
+  
+  <footer style="background:var(--bg-surface);border-top:1px solid var(--border);padding:24px 0;margin-top:64px;font-size:12px;color:var(--text-muted);">
+    <div class="container" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+      <div>
+        <strong>Google Partner Summit 2026</strong> · Built-in AI & WebMCP Workshop
+      </div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;">
+        <a href="../index.html" style="color:var(--text-secondary);" data-ja="ホーム" data-en="Home">ホーム</a>
+        <a href="../shopping/index.html" style="color:var(--text-secondary);" data-ja="ショッピング" data-en="Shopping">ショッピング</a>
+        <a href="../blog/index.html" style="color:var(--text-secondary);" data-ja="ブログ" data-en="Blogging">ブログ</a>
+        <a href="../gallery/index.html" style="color:var(--text-secondary);" data-ja="ギャラリー" data-en="Gallery">ギャラリー</a>
+        <a href="../crm/index.html" style="color:var(--text-secondary);" data-ja="CRM・サポート" data-en="CRM & Support">CRM・サポート</a>
+        <a href="../account/register.html" style="color:var(--text-secondary);" data-ja="アカウント" data-en="Account">アカウント</a>
+        </div>
+    </div>
+  </footer>
+
+  <div class="webmcp-toast"></div>
+  <script src="../shared/js/i18n.js?v=20260915"></script>
+  <script src="../shared/js/store.js?v=20260915"></script>
+  <script>
+    let selectedColor = 'Black';
+    let selectedSize = '26.5cm';
+
+    function selectColor(btn, color) {
+      document.querySelectorAll('#color-pills .sku-pill').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      selectedColor = color;
+      document.getElementById('selected-color-label').textContent = color;
+    }
+
+    function selectSize(btn, size) {
+      document.querySelectorAll('#size-pills .sku-pill').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      selectedSize = size;
+      document.getElementById('selected-size-label').textContent = size;
+    }
+
+    function handleAddToCart() {
+      AppStore.addToCart({
+        id: 'sku-101',
+        name: 'Apex Pro Runner v2',
+        price: 12800,
+        pointsRate: 3,
+        size: selectedSize,
+        color: selectedColor,
+        image: 'shoes'
+      });
+    }
+  </script>
+</body>
+</html>

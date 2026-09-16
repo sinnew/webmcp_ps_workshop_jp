@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Real-time CX Operations | CX & Support Demo</title>
+  <link rel="stylesheet" href="../shared/css/base.css?v=20260915">
+  <link rel="stylesheet" href="../shared/css/components.css?v=20260915">
+  <style>
+    .crm-body {
+      background: #090d16;
+      color: #f8fafc;
+    }
+    .crm-header-card {
+      background: #111827;
+      border: 1px solid #1f2937;
+      border-radius: var(--radius-md);
+      padding: 20px 24px;
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .crm-kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin: 20px 0;
+    }
+    .crm-kpi-card {
+      background: #111827;
+      border: 1px solid #1f2937;
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+    }
+    .kpi-label {
+      font-size: 12px;
+      color: #94a3b8;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .kpi-value {
+      font-size: 24px;
+      font-weight: 800;
+      color: #38bdf8;
+    }
+    .crm-sections {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 20px;
+    }
+    @media (max-width: 900px) {
+      .crm-sections { grid-template-columns: 1fr; }
+    }
+    .timeline-panel {
+      background: #111827;
+      border: 1px solid #1f2937;
+      border-radius: var(--radius-md);
+      padding: 20px;
+    }
+    .timeline-stream {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 480px;
+      overflow-y: auto;
+      margin-top: 14px;
+    }
+    .stream-event-item {
+      background: #090d16;
+      border: 1px solid #1f2937;
+      border-left: 3px solid #38bdf8;
+      border-radius: var(--radius-xs);
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12.5px;
+    }
+    .event-type-badge {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: var(--radius-xs);
+      background: rgba(56, 189, 248, 0.15);
+      color: #38bdf8;
+      margin-right: 8px;
+    }
+    .rule-card {
+      background: #090d16;
+      border: 1px solid #1f2937;
+      border-radius: var(--radius-xs);
+      padding: 14px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body class="crm-body">
+  
+  <!-- Google Fonts (Partner Hub Aligned: Google Sans, Roboto, Google Sans Code, Noto Sans JP) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Code:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Speculation Rules API for instant multi-page navigation -->
+  <script type="speculationrules">
+  {
+    "prerender": [
+      {
+        "where": { "href_matches": "/*" },
+        "eagerness": "moderate"
+      }
+    ]
+  }
+  </script>
+
+  <header class="global-header">
+    <div class="container header-inner">
+      <div class="brand-group">
+        <a href="../../index.html" class="hub-back-pill" title="Return to Google Partner Summit Workshop Hub">
+          <span data-ja="&larr; パートナーハブ" data-en="&larr; Partner Hub">&larr; パートナーハブ</span>
+        </a>
+        <a href="../index.html" class="brand-link">
+          <span style="color:var(--google-blue);">Google</span>
+          <span style="color:var(--text-main);font-weight:500;" data-ja="デモ検証環境" data-en="Demo Testbed">デモ検証環境</span>
+        </a>
+      </div>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="../shopping/index.html" class="nav-link "><span data-ja="ショッピング" data-en="Shopping">ショッピング</span></a></li>
+          <li><a href="../blog/index.html" class="nav-link "><span data-ja="ブログ" data-en="Blogging">ブログ</span></a></li>
+          <li><a href="../gallery/index.html" class="nav-link "><span data-ja="ギャラリー" data-en="Gallery">ギャラリー</span></a></li>
+          <li><a href="../crm/index.html" class="nav-link active"><span data-ja="CRM・サポート" data-en="CRM & Support">CRM・サポート</span></a></li>
+          <li><a href="../account/register.html" class="nav-link "><span data-ja="アカウント" data-en="Account">アカウント</span></a></li>
+          </ul>
+      </nav>
+
+      <div class="header-actions">
+        <button id="lang-toggle-btn" class="lang-toggle-btn lang-switcher" aria-label="Toggle language" onclick="if(window.i18n) window.i18n.toggleLanguage();">
+          <span class="lang-active">JP</span><span class="lang-inactive">EN</span>
+        </button>
+        <a href="../shopping/cart.html" class="cart-indicator-btn" title="Shopping Cart">
+          <span data-ja="カート" data-en="Cart">カート</span>
+          <span class="cart-badge-count" style="display:none;">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+
+  <main class="container">
+    <div class="crm-header-card">
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+          <h1 style="font-size:20px;font-weight:700;color:#f8fafc;" data-ja="リアルタイム CX 運用コンソール" data-en="CRM CX Real-time Operations Console">リアルタイム CX 運用コンソール</h1>
+          <span class="badge" style="background:#0284c7;color:#fff;border:none;font-size:11px;">CX & Support</span>
+        </div>
+        <p style="font-size:13px;color:#94a3b8;margin:0;" data-ja="参加者がショッピング、ブログ、ギャラリーで起こした行動イベント（閲覧、カート追加、スキ、購入）がリアルタイムに集約されます。" data-en="Actions taken across Shopping, Blogging, and Gallery are streamed and synchronized in real time.">
+          参加者がショッピング、ブログ、ギャラリーで起こした行動イベント（閲覧、カート追加、スキ、購入）がリアルタイムに集約されます。
+        </p>
+      </div>
+
+      <div style="display:flex;gap:10px;">
+        <a href="support-sim.html" class="btn" style="background:#0284c7;color:#fff;font-size:12px;padding:6px 14px;" data-ja="🤖 AI自動応答シミュレータ &rarr;" data-en="🤖 AI Chat Simulator &rarr;">
+          🤖 AI自動応答シミュレータ &rarr;
+        </a>
+        <button class="btn btn-secondary" style="color:#94a3b8;border-color:#334155;font-size:12px;padding:6px 12px;" onclick="AppStore.clearCRMEvents(); updateFeed();" data-ja="履歴クリア" data-en="Clear Stream">
+          履歴クリア
+        </button>
+      </div>
+    </div>
+
+    <!-- KPI Summary Grid -->
+    <div class="crm-kpi-grid">
+      <div class="crm-kpi-card">
+        <div class="kpi-label" data-ja="現在のアクティブ来訪者数" data-en="Active Visitors">現在のアクティブ来訪者数</div>
+        <div class="kpi-value" id="kpi-visitors">48 <span style="font-size:13px;font-weight:600;color:#34d399;">+3 名/分</span></div>
+      </div>
+      <div class="crm-kpi-card">
+        <div class="kpi-label" data-ja="本日のセッション累計" data-en="Today's Total Sessions">本日のセッション累計</div>
+        <div class="kpi-value">1,842 <span style="font-size:13px;font-weight:600;color:#94a3b8;">PV</span></div>
+      </div>
+      <div class="crm-kpi-card">
+        <div class="kpi-label" data-ja="カート投入率 (CVR)" data-en="Cart Add Rate (CVR)">カート投入率 (CVR)</div>
+        <div class="kpi-value" style="color:#34d399;">8.4%</div>
+      </div>
+      <div class="crm-kpi-card">
+        <div class="kpi-label" data-ja="イベント処理スループット" data-en="Event Throughput">イベント処理スループット</div>
+        <div class="kpi-value" style="color:#a855f7;">142 <span style="font-size:13px;font-weight:600;color:#94a3b8;">req/sec</span></div>
+      </div>
+    </div>
+
+    <!-- Main CRM Layout -->
+    <div class="crm-sections">
+      <!-- Live Timeline -->
+      <section class="timeline-panel">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+          <h2 style="font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px;" data-ja="リアルタイム・ユーザー行動タイムライン" data-en="Real-time User Action Timeline">
+            <span style="width:8px;height:8px;border-radius:50%;background:#10b981;display:inline-block;"></span>
+            リアルタイム・ユーザー行動タイムライン
+          </h2>
+          <span style="font-size:11.5px;color:#94a3b8;" id="event-counter" data-ja="0 件の最新イベント" data-en="0 recent events">0 件の最新イベント</span>
+        </div>
+
+        <div class="timeline-stream" id="event-stream">
+          <!-- Populated dynamically via store.js -->
+        </div>
+      </section>
+
+      <!-- Engagement Scenarios -->
+      <aside>
+        <div class="timeline-panel">
+          <h2 style="font-size:15px;font-weight:700;margin-bottom:14px;" data-ja="接客アクション配信シナリオ" data-en="Engagement Action Scenarios">接客アクション配信シナリオ</h2>
+
+          <div class="rule-card">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+              <strong style="font-size:13px;" data-ja="カート離脱防止ポップアップ" data-en="Cart Abandonment Popup">カート離脱防止ポップアップ</strong>
+              <span class="badge" style="background:#064e3b;color:#34d399;font-size:10px;border:none;" data-ja="配信中" data-en="Active">配信中</span>
+            </div>
+            <p style="font-size:11.5px;color:#94a3b8;line-height:1.5;margin:0;" data-ja="カートに商品を入れたまま30秒以上操作がないユーザーに対し、5%OFF限定クーポンをポップオーバー表示。" data-en="Displays a 5% discount popover if user leaves cart idle for 30 seconds.">
+              カートに商品を入れたまま30秒以上操作がないユーザーに対し、5%OFF限定クーポンをポップオーバー表示。
+            </p>
+          </div>
+
+          <div class="rule-card">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+              <strong style="font-size:13px;" data-ja="初回来訪者向けウェルカム案内" data-en="First-time Visitor Welcome">初回来訪者向けウェルカム案内</strong>
+              <span class="badge" style="background:#064e3b;color:#34d399;font-size:10px;border:none;" data-ja="配信中" data-en="Active">配信中</span>
+            </div>
+            <p style="font-size:11.5px;color:#94a3b8;line-height:1.5;margin:0;" data-ja="セッション1回目のユーザーがトップページを閲覧した際、初回限定ポイント3倍バナーを自動訴求。" data-en="Promotes 3x welcome points banner for first-time session visitors.">
+              セッション1回目のユーザーがトップページを閲覧した際、初回限定ポイント3倍バナーを自動訴求。
+            </p>
+          </div>
+
+          <div class="rule-card">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+              <strong style="font-size:13px;" data-ja="記事読了者向けメンバーシップ訴求" data-en="Article Reader Membership Upsell">記事読了者向けメンバーシップ訴求</strong>
+              <span class="badge" style="background:#064e3b;color:#34d399;font-size:10px;border:none;" data-ja="配信中" data-en="Active">配信中</span>
+            </div>
+            <p style="font-size:11.5px;color:#94a3b8;line-height:1.5;margin:0;" data-ja="ブログ記事をスクロール読了した読者に、クリエイターの月額メンバーシップ加入案内を提示。" data-en="Presents monthly membership invitation after reading article to completion.">
+              ブログ記事をスクロール読了した読者に、クリエイターの月額メンバーシップ加入案内を提示。
+            </p>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  
+  <footer style="background:var(--bg-surface);border-top:1px solid var(--border);padding:24px 0;margin-top:64px;font-size:12px;color:var(--text-muted);">
+    <div class="container" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+      <div>
+        <strong>Google Partner Summit 2026</strong> · Built-in AI & WebMCP Workshop
+      </div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;">
+        <a href="../index.html" style="color:var(--text-secondary);" data-ja="ホーム" data-en="Home">ホーム</a>
+        <a href="../shopping/index.html" style="color:var(--text-secondary);" data-ja="ショッピング" data-en="Shopping">ショッピング</a>
+        <a href="../blog/index.html" style="color:var(--text-secondary);" data-ja="ブログ" data-en="Blogging">ブログ</a>
+        <a href="../gallery/index.html" style="color:var(--text-secondary);" data-ja="ギャラリー" data-en="Gallery">ギャラリー</a>
+        <a href="../crm/index.html" style="color:var(--text-secondary);" data-ja="CRM・サポート" data-en="CRM & Support">CRM・サポート</a>
+        <a href="../account/register.html" style="color:var(--text-secondary);" data-ja="アカウント" data-en="Account">アカウント</a>
+        </div>
+    </div>
+  </footer>
+
+  <div class="webmcp-toast"></div>
+  <script src="../shared/js/i18n.js?v=20260915"></script>
+  <script src="../shared/js/store.js?v=20260915"></script>
+  <script>
+    function updateFeed() {
+      const events = AppStore.getCRMEvents();
+      const container = document.getElementById('event-stream');
+      const counter = document.getElementById('event-counter');
+
+      if (events.length === 0) {
+        // Seed default preview events
+        container.innerHTML = `
+          <div style="text-align:center;padding:32px 0;color:#64748b;font-size:12px;">
+            まだイベントが記録されていません。<br>
+            ショッピングでカート追加、ブログでスキ、ギャラリーでブックマークを行うと、ここにリアルタイム表示されます。
+          </div>
+        `;
+        counter.textContent = (window.i18n && window.i18n.getLang() === 'en') ? '0 recent events' : '0 件の最新イベント';
+        return;
+      }
+
+      counter.textContent = (window.i18n && window.i18n.getLang() === 'en') ? `${events.length} recent events` : `${events.length} 件の最新イベント`;
+      container.innerHTML = events.slice(0, 20).map(evt => {
+        let borderCol = '#38bdf8';
+        if (evt.category === 'SHOPPING') borderCol = '#ef4444';
+        if (evt.category === 'BLOG') borderCol = '#22c55e';
+        if (evt.category === 'GALLERY') borderCol = '#0284c7';
+
+        return `
+          <div class="stream-event-item" style="border-left-color: ${borderCol};">
+            <div>
+              <span class="event-type-badge">${evt.category}</span>
+              <strong style="color:#f8fafc;font-size:12px;">${evt.action}</strong>
+              <span style="color:#94a3b8;margin-left:8px;font-size:11.5px;">${evt.label || ''}</span>
+            </div>
+            <div style="font-size:11px;color:#64748b;font-family:var(--font-mono);">${evt.timestamp}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      updateFeed();
+      window.addEventListener('crm-event-logged', updateFeed);
+      window.addEventListener('crm-events-cleared', updateFeed);
+      setInterval(updateFeed, 2500);
+    });
+  </script>
+</body>
+</html>

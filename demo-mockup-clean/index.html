@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google Partner Summit: Built-in AI & WebMCP Demo Hub</title>
+  <link rel="stylesheet" href="shared/css/base.css?v=20260915">
+  <link rel="stylesheet" href="shared/css/components.css?v=20260915">
+  <style>
+    .hub-hero {
+      padding: 56px 0 40px 0;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-surface);
+    }
+    .hub-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+    }
+    .hub-title {
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1.3;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+      color: var(--text-main);
+    }
+    .hub-desc {
+      font-size: 14px;
+      color: var(--text-secondary);
+      max-width: 720px;
+      line-height: 1.7;
+    }
+    .hub-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+      margin: 40px 0;
+    }
+    .hub-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    .hub-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--google-blue);
+      box-shadow: var(--shadow-md);
+    }
+    .hub-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .hub-card-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .attendee-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 12px 0 16px 0;
+    }
+    .attendee-tag {
+      font-size: 11px;
+      color: var(--text-muted);
+      background: var(--bg-subtle);
+      padding: 2px 7px;
+      border-radius: var(--radius-xs);
+      border: 1px solid var(--border);
+    }
+    .card-link {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-main);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: auto;
+      padding-top: 12px;
+    }
+    .card-link:hover {
+      color: var(--google-blue);
+    }
+    .service-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+  
+  <!-- Google Fonts (Partner Hub Aligned: Google Sans, Roboto, Google Sans Code, Noto Sans JP) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Code:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Speculation Rules API for instant multi-page navigation -->
+  <script type="speculationrules">
+  {
+    "prerender": [
+      {
+        "where": { "href_matches": "/*" },
+        "eagerness": "moderate"
+      }
+    ]
+  }
+  </script>
+
+  <header class="global-header">
+    <div class="container header-inner">
+      <div class="brand-group">
+        <a href="./../index.html" class="hub-back-pill" title="Return to Google Partner Summit Workshop Hub">
+          <span data-ja="&larr; パートナーハブ" data-en="&larr; Partner Hub">&larr; パートナーハブ</span>
+        </a>
+        <a href="./index.html" class="brand-link">
+          <span style="color:var(--google-blue);">Google</span>
+          <span style="color:var(--text-main);font-weight:500;" data-ja="デモ検証環境" data-en="Demo Testbed">デモ検証環境</span>
+        </a>
+      </div>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="./shopping/index.html" class="nav-link "><span data-ja="ショッピング" data-en="Shopping">ショッピング</span></a></li>
+          <li><a href="./blog/index.html" class="nav-link "><span data-ja="ブログ" data-en="Blogging">ブログ</span></a></li>
+          <li><a href="./gallery/index.html" class="nav-link "><span data-ja="ギャラリー" data-en="Gallery">ギャラリー</span></a></li>
+          <li><a href="./crm/index.html" class="nav-link "><span data-ja="CRM・サポート" data-en="CRM & Support">CRM・サポート</span></a></li>
+          <li><a href="./account/register.html" class="nav-link "><span data-ja="アカウント" data-en="Account">アカウント</span></a></li>
+          </ul>
+      </nav>
+
+      <div class="header-actions">
+        <button id="lang-toggle-btn" class="lang-toggle-btn lang-switcher" aria-label="Toggle language" onclick="if(window.i18n) window.i18n.toggleLanguage();">
+          <span class="lang-active">JP</span><span class="lang-inactive">EN</span>
+        </button>
+        <a href="./shopping/cart.html" class="cart-indicator-btn" title="Shopping Cart">
+          <span data-ja="カート" data-en="Cart">カート</span>
+          <span class="cart-badge-count" style="display:none;">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+
+  <section class="hub-hero">
+    <div class="container">
+      <div class="hub-tag">
+        <span>Google Partner Summit 2026</span>
+        <span>·</span>
+        <span data-ja="ワークショップ実演環境" data-en="Hands-on Workshop Demo">ワークショップ実演環境</span>
+      </div>
+
+      <h1 class="hub-title" data-ja="WebMCP 実装デモ & セキュリティラボ" data-en="WebMCP Interactive Demos & Security Lab">
+        WebMCP 実装デモ & セキュリティラボ
+      </h1>
+
+      <p class="hub-desc" data-ja="ショッピング、ブログ、ギャラリー、CRM・サポート、アカウント登録の主要5ドメインを網羅した標準Webアプリケーション環境です（WebMCPツール未実装のクリーン環境）。拡張機能によるWebMCPツール注入（Track A / Track B）の実践演習に最適です。" data-en="A minimal multi-page testbed modeling key web application domains (Shopping, Blogging, Media Gallery, CRM & Support). Built with Modern Web Guidance (MWG) for hands-on WebMCP testing and red-team safety evaluation.">
+        ショッピング、ブログ、ギャラリー、CRM・サポート、アカウント登録の主要5ドメインを網羅した標準Webアプリケーション環境です（WebMCPツール未実装のクリーン環境）。拡張機能によるWebMCPツール注入（Track A / Track B）の実践演習に最適です。
+      </p>
+    </div>
+  </section>
+
+  <main class="container">
+    <div class="hub-grid">
+      <!-- 1. Shopping -->
+      <article class="hub-card">
+        <div class="hub-card-header">
+          <div class="hub-card-title">
+            <span class="service-dot" style="background:var(--brand-shopping);"></span>
+            <span data-ja="ショッピング" data-en="Shopping">ショッピング</span>
+          </div>
+          <span class="badge" data-ja="EC・検索" data-en="E-Commerce & Search">EC・検索</span>
+        </div>
+        <div class="attendee-list">
+          <span class="attendee-tag">Payas Denis</span>
+          <span class="attendee-tag">Takemasa Yamada</span>
+          <span class="attendee-tag">Koji Saito</span>
+          <span class="attendee-tag">Julien Bataille</span>
+        </div>
+        <p style="font-size:13px;color:var(--text-secondary);line-height:1.6;" data-ja="検索オートサジェスト（履歴・急上昇キーワード）、SKUバリアント選択、ストアポイント計算（3倍〜10倍）、安全な確認ダイアログ付き注文フロー。" data-en="Search auto-suggest (history & trending queries), SKU variants, Reward points calculation, and a safe order review dialog.">
+          検索オートサジェスト（履歴・急上昇キーワード）、SKUバリアント選択、ストアポイント計算（3倍〜10倍）、安全な確認ダイアログ付き注文フロー。
+        </p>
+        <div style="display:flex;gap:12px;margin-top:16px;">
+          <a href="shopping/index.html" class="card-link"><span data-ja="カタログを開く" data-en="Open Catalog">カタログを開く</span> &rarr;</a>
+          <a href="shopping/product.html" class="card-link" style="color:var(--text-muted);"><span data-ja="商品詳細" data-en="Product Detail">商品詳細</span></a>
+        </div>
+      </article>
+
+      <!-- 2. Blogging -->
+      <article class="hub-card">
+        <div class="hub-card-header">
+          <div class="hub-card-title">
+            <span class="service-dot" style="background:var(--brand-blog);"></span>
+            <span data-ja="ブログ" data-en="Blogging">ブログ</span>
+          </div>
+          <span class="badge" data-ja="出版・クリエイター" data-en="Publishing & Media">出版・クリエイター</span>
+        </div>
+        <div class="attendee-list">
+          <span class="attendee-tag">Takehiko Itabashi</span>
+          <span class="attendee-tag">Hiroyuki Nakamura</span>
+        </div>
+        <p style="font-size:13px;color:var(--text-secondary);line-height:1.6;" data-ja="無駄のないタイポグラフィ、目次スクロール、スキ（Like）、有料コンテンツの購入ロック解除、およびクリエイターへのチップ支援モーダル。" data-en="Distraction-free typography, TOC navigation, Likes, paywall unlock flow, and creator tip support dialog.">
+          無駄のないタイポグラフィ、目次スクロール、スキ（Like）、有料コンテンツの購入ロック解除、およびクリエイターへのチップ支援モーダル。
+        </p>
+        <div style="display:flex;gap:12px;margin-top:16px;">
+          <a href="blog/index.html" class="card-link"><span data-ja="記事一覧を開く" data-en="Open Articles">記事一覧を開く</span> &rarr;</a>
+          <a href="blog/article.html" class="card-link" style="color:var(--text-muted);"><span data-ja="記事リーダー" data-en="Reader View">記事リーダー</span></a>
+        </div>
+      </article>
+
+      <!-- 3. ギャラリー -->
+      <article class="hub-card">
+        <div class="hub-card-header">
+          <div class="hub-card-title">
+            <span class="service-dot" style="background:var(--brand-gallery);"></span>
+            <span data-ja="ギャラリー" data-en="Gallery">ギャラリー</span>
+          </div>
+          <span class="badge" data-ja="アート・メディア" data-en="Art & Showcase">アート・メディア</span>
+        </div>
+        <div class="attendee-list">
+          <span class="attendee-tag">Mihai Spinei</span>
+        </div>
+        <p style="font-size:13px;color:var(--text-secondary);line-height:1.6;" data-ja="特集イラストカード、クリエイタークレジット（@illustrator）、タグ探索、およびHTML標準dialogによるフルスクリーン高解像度ライトボックス。" data-en="Curated artwork showcase cards, creator attribution, tag filters, and a native fullscreen lightbox dialog.">
+          特集イラストカード、クリエイタークレジット（@illustrator）、タグ探索、およびHTML標準dialogによるフルスクリーン高解像度ライトボックス。
+        </p>
+        <div style="display:flex;gap:12px;margin-top:16px;flex-wrap:wrap;">
+          <a href="gallery/index.html" class="card-link"><span data-ja="ギャラリーを見る" data-en="View Gallery">ギャラリーを見る</span> &rarr;</a>
+          <a href="gallery/feature.html" class="card-link" style="color:var(--text-muted);"><span data-ja="特集" data-en="Feature">特集</span></a>
+          <a href="gallery/tutorials.html" class="card-link" style="color:var(--text-muted);"><span data-ja="作り方" data-en="Tutorials">作り方</span></a>
+          <a href="gallery/rankings.html" class="card-link" style="color:var(--text-muted);"><span data-ja="ランキング" data-en="Rankings">ランキング</span></a>
+        </div>
+      </article>
+
+      <!-- 4. CX & Conversational AI -->
+      <article class="hub-card">
+        <div class="hub-card-header">
+          <div class="hub-card-title">
+            <span class="service-dot" style="background:var(--brand-crm);"></span>
+            <span data-ja="CRM・サポート" data-en="CRM & Support">CRM・サポート</span>
+          </div>
+          <span class="badge" data-ja="CX & AI対応" data-en="CX & AI Support">CX & AI対応</span>
+        </div>
+        <div class="attendee-list">
+          <span class="attendee-tag">Kazuma Kuramoto</span>
+          <span class="attendee-tag">Hibiki Mizuno</span>
+          <span class="attendee-tag">Koji Ota</span>
+        </div>
+        <p style="font-size:13px;color:var(--text-secondary);line-height:1.6;" data-ja="他ページでの全ユーザー行動がリアルタイムに集約されるCRM風CXダッシュボードと、問い合わせ意図を自動分類するAI Support型コンソール。" data-en="Real-time CX activity stream capturing actions from all pages, alongside an AI Support contact center triage console.">
+          他ページでの全ユーザー行動がリアルタイムに集約されるCRM風CXダッシュボードと、問い合わせ意図を自動分類するAI Support型コンソール。
+        </p>
+        <div style="display:flex;gap:12px;margin-top:16px;">
+          <a href="crm/index.html" class="card-link"><span data-ja="CXダッシュボード" data-en="CX Dashboard">CXダッシュボード</span> &rarr;</a>
+          <a href="crm/support-sim.html" class="card-link" style="color:var(--text-muted);"><span data-ja="AI応答テスト" data-en="AI Simulator">AI応答テスト</span></a>
+        </div>
+      </article>
+
+      <!-- 5. Forms & Account -->
+      <article class="hub-card">
+        <div class="hub-card-header">
+          <div class="hub-card-title">
+            <span class="service-dot" style="background:#8b5cf6;"></span>
+            <span data-ja="アカウント登録" data-en="Sign Up">アカウント登録</span>
+          </div>
+          <span class="badge" data-ja="フォーム・検証" data-en="Forms & Validation">フォーム・検証</span>
+        </div>
+        <div class="attendee-list">
+          <span class="attendee-tag">Auto-fill AI</span>
+          <span class="attendee-tag">Validation</span>
+          <span class="attendee-tag">25+ Form Fields</span>
+        </div>
+        <p style="font-size:13px;color:var(--text-secondary);line-height:1.6;" data-ja="氏名・フリガナ・郵便番号住所・2FA認証・属性・決済・規約同意など25以上の入力項目を網羅した詳細フォーム。WebMCP自動入力ツールや拡張機能のテストに最適です。" data-en="Comprehensive registration testbed with 25+ fields (Kanji/Kana names, address, 2FA, profile, payment, consent). Ideal for WebMCP form-filling agents.">
+          氏名・フリガナ・郵便番号住所・2FA認証・属性・決済・規約同意など25以上の入力項目を網羅した詳細フォーム。WebMCP自動入力ツールや拡張機能のテストに最適です。
+        </p>
+        <div style="margin-top:16px;">
+          <a href="account/register.html" class="card-link"><span data-ja="登録フォームを開く" data-en="Open Form">登録フォームを開く</span> &rarr;</a>
+        </div>
+      </article>
+
+      </div>
+
+    <!-- Quick Run Info -->
+    <div style="background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:20px;margin-top:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+      <div>
+        <div style="font-size:13px;font-weight:700;margin-bottom:4px;" data-ja="ローカル実行方法 (Python HTTP Server)" data-en="Local Run Command (Python HTTP Server)">ローカル実行方法 (Python HTTP Server)</div>
+        <div style="font-size:12px;font-family:var(--font-mono);color:var(--text-secondary);">cd demo-mockup && python3 -m http.server 8088</div>
+      </div>
+      <div style="font-size:12px;color:var(--text-muted);" data-ja="ビルド不要 · 純粋なHTML/CSS/JS · Chrome Canary対応" data-en="Zero Build · Pure HTML/CSS/JS · Chrome Canary Ready">
+        ビルド不要 · 純粋なHTML/CSS/JS · Chrome Canary対応
+      </div>
+    </div>
+  </main>
+
+  
+  <footer style="background:var(--bg-surface);border-top:1px solid var(--border);padding:24px 0;margin-top:64px;font-size:12px;color:var(--text-muted);">
+    <div class="container" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+      <div>
+        <strong>Google Partner Summit 2026</strong> · Built-in AI & WebMCP Workshop
+      </div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;">
+        <a href="./index.html" style="color:var(--text-secondary);" data-ja="ホーム" data-en="Home">ホーム</a>
+        <a href="./shopping/index.html" style="color:var(--text-secondary);" data-ja="ショッピング" data-en="Shopping">ショッピング</a>
+        <a href="./blog/index.html" style="color:var(--text-secondary);" data-ja="ブログ" data-en="Blogging">ブログ</a>
+        <a href="./gallery/index.html" style="color:var(--text-secondary);" data-ja="ギャラリー" data-en="Gallery">ギャラリー</a>
+        <a href="./crm/index.html" style="color:var(--text-secondary);" data-ja="CRM・サポート" data-en="CRM & Support">CRM・サポート</a>
+        <a href="./account/register.html" style="color:var(--text-secondary);" data-ja="アカウント" data-en="Account">アカウント</a>
+        </div>
+    </div>
+  </footer>
+
+  <div class="webmcp-toast"></div>
+  <script src="./shared/js/i18n.js?v=20260915"></script>
+  <script src="./shared/js/store.js?v=20260915"></script>
+  </body>
+</html>

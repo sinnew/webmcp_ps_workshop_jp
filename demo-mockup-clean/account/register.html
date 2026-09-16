@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>新規会員登録 (Account Registration) | WebMCP Demo</title>
+  <link rel="stylesheet" href="../shared/css/base.css?v=20260915">
+  <link rel="stylesheet" href="../shared/css/components.css?v=20260915">
+  <style>
+    .account-hero {
+      padding: 32px 0 24px 0;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-surface);
+    }
+    .account-hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #8b5cf6;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+    .account-hero-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 8px;
+    }
+    .account-hero-desc {
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      max-width: 720px;
+      line-height: 1.6;
+    }
+    .form-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 12px 16px;
+      margin-bottom: 24px;
+    }
+    .form-toolbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .is-invalid {
+      border-color: #ef4444 !important;
+      background-color: #fef2f2 !important;
+    }
+    .json-viewer {
+      background: #0f172a;
+      color: #38bdf8;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      padding: 16px;
+      border-radius: var(--radius-sm);
+      max-height: 240px;
+      overflow-y: auto;
+      text-align: left;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  
+  <!-- Google Fonts (Partner Hub Aligned: Google Sans, Roboto, Google Sans Code, Noto Sans JP) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Code:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Speculation Rules API for instant multi-page navigation -->
+  <script type="speculationrules">
+  {
+    "prerender": [
+      {
+        "where": { "href_matches": "/*" },
+        "eagerness": "moderate"
+      }
+    ]
+  }
+  </script>
+
+  <header class="global-header">
+    <div class="container header-inner">
+      <div class="brand-group">
+        <a href="../../index.html" class="hub-back-pill" title="Return to Google Partner Summit Workshop Hub">
+          <span data-ja="&larr; パートナーハブ" data-en="&larr; Partner Hub">&larr; パートナーハブ</span>
+        </a>
+        <a href="../index.html" class="brand-link">
+          <span style="color:var(--google-blue);">Google</span>
+          <span style="color:var(--text-main);font-weight:500;" data-ja="デモ検証環境" data-en="Demo Testbed">デモ検証環境</span>
+        </a>
+      </div>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="../shopping/index.html" class="nav-link "><span data-ja="ショッピング" data-en="Shopping">ショッピング</span></a></li>
+          <li><a href="../blog/index.html" class="nav-link "><span data-ja="ブログ" data-en="Blogging">ブログ</span></a></li>
+          <li><a href="../gallery/index.html" class="nav-link "><span data-ja="ギャラリー" data-en="Gallery">ギャラリー</span></a></li>
+          <li><a href="../crm/index.html" class="nav-link "><span data-ja="CRM・サポート" data-en="CRM & Support">CRM・サポート</span></a></li>
+          <li><a href="../account/register.html" class="nav-link active"><span data-ja="アカウント" data-en="Account">アカウント</span></a></li>
+          </ul>
+      </nav>
+
+      <div class="header-actions">
+        <button id="lang-toggle-btn" class="lang-toggle-btn lang-switcher" aria-label="Toggle language" onclick="if(window.i18n) window.i18n.toggleLanguage();">
+          <span class="lang-active">JP</span><span class="lang-inactive">EN</span>
+        </button>
+        <a href="../shopping/cart.html" class="cart-indicator-btn" title="Shopping Cart">
+          <span data-ja="カート" data-en="Cart">カート</span>
+          <span class="cart-badge-count" style="display:none;">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+
+  <section class="account-hero">
+    <div class="container">
+      <div class="account-hero-tag">
+        <span>WebMCP Form Testbed</span>
+        <span>·</span>
+        <span data-ja="高密度フォーム検証" data-en="High-Density Form Testing">高密度フォーム検証</span>
+      </div>
+      <h1 class="account-hero-title" data-ja="新規会員登録 (Account Registration)" data-en="New Member Registration">
+        新規会員登録 (Account Registration)
+      </h1>
+      <p class="account-hero-desc" data-ja="WebMCPエージェント連携・Chrome拡張機能によるフォーム自動入力・バリデーション検証のための高密度フォーム環境です。氏名・住所・認証・属性・決済・規約同意など25以上の実用的フィールドを備えています。" data-en="High-density form testbed for WebMCP agent autofill and Chrome extension validation. Features 25+ real-world input fields spanning profile, security, address, demographics, payment, and consent.">
+        WebMCPエージェント連携・Chrome拡張機能によるフォーム自動入力・バリデーション検証のための高密度フォーム環境です。氏名・住所・認証・属性・決済・規約同意など25以上の実用的フィールドを備えています。
+      </p>
+    </div>
+  </section>
+
+  <main class="container">
+    <div class="form-container">
+      <!-- Top Action Toolbar -->
+      <div class="form-toolbar">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="badge" id="form-progress-badge" style="background:#8b5cf6;color:#fff;" data-ja="必須項目: 0 / 14 入力済" data-en="Required: 0 / 14 Completed">必須項目: 0 / 14 入力済</span>
+          <span style="font-size:12px;color:var(--text-muted);" data-ja="リアルタイム検証中" data-en="Live Validating">リアルタイム検証中</span>
+        </div>
+        <div class="form-toolbar-actions">
+          <button type="button" class="btn" style="background:#2563eb;color:#fff;font-size:12.5px;padding:6px 14px;" onclick="autofillSamplePersona()">
+            <span data-ja="🤖 WebMCP / AI 一括入力 (Sample Persona)" data-en="🤖 WebMCP / AI Autofill (Sample Persona)">🤖 WebMCP / AI 一括入力 (Sample Persona)</span>
+          </button>
+          <button type="button" class="btn btn-secondary" style="font-size:12.5px;padding:6px 12px;" onclick="resetForm()">
+            <span data-ja="フォーム初期化" data-en="Reset Form">フォーム初期化</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Main Registration Form -->
+      <form id="registration-form" novalidate onsubmit="handleRegistrationSubmit(event)">
+        <!-- 1. 基本会員情報 -->
+        <fieldset class="form-card">
+          <legend class="form-section-title">
+            <span style="color:#8b5cf6;">01.</span>
+            <span data-ja="基本会員情報" data-en="Basic Account Information">基本会員情報</span>
+          </legend>
+
+          <!-- 氏名 (漢字) -->
+          <div class="form-grid form-grid-2">
+            <div class="form-group">
+              <label for="lastName" class="form-label">
+                <span data-ja="氏名（姓）" data-en="Last Name (Kanji)">氏名（姓）</span>
+                <span class="form-badge-req" data-ja="必須" data-en="Required">必須</span>
+              </label>
+              <input type="text" id="lastName" name="lastName" class="form-input" placeholder="山田" data-ja="山田" data-en="Yamada" required autocomplete="family-name">
+            </div>
+            <div class="form-group">
+              <label for="firstName" class="form-label">
+                <span data-ja="氏名（名）" data-en="First Name (Kanji)">氏名（名）</span>
+                <span class="form-badge-req" data-ja="必須" data-en="Required">必須</span>
+              </label>
+              <input type="text" id="firstName" name="firstName" class="form-input" placeholder="太郎" data-ja="太郎" data-en="Taro" required autocomplete="given-name">
+            </div>
+          </div>
+
+          <!-- フリガナ (全角カナ) -->
+          <div class="form-grid form-grid-2">
+            <div class="form-group">
+              <label for="lastNameKana" class="form-label">
+                <span data-ja="フリガナ（セイ）" data-en="Last Name (Kana)">フリガナ（セイ）</span>
+                <span class="form-badge-req" data-ja="必須" data-en="Required">必須</span>
+              </label>
+              <input type="text" id="lastNameKana" name="lastNameKana" class="form-input" placeholder="ヤマダ" data-ja="ヤマダ" data-en="YAMADA" required>
+            </div>
+            <div class="form-group">
+              <label for="firstNameKana" class="form-label">
+                <span data-ja="フリガナ（メイ）" data-en="First Name (Kana)">フリガナ（メイ）</span>
+                <span class="form-badge-req" data-ja="必須" data-en="Required">必須</span>
+              </label>
+              <input type="text" id="firstNameKana" name="firstNameKana" class="form-input" placeholder="タロウ" data-ja="タロウ" data-en="TARO" required>
+            </div>
+          </div>
+
+          <!-- ローマ字 (任意) -->
+          <div class="form-grid form-grid-2">
+            <div class="form-group">
+              <label for="lastNameRomaji" class="form-label">
+                <span data-ja="ローマ字（Last Name）" data-en="Last Name (Alphabet)">ローマ字（Last Name）</span>
+                <span class="form-badge-opt" data-ja="任意" data-en="Optional">任意</span>
+              </label>
+              <input type="text" id="lastNameRomaji" name="lastNameRomaji" class="form-input" placeholder="Yamada">
+            </div>
+            <div class="form-group">
+              <label for="firstNameRomaji" class="form-label">
+                <span data-ja="ローマ字（First Name）" data-en="First Name (Alphabet)">ローマ字（First Name）</span>
+                <span class="form-badge-opt" data-ja="任意" data-en="Optional">任意</span>
+              </label>
+              <input type="text" id="firstNameRomaji" name="firstNameRomaji" class="form-input" placeholder="Taro">
+            </div>
+          </div>
+
+          <!-- ニックネーム & 公開設定 -->
+          <div class="form-grid form-grid-2">
+            <div class="form-group">
+              <label for="nickname" class="form-label">
+                <span data-ja="表示名 / ニックネーム" data-en="Display Nickname">表示名 / ニックネーム</span>
+                <span class="form-badge-req" data-ja="必須" data-en="Required">必須</span>
+              </label>
+              <input type="text" id="nickname" name="nickname" class="form-input" placeholder="yamada_tech" data-ja="yamada_tech" data-en="yamada_tech" required autocomplete="nickname">
+              <span class="form-helper-text" data-ja="レビューやコミュニティで公開される名称です" data-en="Visible in public reviews and community comments">レビューやコミュニティで公開される名称です</span>
+            </div>
+            <div class="form-group">
+              <label for="profileVisibility" class="form-label">
+                <span data-ja="プロフィール公開範囲" data-en="Profile Visibility">プロフィール公開範囲</span>
+                <span class="form-badge-opt" data-ja="任意" data-en="Optional">任意</span>
+              </label>
+              <select id="profileVisibility" name="profileVisibility" class="form-select">
+                <option value="public" data-ja="全体に公開 (Public)" data-en="Public to all">全体に公開 (Public)</option>
+                <option value="members" data-ja="会員のみに公開 (Members Only)" data-en="Members Only">会員のみに公開 (Members Only)</option>
+                <option value="private" data-ja="非公開 (Private)" data-en="Private">非公開 (Private)</option>
+              </select>
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- 2. ログイン & セキュリティ認証 -->
+        <fieldset class="form-card">
+          <legend class="form-section-title">
+            <span style="color:#8b5cf6;">02.</span>
+            <span data-ja="ログイン & セキュリティ認証" data-en="Login & Security Credentials">ログイン & セキュリティ認証</span>
+          </legend>
+
+          <!-- メールアドレス -->
+          <div class="form-grid form-grid-2">
+            <div class="form-group">
+              <label for="email" class="form-label">
+                <span data-ja="メールアドレス" data-en="Email Address">メールアドレス</span>
+                <span class="form-badge-req" data-ja="必須" data-en="Required">必須</span>
+              </label>
+              <input type="email" id="email" name="email" class="form-input" placeholder="yamada.taro@example.com" required autocomplete="email">
+            </div>
+            <div class="form-group">
+              <label for="emailConfirm" class="form-label">
+                <span data-ja="メールアドレス（確認用）" data-en="Confirm Email">メールアドレス（確認用）</span>
+                <span class="form-badge-req" data-ja="必須" data-en="Required">必須</span>
+              </label>
+              <input type="email" id="emailConfirm" name="emailConfirm" class="form-input" placeholder="yamada.taro@example.com" required autocomplete="email">
+            </div>
+          </div>
+
+          <!-- パスワード -->
+          <div class="form-grid form-grid-2">
+            <div class="form-group">
+              <label for="password" class="form-label">
+                <span data-ja="ログインパスワード" data-en="Password">ログインパスワード</span>
+                <span class="form-badge-req" data-ja="必須" data-en="Required">必須</span>
+              </label>
+              <input type="password" id="password" name="password" class="form-input" placeholder="••••••••" required autocomplete="new-password" minlength="8">
+              <span class="form-helper-text" data-ja="半角英大文字・小文字・数字・記号を含む8文字以上" data-en="8+ chars with upper/lowercase, numbers and symbols">半角英大文字・小文字・数字・記号を含む8文字以上</span>
+            </div>
+            <div class="form-group">
+              <label for="passwordConfirm" class="form-label">
+                <span data-ja="パスワード（確認用）" data-en="Confirm Password">パスワード（確認用）</span>
+                <span class="form-badge-req" data-ja="必須" data-en="Required">必須</span>
+              </label>
+              <input type="password" id="passwordConfirm" name="passwordConfirm" class="form-input" placeholder="••••••••" required autocomplete="new-password">
+            </div>
+          </div>
+
+          <!-- 二要素認証方式 (2FA) -->
+          <div class="form-group">
+            <label class="form-label">
+              <span data-ja="二要素認証（2FA）の希望方式" data-en="Preferred 2FA Method">二要素認証（2FA）の希望方式</span>
+              <span class="form-badge-opt" data-ja="任意" data-en="Optional">任意</span>
+            </label>
+            <div class="form-radio-group">
+              <label class="form-check-label">
+                <input type="radio" name="twoFactorAuth" value="passkey" checked>
+                <span data-ja="パスキー (WebAuthn / FIDO2 推奨)" data-en="Passkey (WebAuthn / FIDO2 Recommended)">パスキー (WebAuthn / FIDO2 推奨)</span>
+              </label>
+              <label class="form-check-label">
+                <input type="radio" name="twoFactorAuth" value="totp">
+                <span data-ja="認証アプリ (Google Authenticator)" data-en="Authenticator App (TOTP)">認証アプリ (Google Authenticator)</span>
+              </label>
+              <label class="form-check-label">
+                <input type="radio" name="twoFactorAuth" value="sms">
+                <span data-ja="SMS認証" data-en="SMS Verification">SMS認証</span>
+              </label>
+              <label class="form-check-label">
+                <input type="radio" name="twoFactorAuth" value="none">
+                <span data-ja="設定しない" data-en="None">設定しない</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- 秘密の質問 -->
+          <div class="form-grid form-grid-2">
+            <div class="form-group">
+              <label for="securityQuestion" class="form-label">
+                <span data-ja="秘密の質問" data-en="Security Question">秘密の質問</span>
+                <span class="form-badge-opt" data-ja="任意" data-en="Optional">任意</span>
+              </label>
+              <select id="securityQuestion" name="securityQuestion" class="form-select">
+                <option value="" data-ja="選択してください" data-en="Select a question">選択してください</option>
+                <option value="dream" data-ja="子供の頃の夢は？" data-en="Childhood dream job?">子供の頃の夢は？</option>
+                <option value="pet" data-ja="最初に飼ったペットの名前は？" data-en="First pet's name?">最初に飼ったペットの名前は？</option>
+                <option value="school" data-ja="通っていた小学校の名前は？" data-en="Elementary school name?">通っていた小学校の名前は？</option>
+                <option value="city" data-ja="母親の出身地（都市名）は？" data-en="Mother's birth city?">母親の出身地（都市名）は？</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="securityAnswer" class="form-label">
+                <span data-ja="秘密の質問の回答" data-en="Security Answer">秘密の質問の回答</span>
+                <span class="form-badge-opt" data-ja="任意" data-en="Optional">任意</span>
+              </label>
+              <input type="text" id="securityAnswer" name="securityAnswer" class="form-input" placeholder="回答を入力" data-ja="回答を入力" data-en="Your answer">
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- 3. 住所 & 連絡先情報 -->
+        <fieldset class="form-card">
+          <legend class="form-section-title">
+            <span style="color:#8b5cf6;">03.</span>
+            <span data-ja="住所 & 連絡先情報" data-en="Address & Contact Information">住所 & 連絡先情報</span>
+          </legend>
+
+          <!-- 郵便番号 & 都道府県 -->
+          <div class="form-grid form-grid-3">
+            <div class="form-group">
+              <label for="postalCode" class="form-label">
+                <span data-ja="郵便番号" data-en="Postal Code">郵便番号</span>
+                <span class="form-badge-req" data-ja="必須" data-en="Required">必須</span>
+              </label>
+              <input type="text" id="postalCode" name="postalCode" class="form-input" placeholder="100-0001" maxlength="8" required autocomplete="postal-code">
+            </div>
+            <div class="form-group" style="justify-content:flex-end;">
+              <button type="button" class="btn btn-secondary" style="height:38px;" onclick="lookupPostalCode()">
+                <span data-ja="住所自動補完" data-en="Auto Lookup">住所自動補完</span>
+              </button>
+            </div>
+            <div class="form-group">
+              <label for="prefecture" class="form-label">
+                <span data-ja="都道府県" data-en="Prefecture">都道府県</span>
+                <span class="form-badge-req" data-ja="必須" data-en="Required">必須</span>
+              </label>
+              <select id="prefecture" name="prefecture" class="form-select" required autocomplete="address-level1">
+                <option value="" data-ja="選択してください" data-en="Select">選択してください</option>
+                <option value="東京都">東京都 (Tokyo)</option>
+                <option value="神奈川県">神奈川県 (Kanagawa)</option>
+                <option value="埼玉県">埼玉県 (Saitama)</option>
+                <option value="千葉県">千葉県 (Chiba)</option>
+                <option value="大阪府">大阪府 (Osaka)</option>
+                <option value="京都府">京都府 (Kyoto)</option>
+                <option value="兵庫県">兵庫県 (Hyogo)</option>
+                <option value="愛知県">愛知県 (Aichi)</option>
+                <option value="北海道">北海道 (Hokkaido)</option>
+                <option value="福岡県">福岡県 (Fukuoka)</option>
+                <option value="宮城県">宮城県 (Miyagi)</option>
+                <option value="広島県">広島県 (Hiroshima)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- 市区町村 & 番地 -->
+          <div class="form-grid form-grid-2">
+            <div class="form-group">
+              <label for="city" class="form-label">
+                <span data-ja="市区町村" data-en="City / Ward">市区町村</span>
+                <span class="form-badge-req" data-ja="必須" data-en="Required">必須</span>
+              </label>
+              <input type="text" id="city" name="city" class="form-input" placeholder="千代田区千代田" data-ja="千代田区千代田" data-en="Chiyoda-ku, Chiyoda" required autocomplete="address-level2">
+            </div>
+            <div class="form-group">
+              <label for="street" class="form-label">
+                <span data-ja="丁目・番地・号" data-en="Street Address">丁目・番地・号</span>
+                <span class="form-badge-req" data-ja="必須" data-en="Required">必須</span>
+              </label>
+              <input type="text" id="street" name="street" class="form-input" placeholder="1-1-1" data-ja="1-1-1" data-en="1-1-1" required autocomplete="street-address">
+            </div>
+          </div>
+
+          <!-- 建物名 & 電話番号 -->
+          <div class="form-grid form-grid-2">
+            <div class="form-group">
+              <label for="building" class="form-label">
+                <span data-ja="建物名・部屋番号" data-en="Building / Unit">建物名・部屋番号</span>
+                <span class="form-badge-opt" data-ja="任意" data-en="Optional">任意</span>
+              </label>
+              <input type="text" id="building" name="building" class="form-input" placeholder="皇居前パレス 1204号室" data-ja="皇居前パレス 1204号室" data-en="Chiyoda Palace #1204">
+            </div>
+            <div class="form-group">
+              <label for="phone" class="form-label">
+                <span data-ja="携帯電話番号" data-en="Mobile Phone">携帯電話番号</span>
+                <span class="form-badge-req" data-ja="必須" data-en="Required">必須</span>
+              </label>
+              <input type="tel" id="phone" name="phone" class="form-input" placeholder="090-1234-5678" required autocomplete="tel">
+            </div>
+          </div>
+
+          <!-- 固定電話 & 連絡希望時間 -->
+          <div class="form-grid form-grid-2">
+            <div class="form-group">
+              <label for="landline" class="form-label">
+                <span data-ja="固定電話番号" data-en="Landline Phone">固定電話番号</span>
+                <span class="form-badge-opt" data-ja="任意" data-en="Optional">任意</span>
+              </label>
+              <input type="tel" id="landline" name="landline" class="form-input" placeholder="03-3211-0000">
+            </div>
+            <div class="form-group">
+              <label for="contactTime" class="form-label">
+                <span data-ja="ご都合のよい連絡時間帯" data-en="Preferred Contact Time">ご都合のよい連絡時間帯</span>
+                <span class="form-badge-opt" data-ja="任意" data-en="Optional">任意</span>
+              </label>
+              <select id="contactTime" name="contactTime" class="form-select">
+                <option value="any" data-ja="指定なし (Anytime)" data-en="Anytime">指定なし (Anytime)</option>
+                <option value="morning" data-ja="午前 (9:00〜12:00)" data-en="Morning (9-12)">午前 (9:00〜12:00)</option>
+                <option value="afternoon" data-ja="午後 (13:00〜17:00)" data-en="Afternoon (13-17)">午後 (13:00〜17:00)</option>
+                <option value="evening" data-ja="夜間 (18:00〜21:00)" data-en="Evening (18-21)">夜間 (18:00〜21:00)</option>
+              </select>
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- 4. 属性 & プロフィール情報 -->
+        <fieldset class="form-card">
+          <legend class="form-section-title">
+            <span style="color:#8b5cf6;">04.</span>
+            <span data-ja="属性 & プロフィール情報" data-en="Demographics & Profile">属性 & プロフィール情報</span>
+          </legend>
+
+          <!-- 生年月日 -->
+          <div class="form-group">
+            <label class="form-label">
+              <span data-ja="生年月日（西暦）" data-en="Date of Birth">生年月日（西暦）</span>
+              <span class="form-badge-req" data-ja="必須" data-en="Required">必須</span>
+            </label>
+            <div class="form-grid form-grid-3">
+              <select id="birthYear" name="birthYear" class="form-select" required autocomplete="bday-year">
+                <option value="" data-ja="年 (Year)" data-en="Year">年 (Year)</option>
+                <option value="1980">1980年 (昭和55年)</option>
+                <option value="1985">1985年 (昭和60年)</option>
+                <option value="1990">1990年 (平成2年)</option>
+                <option value="1992">1992年 (平成4年)</option>
+                <option value="1995">1995年 (平成7年)</option>
+                <option value="1998">1998年 (平成10年)</option>
+                <option value="2000">2000年 (平成12年)</option>
+                <option value="2002">2002年 (平成14年)</option>
+                <option value="2005">2005年 (平成17年)</option>
+              </select>
+              <select id="birthMonth" name="birthMonth" class="form-select" required autocomplete="bday-month">
+                <option value="" data-ja="月 (Month)" data-en="Month">月 (Month)</option>
+                <option value="1">1月</option>
+                <option value="2">2月</option>
+                <option value="3">3月</option>
+                <option value="4">4月</option>
+                <option value="5">5月</option>
+                <option value="6">6月</option>
+                <option value="7">7月</option>
+                <option value="8">8月</option>
+                <option value="9">9月</option>
+                <option value="10">10月</option>
+                <option value="11">11月</option>
+                <option value="12">12月</option>
+              </select>
+              <select id="birthDay" name="birthDay" class="form-select" required autocomplete="bday-day">
+                <option value="" data-ja="日 (Day)" data-en="Day">日 (Day)</option>
+                <option value="1">1日</option>
+                <option value="5">5日</option>
+                <option value="10">10日</option>
+                <option value="15">15日</option>
+                <option value="20">20日</option>
+                <option value="25">25日</option>
+                <option value="26">26日</option>
+                <option value="28">28日</option>
+                <option value="30">30日</option>
+                <option value="31">31日</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- 性別 -->
+          <div class="form-group">
+            <label class="form-label">
+              <span data-ja="性別" data-en="Gender Identity">性別</span>
+              <span class="form-badge-opt" data-ja="任意" data-en="Optional">任意</span>
+            </label>
+            <div class="form-radio-group">
+              <label class="form-check-label">
+                <input type="radio" name="gender" value="male" checked>
+                <span data-ja="男性" data-en="Male">男性</span>
+              </label>
+              <label class="form-check-label">
+                <input type="radio" name="gender" value="female">
+                <span data-ja="女性" data-en="Female">女性</span>
+              </label>
+              <label class="form-check-label">
+                <input type="radio" name="gender" value="unspecified">
+                <span data-ja="回答しない" data-en="Prefer not to say">回答しない</span>
+              </label>
+              <label class="form-check-label">
+                <input type="radio" name="gender" value="other">
+                <span data-ja="その他" data-en="Other">その他</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- 職業 / 年収 / 世帯人数 -->
+          <div class="form-grid form-grid-3">
+            <div class="form-group">
+              <label for="occupation" class="form-label">
+                <span data-ja="ご職業" data-en="Occupation">ご職業</span>
+                <span class="form-badge-opt" data-ja="任意" data-en="Optional">任意</span>
+              </label>
+              <select id="occupation" name="occupation" class="form-select">
+                <option value="" data-ja="選択してください" data-en="Select">選択してください</option>
+                <option value="tech" data-ja="IT・Webエンジニア" data-en="IT / Software Engineer">IT・Webエンジニア</option>
+                <option value="sales" data-ja="営業・マーケティング" data-en="Sales & Marketing">営業・マーケティング</option>
+                <option value="creative" data-ja="デザイナー・クリエイター" data-en="Design / Creative">デザイナー・クリエイター</option>
+                <option value="management" data-ja="会社役員・経営者" data-en="Executive / Management">会社役員・経営者</option>
+                <option value="freelance" data-ja="自営業・フリーランス" data-en="Self-employed / Freelance">自営業・フリーランス</option>
+                <option value="public" data-ja="公務員・団体職員" data-en="Public Sector">公務員・団体職員</option>
+                <option value="student" data-ja="学生" data-en="Student">学生</option>
+                <option value="other" data-ja="その他" data-en="Other">その他</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="incomeRange" class="form-label">
+                <span data-ja="世帯年収（概算）" data-en="Household Income">世帯年収（概算）</span>
+                <span class="form-badge-opt" data-ja="任意" data-en="Optional">任意</span>
+              </label>
+              <select id="incomeRange" name="incomeRange" class="form-select">
+                <option value="" data-ja="選択してください" data-en="Select">選択してください</option>
+                <option value="under3m" data-ja="300万円未満" data-en="Under ¥3M">300万円未満</option>
+                <option value="3m_5m" data-ja="300万〜500万円" data-en="¥3M - ¥5M">300万〜500万円</option>
+                <option value="5m_8m" data-ja="500万〜800万円" data-en="¥5M - ¥8M">500万〜800万円</option>
+                <option value="8m_12m" data-ja="800万〜1,200万円" data-en="¥8M - ¥12M">800万〜1,200万円</option>
+                <option value="over12m" data-ja="1,200万円以上" data-en="¥12M+">1,200万円以上</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="householdSize" class="form-label">
+                <span data-ja="世帯人数" data-en="Household Size">世帯人数</span>
+                <span class="form-badge-opt" data-ja="任意" data-en="Optional">任意</span>
+              </label>
+              <select id="householdSize" name="householdSize" class="form-select">
+                <option value="" data-ja="選択してください" data-en="Select">選択してください</option>
+                <option value="1" data-ja="1人（単身）" data-en="1 Person (Single)">1人（単身）</option>
+                <option value="2" data-ja="2人（夫婦など）" data-en="2 People">2人（夫婦など）</option>
+                <option value="3_4" data-ja="3〜4人（ファミリー）" data-en="3-4 People">3〜4人（ファミリー）</option>
+                <option value="5_plus" data-ja="5人以上" data-en="5+ People">5人以上</option>
+              </select>
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- 5. 決済情報 & ポイント連携 -->
+        <fieldset class="form-card">
+          <legend class="form-section-title">
+            <span style="color:#8b5cf6;">05.</span>
+            <span data-ja="決済情報 & ポイント連携" data-en="Payment & Loyalty Program">決済情報 & ポイント連携</span>
+          </legend>
+
+          <!-- カード番号 & 名義人 -->
+          <div class="form-grid form-grid-2">
+            <div class="form-group">
+              <label for="cardNumber" class="form-label">
+                <span data-ja="クレジットカード番号" data-en="Credit Card Number">クレジットカード番号</span>
+                <span class="form-badge-opt" data-ja="任意" data-en="Optional">任意</span>
+              </label>
+              <input type="text" id="cardNumber" name="cardNumber" class="form-input" placeholder="4532 8820 1928 4091" maxlength="19" autocomplete="cc-number">
+            </div>
+            <div class="form-group">
+              <label for="cardHolder" class="form-label">
+                <span data-ja="カード名義人（半角英字）" data-en="Cardholder Name">カード名義人（半角英字）</span>
+                <span class="form-badge-opt" data-ja="任意" data-en="Optional">任意</span>
+              </label>
+              <input type="text" id="cardHolder" name="cardHolder" class="form-input" placeholder="TARO YAMADA" autocomplete="cc-name">
+            </div>
+          </div>
+
+          <!-- 有効期限 & CVV -->
+          <div class="form-grid form-grid-3">
+            <div class="form-group">
+              <label for="cardExpMonth" class="form-label">
+                <span data-ja="有効期限（月）" data-en="Exp Month">有効期限（月）</span>
+                <span class="form-badge-opt" data-ja="任意" data-en="Optional">任意</span>
+              </label>
+              <select id="cardExpMonth" name="cardExpMonth" class="form-select" autocomplete="cc-exp-month">
+                <option value="">MM</option>
+                <option value="01">01</option>
+                <option value="02">02</option>
+                <option value="03">03</option>
+                <option value="04">04</option>
+                <option value="05">05</option>
+                <option value="06">06</option>
+                <option value="07">07</option>
+                <option value="08">08</option>
+                <option value="09">09</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="cardExpYear" class="form-label">
+                <span data-ja="有効期限（年）" data-en="Exp Year">有効期限（年）</span>
+                <span class="form-badge-opt" data-ja="任意" data-en="Optional">任意</span>
+              </label>
+              <select id="cardExpYear" name="cardExpYear" class="form-select" autocomplete="cc-exp-year">
+                <option value="">YY</option>
+                <option value="26">2026</option>
+                <option value="27">2027</option>
+                <option value="28">2028</option>
+                <option value="29">2029</option>
+                <option value="30">2030</option>
+                <option value="31">2031</option>
+                <option value="32">2032</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="cardCvv" class="form-label">
+                <span data-ja="セキュリティコード (CVV)" data-en="Security Code (CVV)">セキュリティコード (CVV)</span>
+                <span class="form-badge-opt" data-ja="任意" data-en="Optional">任意</span>
+              </label>
+              <input type="password" id="cardCvv" name="cardCvv" class="form-input" maxlength="4" placeholder="123" autocomplete="cc-csc">
+            </div>
+          </div>
+
+          <!-- ポイントカード & 請求先チェック -->
+          <div class="form-grid form-grid-2">
+            <div class="form-group">
+              <label for="loyaltyId" class="form-label">
+                <span data-ja="提携ポイントカード番号" data-en="Loyalty Card ID">提携ポイントカード番号</span>
+                <span class="form-badge-opt" data-ja="任意" data-en="Optional">任意</span>
+              </label>
+              <input type="text" id="loyaltyId" name="loyaltyId" class="form-input" placeholder="PT-7729-1029">
+            </div>
+            <div class="form-group" style="justify-content:center;">
+              <label class="form-check-label">
+                <input type="checkbox" id="billingSameAsShipping" name="billingSameAsShipping" checked>
+                <span data-ja="請求先住所は連絡先住所と同一にする" data-en="Billing address matches contact address">請求先住所は連絡先住所と同一にする</span>
+              </label>
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- 6. 通知設定 & 興味関心 -->
+        <fieldset class="form-card">
+          <legend class="form-section-title">
+            <span style="color:#8b5cf6;">06.</span>
+            <span data-ja="通知設定 & 興味関心" data-en="Preferences & Notifications">通知設定 & 興味関心</span>
+          </legend>
+
+          <!-- 興味関心ジャンル -->
+          <div class="form-group">
+            <label class="form-label">
+              <span data-ja="興味のあるジャンル（複数選択可）" data-en="Interested Categories (Multiple allowed)">興味のあるジャンル（複数選択可）</span>
+              <span class="form-badge-opt" data-ja="任意" data-en="Optional">任意</span>
+            </label>
+            <div class="form-checkbox-group">
+              <label class="form-check-label">
+                <input type="checkbox" id="catShoes" name="interests" value="shoes" checked>
+                <span data-ja="靴・スニーカー (Shoes)" data-en="Shoes & Footwear">靴・スニーカー (Shoes)</span>
+              </label>
+              <label class="form-check-label">
+                <input type="checkbox" id="catAudio" name="interests" value="audio" checked>
+                <span data-ja="オーディオ・音響 (Audio)" data-en="Audio & Headphones">オーディオ・音響 (Audio)</span>
+              </label>
+              <label class="form-check-label">
+                <input type="checkbox" id="catGaming" name="interests" value="gaming" checked>
+                <span data-ja="PC・ゲーミング (Gaming)" data-en="PC & Gaming">PC・ゲーミング (Gaming)</span>
+              </label>
+              <label class="form-check-label">
+                <input type="checkbox" id="catBlog" name="interests" value="blog">
+                <span data-ja="ブログ・出版 (Media)" data-en="Media & Books">ブログ・出版 (Media)</span>
+              </label>
+              <label class="form-check-label">
+                <input type="checkbox" id="catArt" name="interests" value="art">
+                <span data-ja="アート・イラスト (Art)" data-en="Art & Illustration">アート・イラスト (Art)</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- メールマガジン配信頻度 -->
+          <div class="form-group">
+            <label class="form-label">
+              <span data-ja="セール・クーポンお得情報の配信頻度" data-en="Newsletter Frequency">セール・クーポンお得情報の配信頻度</span>
+              <span class="form-badge-opt" data-ja="任意" data-en="Optional">任意</span>
+            </label>
+            <div class="form-radio-group">
+              <label class="form-check-label">
+                <input type="radio" name="newsletterFreq" value="weekly" checked>
+                <span data-ja="週1回（おすすめ厳選）" data-en="Weekly (Top Picks)">週1回（おすすめ厳選）</span>
+              </label>
+              <label class="form-check-label">
+                <input type="radio" name="newsletterFreq" value="daily">
+                <span data-ja="毎日（タイムセール含む）" data-en="Daily (Including Flash Sales)">毎日（タイムセール含む）</span>
+              </label>
+              <label class="form-check-label">
+                <input type="radio" name="newsletterFreq" value="none">
+                <span data-ja="配信を希望しない" data-en="No promo emails">配信を希望しない</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- 通信オプション -->
+          <div class="form-group">
+            <div class="form-checkbox-group" style="flex-direction:column;gap:8px;">
+              <label class="form-check-label">
+                <input type="checkbox" id="smsAlerts" name="smsAlerts" checked>
+                <span data-ja="重要なお知らせおよび不正ログイン検知アラートをSMSで受信する" data-en="Receive security alerts and suspicious activity notices via SMS">重要なお知らせおよび不正ログイン検知アラートをSMSで受信する</span>
+              </label>
+              <label class="form-check-label">
+                <input type="checkbox" id="postMail" name="postMail">
+                <span data-ja="季節カタログおよび特別優待クーポンの郵送（DM）を希望する" data-en="Receive physical seasonal catalogs and paper coupons by post">季節カタログおよび特別優待クーポンの郵送（DM）を希望する</span>
+              </label>
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- 7. 利用規約 & 同意事項 -->
+        <fieldset class="form-card">
+          <legend class="form-section-title">
+            <span style="color:#8b5cf6;">07.</span>
+            <span data-ja="利用規約 & 個人情報の取り扱いへの同意" data-en="Terms of Service & Consent">利用規約 & 個人情報の取り扱いへの同意</span>
+          </legend>
+
+          <!-- 規約テキストボックス 1 -->
+          <div class="form-group">
+            <label class="form-label" data-ja="会員利用規約" data-en="Terms of Service">会員利用規約</label>
+            <div class="form-terms-box" tabindex="0">
+              第1条（総則）本規約は、当検証プラットフォーム（Google Partner Summit 2026 デモ環境）が提供する各種Webサービスにおいて、利用者が遵守すべき条件を定めるものです。<br>
+              第2条（アカウント管理）利用者は登録したID・パスワード等の認証情報を自らの責任において適切に管理するものとし、第三者への譲渡・貸与は一切禁止されます。<br>
+              第3条（WebMCP検証）当環境はBuilt-in AIおよびWebMCPツールの安全な実証環境であり、入力されたモックデータはローカルストレージおよびCRMシミュレータに安全に記録されます。<br>
+              第4条（免責事項）当システムで実行される注文や送金はすべてシミュレーションであり、実際の金銭決済は発生しません。
+            </div>
+            <label class="form-check-label">
+              <input type="checkbox" id="termsConsent" name="termsConsent" required>
+              <span data-ja="会員利用規約に同意する" data-en="I agree to the Terms of Service">会員利用規約に同意する</span>
+              <span class="form-badge-req" data-ja="必須" data-en="Required">必須</span>
+            </label>
+          </div>
+
+          <!-- 規約テキストボックス 2 -->
+          <div class="form-group" style="margin-top:16px;">
+            <label class="form-label" data-ja="プライバシーポリシー（個人情報の取り扱い）" data-en="Privacy Policy">プライバシーポリシー（個人情報の取り扱い）</label>
+            <div class="form-terms-box" tabindex="0">
+              当プラットフォームは、取得した個人情報を適正に管理し、利用者の明示的な同意がある場合または法令に定める場合を除き、第三者へ提供することはありません。<br>
+              AIエージェントおよびWebMCPツールからの個人情報アクセス時における保護方針は、Modern Web GuidanceおよびW3C WebMCPドラフト標準の機密性レベル（PII Protection Guidelines）に準拠しています。
+            </div>
+            <label class="form-check-label">
+              <input type="checkbox" id="privacyConsent" name="privacyConsent" required>
+              <span data-ja="プライバシーポリシー（個人情報の取り扱い方針）に同意する" data-en="I agree to the Privacy Policy">プライバシーポリシー（個人情報の取り扱い方針）に同意する</span>
+              <span class="form-badge-req" data-ja="必須" data-en="Required">必須</span>
+            </label>
+          </div>
+
+          <!-- ポイント規約同意 -->
+          <div class="form-group" style="margin-top:10px;">
+            <label class="form-check-label">
+              <input type="checkbox" id="rewardsConsent" name="rewardsConsent" required>
+              <span data-ja="ポイントプログラム利用特約および還元条件に同意する" data-en="I agree to the Rewards Program Terms">ポイントプログラム利用特約および還元条件に同意する</span>
+              <span class="form-badge-req" data-ja="必須" data-en="Required">必須</span>
+            </label>
+          </div>
+        </fieldset>
+
+        <!-- Submit Bar -->
+        <div style="display:flex;gap:16px;justify-content:center;align-items:center;margin:32px 0;flex-wrap:wrap;">
+          <button type="submit" class="btn btn-primary-shopping" style="min-width:240px;height:46px;font-size:15px;font-weight:700;">
+            <span data-ja="会員登録を完了する" data-en="Complete Registration">会員登録を完了する</span>
+          </button>
+          <button type="button" class="btn btn-secondary" style="height:46px;padding:0 24px;" onclick="resetForm()">
+            <span data-ja="入力をすべてクリア" data-en="Reset Form">入力をすべてクリア</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <!-- Success Confirmation Native Dialog -->
+  <dialog id="register-success-dialog" style="max-width:620px;width:90vw;padding:24px;border-radius:var(--radius-md);border:1px solid var(--border);box-shadow:var(--shadow-md);background:var(--bg-surface);">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;border-bottom:1px solid var(--border);padding-bottom:12px;">
+      <h3 style="font-size:17px;font-weight:700;display:flex;align-items:center;gap:8px;color:#059669;">
+        <span>🎉</span>
+        <span data-ja="会員登録が正常に完了しました！" data-en="Registration Completed Successfully!">会員登録が正常に完了しました！</span>
+      </h3>
+      <button class="dialog-close-btn" onclick="document.getElementById('register-success-dialog').close()">✕</button>
+    </div>
+    
+    <p style="font-size:13px;color:var(--text-secondary);line-height:1.6;margin-bottom:16px;" data-ja="WebMCPフォームツールまたは手動入力により、以下のペルソナ情報が正常に検証・登録されました。" data-en="The following persona information was verified and registered successfully via WebMCP tools or user input.">
+      WebMCPフォームツールまたは手動入力により、以下のペルソナ情報が正常に検証・登録されました。
+    </p>
+
+    <!-- Overview Table -->
+    <div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px;margin-bottom:16px;font-size:12.5px;">
+      <div style="display:grid;grid-template-columns:120px 1fr;gap:8px;line-height:1.5;">
+        <span style="color:var(--text-muted);" data-ja="氏名:" data-en="Name:">氏名:</span>
+        <strong id="res-name">-</strong>
+        <span style="color:var(--text-muted);" data-ja="メールアドレス:" data-en="Email:">メールアドレス:</span>
+        <strong id="res-email">-</strong>
+        <span style="color:var(--text-muted);" data-ja="住所:" data-en="Address:">住所:</span>
+        <span id="res-address">-</span>
+        <span style="color:var(--text-muted);" data-ja="電話番号:" data-en="Phone:">電話番号:</span>
+        <span id="res-phone">-</span>
+        <span style="color:var(--text-muted);" data-ja="2FA認証:" data-en="2FA Method:">2FA認証:</span>
+        <span id="res-2fa">-</span>
+      </div>
+    </div>
+
+    <!-- Raw WebMCP Payload Inspection -->
+    <div style="margin-bottom:16px;">
+      <div style="font-size:11.5px;font-weight:700;color:var(--text-muted);margin-bottom:6px;" data-ja="WebMCP 送信ペイロード (JSON):" data-en="WebMCP Registered Payload (JSON):">WebMCP 送信ペイロード (JSON):</div>
+      <pre id="submitted-json" class="json-viewer"></pre>
+    </div>
+
+    <div class="dialog-actions">
+      <button class="btn btn-secondary" onclick="document.getElementById('register-success-dialog').close()" data-ja="閉じる" data-en="Close">閉じる</button>
+      <a href="../shopping/index.html" class="btn btn-primary-shopping" data-ja="ショッピングへ移動" data-en="Go Shopping">ショッピングへ移動</a>
+    </div>
+  </dialog>
+
+  
+  <footer style="background:var(--bg-surface);border-top:1px solid var(--border);padding:24px 0;margin-top:64px;font-size:12px;color:var(--text-muted);">
+    <div class="container" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+      <div>
+        <strong>Google Partner Summit 2026</strong> · Built-in AI & WebMCP Workshop
+      </div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;">
+        <a href="../index.html" style="color:var(--text-secondary);" data-ja="ホーム" data-en="Home">ホーム</a>
+        <a href="../shopping/index.html" style="color:var(--text-secondary);" data-ja="ショッピング" data-en="Shopping">ショッピング</a>
+        <a href="../blog/index.html" style="color:var(--text-secondary);" data-ja="ブログ" data-en="Blogging">ブログ</a>
+        <a href="../gallery/index.html" style="color:var(--text-secondary);" data-ja="ギャラリー" data-en="Gallery">ギャラリー</a>
+        <a href="../crm/index.html" style="color:var(--text-secondary);" data-ja="CRM・サポート" data-en="CRM & Support">CRM・サポート</a>
+        <a href="../account/register.html" style="color:var(--text-secondary);" data-ja="アカウント" data-en="Account">アカウント</a>
+        </div>
+    </div>
+  </footer>
+
+  <div class="webmcp-toast"></div>
+  <script src="../shared/js/i18n.js?v=20260915"></script>
+  <script src="../shared/js/store.js?v=20260915"></script>
+  <script>
+    // List of required input IDs
+    const REQUIRED_FIELD_IDS = [
+      'lastName', 'firstName', 'lastNameKana', 'firstNameKana',
+      'nickname', 'email', 'emailConfirm', 'password', 'passwordConfirm',
+      'postalCode', 'prefecture', 'city', 'street', 'phone',
+      'birthYear', 'birthMonth', 'birthDay',
+      'termsConsent', 'privacyConsent', 'rewardsConsent'
+    ];
+
+    function updateProgress() {
+      let filled = 0;
+      REQUIRED_FIELD_IDS.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        if (el.type === 'checkbox') {
+          if (el.checked) filled++;
+        } else {
+          if (el.value.trim().length > 0) filled++;
+        }
+      });
+
+      const badge = document.getElementById('form-progress-badge');
+      if (badge) {
+        const lang = (window.i18n && window.i18n.getLang()) || 'ja';
+        const total = REQUIRED_FIELD_IDS.length;
+        badge.setAttribute('data-ja', `必須項目: ${filled} / ${total} 入力済`);
+        badge.setAttribute('data-en', `Required: ${filled} / ${total} Completed`);
+        badge.textContent = badge.getAttribute(`data-${lang}`);
+        if (filled === total) {
+          badge.style.background = '#059669';
+        } else {
+          badge.style.background = '#8b5cf6';
+        }
+      }
+    }
+
+    // Attach live validation on input/change
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('registration-form');
+      if (form) {
+        form.querySelectorAll('input, select, textarea').forEach(input => {
+          input.addEventListener('input', () => {
+            input.classList.remove('is-invalid');
+            updateProgress();
+          });
+          input.addEventListener('change', () => {
+            input.classList.remove('is-invalid');
+            updateProgress();
+          });
+        });
+      }
+      updateProgress();
+      registerAccountWebMCPTools();
+    });
+
+    // Sample Persona Autofill (Realistic Japanese Profile)
+    function autofillSamplePersona() {
+      const persona = {
+        lastName: '山田',
+        firstName: '太郎',
+        lastNameKana: 'ヤマダ',
+        firstNameKana: 'タロウ',
+        lastNameRomaji: 'Yamada',
+        firstNameRomaji: 'Taro',
+        nickname: 'yamada_tech',
+        profileVisibility: 'members',
+        email: 'yamada.taro@example.com',
+        emailConfirm: 'yamada.taro@example.com',
+        password: 'WebMCP#Secure2026!',
+        passwordConfirm: 'WebMCP#Secure2026!',
+        twoFactorAuth: 'passkey',
+        securityQuestion: 'dream',
+        securityAnswer: '宇宙飛行士',
+        postalCode: '100-0001',
+        prefecture: '東京都',
+        city: '千代田区千代田',
+        street: '1-1-1',
+        building: '皇居前パレス 1204号室',
+        phone: '090-1234-5678',
+        landline: '03-3211-0000',
+        contactTime: 'evening',
+        birthYear: '1992',
+        birthMonth: '8',
+        birthDay: '26',
+        gender: 'male',
+        occupation: 'tech',
+        incomeRange: '8m_12m',
+        householdSize: '2',
+        cardNumber: '4532 8820 1928 4091',
+        cardHolder: 'TARO YAMADA',
+        cardExpMonth: '10',
+        cardExpYear: '29',
+        cardCvv: '842',
+        loyaltyId: 'PT-7729-1029',
+        billingSameAsShipping: true,
+        catShoes: true,
+        catAudio: true,
+        catGaming: true,
+        catBlog: true,
+        catArt: false,
+        newsletterFreq: 'weekly',
+        smsAlerts: true,
+        postMail: false,
+        termsConsent: true,
+        privacyConsent: true,
+        rewardsConsent: true
+      };
+
+      populateFields(persona);
+      updateProgress();
+      if (window.AppStore) {
+        window.AppStore.showToast((window.i18n && window.i18n.getLang() === 'en') ? '🤖 Auto-filled all 25 fields with sample persona (Taro Yamada)' : '🤖 サンプルペルソナ（山田 太郎）の25項目を一括入力しました');
+      }
+    }
+
+    function populateFields(data) {
+      for (const [key, val] of Object.entries(data)) {
+        // Handle Radios
+        if (key === 'twoFactorAuth' || key === 'gender' || key === 'newsletterFreq') {
+          const radio = document.querySelector(`input[name="${key}"][value="${val}"]`);
+          if (radio) {
+            radio.checked = true;
+            radio.dispatchEvent(new Event('change', { bubbles: true }));
+          }
+          continue;
+        }
+
+        // Handle Checkboxes
+        const el = document.getElementById(key) || document.querySelector(`input[name="${key}"]`);
+        if (el) {
+          if (el.type === 'checkbox') {
+            el.checked = Boolean(val);
+            el.dispatchEvent(new Event('change', { bubbles: true }));
+          } else {
+            el.value = val;
+            el.dispatchEvent(new Event('input', { bubbles: true }));
+            el.dispatchEvent(new Event('change', { bubbles: true }));
+          }
+        }
+      }
+    }
+
+    function resetForm() {
+      const form = document.getElementById('registration-form');
+      if (form) form.reset();
+      document.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
+      updateProgress();
+      if (window.AppStore) {
+        window.AppStore.showToast((window.i18n && window.i18n.getLang() === 'en') ? 'Form inputs cleared' : 'フォームの入力を初期化しました');
+      }
+    }
+
+    function lookupPostalCode() {
+      const code = document.getElementById('postalCode').value.replace(/[^0-9]/g, '');
+      if (code.startsWith('100')) {
+        document.getElementById('prefecture').value = '東京都';
+        document.getElementById('city').value = '千代田区千代田';
+      } else if (code.startsWith('530')) {
+        document.getElementById('prefecture').value = '大阪府';
+        document.getElementById('city').value = '大阪市北区梅田';
+      } else if (code.startsWith('220')) {
+        document.getElementById('prefecture').value = '神奈川県';
+        document.getElementById('city').value = '横浜市西区みなとみらい';
+      } else {
+        document.getElementById('prefecture').value = '東京都';
+        document.getElementById('city').value = '千代田区丸の内';
+      }
+      document.getElementById('prefecture').dispatchEvent(new Event('change', { bubbles: true }));
+      document.getElementById('city').dispatchEvent(new Event('input', { bubbles: true }));
+      updateProgress();
+      if (window.AppStore) {
+        window.AppStore.showToast((window.i18n && window.i18n.getLang() === 'en') ? 'Address auto-completed from postal code' : '郵便番号から住所を自動補完しました');
+      }
+    }
+
+    function getFormDataPayload() {
+      const form = document.getElementById('registration-form');
+      const fd = new FormData(form);
+      const data = {};
+      for (let [k, v] of fd.entries()) {
+        data[k] = v;
+      }
+      // Add checkboxes state
+      data.billingSameAsShipping = document.getElementById('billingSameAsShipping').checked;
+      data.smsAlerts = document.getElementById('smsAlerts').checked;
+      data.postMail = document.getElementById('postMail').checked;
+      data.termsConsent = document.getElementById('termsConsent').checked;
+      data.privacyConsent = document.getElementById('privacyConsent').checked;
+      data.rewardsConsent = document.getElementById('rewardsConsent').checked;
+      return data;
+    }
+
+    function handleRegistrationSubmit(e) {
+      e.preventDefault();
+
+      let hasError = false;
+      let firstInvalid = null;
+
+      REQUIRED_FIELD_IDS.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        let valid = true;
+        if (el.type === 'checkbox') {
+          valid = el.checked;
+        } else {
+          valid = (el.value.trim().length > 0);
+          if (el.type === 'email' && !el.value.includes('@')) valid = false;
+        }
+
+        if (!valid) {
+          el.classList.add('is-invalid');
+          hasError = true;
+          if (!firstInvalid) firstInvalid = el;
+        } else {
+          el.classList.remove('is-invalid');
+        }
+      });
+
+      // Email match check
+      const email = document.getElementById('email').value;
+      const emailConfirm = document.getElementById('emailConfirm').value;
+      if (email !== emailConfirm) {
+        document.getElementById('emailConfirm').classList.add('is-invalid');
+        hasError = true;
+      }
+
+      // Password match check
+      const pwd = document.getElementById('password').value;
+      const pwdConfirm = document.getElementById('passwordConfirm').value;
+      if (pwd !== pwdConfirm) {
+        document.getElementById('passwordConfirm').classList.add('is-invalid');
+        hasError = true;
+      }
+
+      if (hasError) {
+        if (firstInvalid) {
+          firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          firstInvalid.focus();
+        }
+        if (window.AppStore) {
+          window.AppStore.showToast((window.i18n && window.i18n.getLang() === 'en') ? '⚠️ Please complete all required fields' : '⚠️ 未入力または不備のある必須項目があります');
+        }
+        return false;
+      }
+
+      // Form is Valid
+      const payload = getFormDataPayload();
+
+      // Update dialog overview
+      document.getElementById('res-name').textContent = `${payload.lastName} ${payload.firstName} (${payload.lastNameKana} ${payload.firstNameKana})`;
+      document.getElementById('res-email').textContent = payload.email;
+      document.getElementById('res-address').textContent = `〒${payload.postalCode} ${payload.prefecture} ${payload.city} ${payload.street} ${payload.building || ''}`;
+      document.getElementById('res-phone').textContent = payload.phone;
+      document.getElementById('res-2fa').textContent = payload.twoFactorAuth || 'passkey';
+      document.getElementById('submitted-json').textContent = JSON.stringify(payload, null, 2);
+
+      // Log CRM event
+      if (window.AppStore) {
+        window.AppStore.logCRMEvent('ACCOUNT', 'USER_REGISTERED', payload.email, {
+          name: `${payload.lastName} ${payload.firstName}`,
+          prefecture: payload.prefecture,
+          occupation: payload.occupation
+        });
+        window.AppStore.showToast((window.i18n && window.i18n.getLang() === 'en') ? '✅ Account registration completed!' : '✅ 会員登録が完了しました！');
+      }
+
+      // Open Native Dialog
+      document.getElementById('register-success-dialog').showModal();
+      return true;
+    }
+
+    // =========================================================================
+    // Client-Side WebMCP Tool Registrations (document.modelContext)
+    // =========================================================================
+    function registerAccountWebMCPTools() {
+      if (!window.document || !window.document.modelContext) return;
+
+      const ctx = window.document.modelContext;
+
+      // 1. Tool: get_form_fields
+      ctx.registerTool({
+        name: 'get_form_fields',
+        description: 'Returns all field names, types, labels, and required status for the registration form.',
+        inputSchema: { type: 'object', properties: {} },
+        annotations: { readOnly: true },
+        execute: async () => {
+          const form = document.getElementById('registration-form');
+          if (!form) return JSON.stringify({ error: 'Form not found' });
+
+          const fields = Array.from(form.querySelectorAll('input, select, textarea')).map(el => ({
+            id: el.id || null,
+            name: el.name || null,
+            type: el.type || el.tagName.toLowerCase(),
+            required: el.required || REQUIRED_FIELD_IDS.includes(el.id),
+            value: el.type === 'checkbox' ? el.checked : el.value
+          }));
+
+          return JSON.stringify({ count: fields.length, fields });
+        }
+      });
+
+      // 2. Tool: fill_registration_form
+      ctx.registerTool({
+        name: 'fill_registration_form',
+        description: 'Fills registration form fields using provided key-value pairs and triggers validation.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            formData: {
+              type: 'object',
+              description: 'Key-value map of field IDs/names to values (e.g. lastName, email, postalCode, etc.)'
+            }
+          },
+          required: ['formData']
+        },
+        annotations: { consequentialHint: false },
+        execute: async (args) => {
+          if (!args.formData) throw new Error('formData is required');
+          populateFields(args.formData);
+          updateProgress();
+          return JSON.stringify({ success: true, updatedKeys: Object.keys(args.formData) });
+        }
+      });
+
+      // 3. Tool: validate_registration_form
+      ctx.registerTool({
+        name: 'validate_registration_form',
+        description: 'Validates all required fields in the registration form and returns any missing or invalid fields.',
+        inputSchema: { type: 'object', properties: {} },
+        annotations: { readOnly: true },
+        execute: async () => {
+          const missing = [];
+          REQUIRED_FIELD_IDS.forEach(id => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            if (el.type === 'checkbox') {
+              if (!el.checked) missing.push(id);
+            } else {
+              if (!el.value || el.value.trim().length === 0) missing.push(id);
+            }
+          });
+          return JSON.stringify({
+            isValid: missing.length === 0,
+            missingCount: missing.length,
+            missingFields: missing
+          });
+        }
+      });
+
+      // 4. Tool: submit_registration_form
+      ctx.registerTool({
+        name: 'submit_registration_form',
+        description: 'Submits the registration form. If valid, completes registration and logs event.',
+        inputSchema: { type: 'object', properties: {} },
+        annotations: { consequentialHint: true },
+        execute: async () => {
+          const mockEvent = { preventDefault: () => {} };
+          const success = handleRegistrationSubmit(mockEvent);
+          return JSON.stringify({
+            submitted: success,
+            status: success ? 'REGISTERED' : 'VALIDATION_FAILED'
+          });
+        }
+      });
+
+      console.log('[WebMCP] Account registration tools successfully registered on document.modelContext');
+    }
+  </script>
+</body>
+</html>

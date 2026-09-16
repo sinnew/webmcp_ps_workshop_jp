@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ギャラリー (Gallery) | WebMCP Demo</title>
+  <link rel="stylesheet" href="../shared/css/base.css?v=20260915">
+  <link rel="stylesheet" href="../shared/css/components.css?v=20260915">
+  <style>
+    .gallery-nav-sub {
+      display: flex;
+      gap: 20px;
+      padding: 6px 0 14px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 13.5px;
+      font-weight: 600;
+      margin-bottom: 24px;
+      overflow-x: auto;
+    }
+    .gallery-nav-sub a {
+      color: var(--text-secondary);
+      transition: color 0.15s ease;
+      white-space: nowrap;
+    }
+    .gallery-nav-sub a:hover, .gallery-nav-sub a.active {
+      color: var(--brand-gallery);
+    }
+    .hero-spotlight {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px;
+      margin-bottom: 32px;
+    }
+    @media (max-width: 768px) {
+      .hero-spotlight { flex-direction: column; align-items: flex-start; }
+    }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+    }
+    .gallery-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    .gallery-card:hover {
+      border-color: var(--border-hover);
+      box-shadow: var(--shadow-sm);
+    }
+    .art-thumbnail {
+      aspect-ratio: 16/10;
+      background: #18181b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .art-meta {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+  </style>
+</head>
+<body>
+  
+  <!-- Google Fonts (Partner Hub Aligned: Google Sans, Roboto, Google Sans Code, Noto Sans JP) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Code:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Speculation Rules API for instant multi-page navigation -->
+  <script type="speculationrules">
+  {
+    "prerender": [
+      {
+        "where": { "href_matches": "/*" },
+        "eagerness": "moderate"
+      }
+    ]
+  }
+  </script>
+
+  <header class="global-header">
+    <div class="container header-inner">
+      <div class="brand-group">
+        <a href="../../index.html" class="hub-back-pill" title="Return to Google Partner Summit Workshop Hub">
+          <span data-ja="&larr; パートナーハブ" data-en="&larr; Partner Hub">&larr; パートナーハブ</span>
+        </a>
+        <a href="../index.html" class="brand-link">
+          <span style="color:var(--google-blue);">Google</span>
+          <span style="color:var(--text-main);font-weight:500;" data-ja="デモ検証環境" data-en="Demo Testbed">デモ検証環境</span>
+        </a>
+      </div>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="../shopping/index.html" class="nav-link "><span data-ja="ショッピング" data-en="Shopping">ショッピング</span></a></li>
+          <li><a href="../blog/index.html" class="nav-link "><span data-ja="ブログ" data-en="Blogging">ブログ</span></a></li>
+          <li><a href="../gallery/index.html" class="nav-link active"><span data-ja="ギャラリー" data-en="Gallery">ギャラリー</span></a></li>
+          <li><a href="../crm/index.html" class="nav-link "><span data-ja="CRM・サポート" data-en="CRM & Support">CRM・サポート</span></a></li>
+          <li><a href="../account/register.html" class="nav-link "><span data-ja="アカウント" data-en="Account">アカウント</span></a></li>
+          </ul>
+      </nav>
+
+      <div class="header-actions">
+        <button id="lang-toggle-btn" class="lang-toggle-btn lang-switcher" aria-label="Toggle language" onclick="if(window.i18n) window.i18n.toggleLanguage();">
+          <span class="lang-active">JP</span><span class="lang-inactive">EN</span>
+        </button>
+        <a href="../shopping/cart.html" class="cart-indicator-btn" title="Shopping Cart">
+          <span data-ja="カート" data-en="Cart">カート</span>
+          <span class="cart-badge-count" style="display:none;">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+
+  <main class="container" style="margin-top: 20px;">
+    <div class="gallery-nav-sub">
+      <a href="index.html" class="active" data-ja="イラスト (Illustrations)" data-en="Illustrations">イラスト</a>
+      <a href="feature.html" data-ja="特集 (Features)" data-en="Features">特集</a>
+      <a href="tutorials.html" data-ja="作り方 (How-to)" data-en="Tutorials">作り方</a>
+      <a href="rankings.html" data-ja="ランキング (Rankings)" data-en="Rankings">ランキング</a>
+    </div>
+
+    <!-- Hero Spotlight -->
+    <section class="hero-spotlight">
+      <div style="max-width:520px;">
+        <span class="badge" style="background:#eff6ff;color:var(--brand-gallery);border:1px solid #bfdbfe;margin-bottom:10px;" data-ja="今週の注目特集" data-en="Featured This Week">今週の注目特集</span>
+        <h1 style="font-size:22px;font-weight:700;line-height:1.35;margin-bottom:10px;" data-ja="光と影が織りなす幻想的な世界。サイバーパンク都市の夜景イラスト特集" data-en="World of Light & Shadow: Cyberpunk City Nightscapes">
+          光と影が織りなす幻想的な世界。サイバーパンク都市の夜景イラスト特集
+        </h1>
+        <p style="font-size:13px;color:var(--text-secondary);line-height:1.6;margin-bottom:18px;" data-ja="雨に濡れたアスファルトとネオン看板の反射。SFクリエイターたちが描く緻密な近未来都市景観の数々をご紹介します。" data-en="Wet asphalt and glowing neon reflections. Exploring intricate futuristic urban landscapes created by top creators.">
+          雨に濡れたアスファルトとネオン看板の反射。SFクリエイターたちが描く緻密な近未来都市景観の数々をご紹介します。
+        </p>
+        <a href="feature.html" class="btn btn-primary-gallery" style="font-size:13px;padding:8px 18px;" data-ja="特集記事を見る &rarr;" data-en="View Feature &rarr;">
+          特集記事を見る &rarr;
+        </a>
+      </div>
+      <div style="width:200px;height:130px;background:#09090b;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;border:1px solid var(--border);">
+        <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="1.5"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+      </div>
+    </section>
+
+    <!-- Tag Cloud -->
+    <div style="margin-bottom:20px;display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+      <span style="font-size:12px;font-weight:700;color:var(--text-secondary);" data-ja="人気のタグ:" data-en="Popular Tags:">人気のタグ:</span>
+      <span class="tag-pill" style="cursor:pointer;">#サイバーパンク</span>
+      <span class="tag-pill" style="cursor:pointer;">#夜景</span>
+      <span class="tag-pill" style="cursor:pointer;">#ファンタジー</span>
+      <span class="tag-pill" style="cursor:pointer;">#背景美術</span>
+      <span class="tag-pill" style="cursor:pointer;">#光</span>
+    </div>
+
+    <!-- Gallery Grid -->
+    <div class="gallery-grid">
+      <!-- Art 1 -->
+      <article class="gallery-card">
+        <a href="feature.html" class="art-thumbnail">
+          <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/></svg>
+          <span style="position:absolute;bottom:6px;right:6px;background:rgba(0,0,0,0.7);color:#fff;font-size:10px;padding:2px 5px;border-radius:2px;">4K Ultra</span>
+        </a>
+        <div class="art-meta">
+          <h2 style="font-size:14px;font-weight:700;margin-bottom:4px;"><a href="feature.html" data-ja="ネオンの街路と雨音" data-en="Neon Streets & Rain">ネオンの街路と雨音</a></h2>
+          <div style="font-size:12px;color:var(--brand-gallery);font-weight:600;margin-bottom:10px;">by @mikhail_spinei (Tech Lead)</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:11.5px;color:var(--text-muted);margin-top:auto;">
+            <span data-ja="👁️ 8,420 閲覧" data-en="👁️ 8,420 views">👁️ 8,420 閲覧</span>
+            <button class="btn btn-secondary" style="padding:2px 8px;font-size:11px;" onclick="AppStore.toggleBookmark('art-px-1', 'ネオンの街路と雨音')" data-ja="🔖 保存" data-en="🔖 Bookmark">🔖 保存</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Art 2 -->
+      <article class="gallery-card">
+        <a href="feature.html" class="art-thumbnail">
+          <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#ec4899" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+          <span style="position:absolute;bottom:6px;right:6px;background:rgba(0,0,0,0.7);color:#fff;font-size:10px;padding:2px 5px;border-radius:2px;">HD</span>
+        </a>
+        <div class="art-meta">
+          <h2 style="font-size:14px;font-weight:700;margin-bottom:4px;"><a href="feature.html" data-ja="電脳都市の黄昏" data-en="Cyber City Dusk">電脳都市の黄昏</a></h2>
+          <div style="font-size:12px;color:var(--brand-gallery);font-weight:600;margin-bottom:10px;">by @sakura_illust</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:11.5px;color:var(--text-muted);margin-top:auto;">
+            <span data-ja="👁️ 6,190 閲覧" data-en="👁️ 6,190 views">👁️ 6,190 閲覧</span>
+            <button class="btn btn-secondary" style="padding:2px 8px;font-size:11px;" onclick="AppStore.toggleBookmark('art-px-2', '電脳都市の黄昏')" data-ja="🔖 保存" data-en="🔖 Bookmark">🔖 保存</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Art 3 -->
+      <article class="gallery-card">
+        <a href="feature.html" class="art-thumbnail">
+          <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <span style="position:absolute;bottom:6px;right:6px;background:rgba(0,0,0,0.7);color:#fff;font-size:10px;padding:2px 5px;border-radius:2px;">4K</span>
+        </a>
+        <div class="art-meta">
+          <h2 style="font-size:14px;font-weight:700;margin-bottom:4px;"><a href="feature.html" data-ja="光彩のフライト" data-en="Prismatic Flight">光彩のフライト</a></h2>
+          <div style="font-size:12px;color:var(--brand-gallery);font-weight:600;margin-bottom:10px;">by @neon_blade</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:11.5px;color:var(--text-muted);margin-top:auto;">
+            <span data-ja="👁️ 11,200 閲覧" data-en="👁️ 11,200 views">👁️ 11,200 閲覧</span>
+            <button class="btn btn-secondary" style="padding:2px 8px;font-size:11px;" onclick="AppStore.toggleBookmark('art-px-3', '光彩のフライト')" data-ja="🔖 保存" data-en="🔖 Bookmark">🔖 保存</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Art 4 -->
+      <article class="gallery-card">
+        <a href="feature.html" class="art-thumbnail">
+          <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          <span style="position:absolute;bottom:6px;right:6px;background:rgba(0,0,0,0.7);color:#fff;font-size:10px;padding:2px 5px;border-radius:2px;">8K HDR</span>
+        </a>
+        <div class="art-meta">
+          <h2 style="font-size:14px;font-weight:700;margin-bottom:4px;"><a href="feature.html" data-ja="深海メトロポリス" data-en="Abyssal Metropolis">深海メトロポリス</a></h2>
+          <div style="font-size:12px;color:var(--brand-gallery);font-weight:600;margin-bottom:10px;">by @aqua_blue</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:11.5px;color:var(--text-muted);margin-top:auto;">
+            <span data-ja="👁️ 4,830 閲覧" data-en="👁️ 4,830 views">👁️ 4,830 閲覧</span>
+            <button class="btn btn-secondary" style="padding:2px 8px;font-size:11px;" onclick="AppStore.toggleBookmark('art-px-4', '深海メトロポリス')" data-ja="🔖 保存" data-en="🔖 Bookmark">🔖 保存</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Art 5 -->
+      <article class="gallery-card">
+        <a href="feature.html" class="art-thumbnail">
+          <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#f43f5e" stroke-width="1.5"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+          <span style="position:absolute;bottom:6px;right:6px;background:rgba(0,0,0,0.7);color:#fff;font-size:10px;padding:2px 5px;border-radius:2px;">Original</span>
+        </a>
+        <div class="art-meta">
+          <h2 style="font-size:14px;font-weight:700;margin-bottom:4px;"><a href="feature.html" data-ja="桜吹雪のプロムナード" data-en="Cherry Blossom Promenade">桜吹雪のプロムナード</a></h2>
+          <div style="font-size:12px;color:var(--brand-gallery);font-weight:600;margin-bottom:10px;">by @haru_art</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:11.5px;color:var(--text-muted);margin-top:auto;">
+            <span data-ja="👁️ 9,120 閲覧" data-en="👁️ 9,120 views">👁️ 9,120 閲覧</span>
+            <button class="btn btn-secondary" style="padding:2px 8px;font-size:11px;" onclick="AppStore.toggleBookmark('art-px-5', '桜吹雪のプロムナード')" data-ja="🔖 保存" data-en="🔖 Bookmark">🔖 保存</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Art 6 -->
+      <article class="gallery-card">
+        <a href="feature.html" class="art-thumbnail">
+          <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#eab308" stroke-width="1.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          <span style="position:absolute;bottom:6px;right:6px;background:rgba(0,0,0,0.7);color:#fff;font-size:10px;padding:2px 5px;border-radius:2px;">Mecha</span>
+        </a>
+        <div class="art-meta">
+          <h2 style="font-size:14px;font-weight:700;margin-bottom:4px;"><a href="feature.html" data-ja="零号機起動シーケンス" data-en="Unit-0 Startup Sequence">零号機起動シーケンス</a></h2>
+          <div style="font-size:12px;color:var(--brand-gallery);font-weight:600;margin-bottom:10px;">by @mecha_craft</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:11.5px;color:var(--text-muted);margin-top:auto;">
+            <span data-ja="👁️ 15,400 閲覧" data-en="👁️ 15,400 views">👁️ 15,400 閲覧</span>
+            <button class="btn btn-secondary" style="padding:2px 8px;font-size:11px;" onclick="AppStore.toggleBookmark('art-px-6', '零号機起動シーケンス')" data-ja="🔖 保存" data-en="🔖 Bookmark">🔖 保存</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Art 7 -->
+      <article class="gallery-card">
+        <a href="feature.html" class="art-thumbnail">
+          <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="1.5"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+          <span style="position:absolute;bottom:6px;right:6px;background:rgba(0,0,0,0.7);color:#fff;font-size:10px;padding:2px 5px;border-radius:2px;">Landscape</span>
+        </a>
+        <div class="art-meta">
+          <h2 style="font-size:14px;font-weight:700;margin-bottom:4px;"><a href="feature.html" data-ja="浮遊群島クロニクル" data-en="Floating Archipelago">浮遊群島クロニクル</a></h2>
+          <div style="font-size:12px;color:var(--brand-gallery);font-weight:600;margin-bottom:10px;">by @sky_painter</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:11.5px;color:var(--text-muted);margin-top:auto;">
+            <span data-ja="👁️ 7,890 閲覧" data-en="👁️ 7,890 views">👁️ 7,890 閲覧</span>
+            <button class="btn btn-secondary" style="padding:2px 8px;font-size:11px;" onclick="AppStore.toggleBookmark('art-px-7', '浮遊群島クロニクル')" data-ja="🔖 保存" data-en="🔖 Bookmark">🔖 保存</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Art 8 -->
+      <article class="gallery-card">
+        <a href="feature.html" class="art-thumbnail">
+          <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="1.5"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>
+          <span style="position:absolute;bottom:6px;right:6px;background:rgba(0,0,0,0.7);color:#fff;font-size:10px;padding:2px 5px;border-radius:2px;">Fantasy</span>
+        </a>
+        <div class="art-meta">
+          <h2 style="font-size:14px;font-weight:700;margin-bottom:4px;"><a href="feature.html" data-ja="夢幻のクリスタルキャビン" data-en="Crystalline Cabin">夢幻のクリスタルキャビン</a></h2>
+          <div style="font-size:12px;color:var(--brand-gallery);font-weight:600;margin-bottom:10px;">by @frost_glimmer</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:11.5px;color:var(--text-muted);margin-top:auto;">
+            <span data-ja="👁️ 5,420 閲覧" data-en="👁️ 5,420 views">👁️ 5,420 閲覧</span>
+            <button class="btn btn-secondary" style="padding:2px 8px;font-size:11px;" onclick="AppStore.toggleBookmark('art-px-8', '夢幻のクリスタルキャビン')" data-ja="🔖 保存" data-en="🔖 Bookmark">🔖 保存</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Art 9 -->
+      <article class="gallery-card">
+        <a href="feature.html" class="art-thumbnail">
+          <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+          <span style="position:absolute;bottom:6px;right:6px;background:rgba(0,0,0,0.7);color:#fff;font-size:10px;padding:2px 5px;border-radius:2px;">Sci-Fi</span>
+        </a>
+        <div class="art-meta">
+          <h2 style="font-size:14px;font-weight:700;margin-bottom:4px;"><a href="feature.html" data-ja="コズミック・ハイウェイ" data-en="Cosmic Highway">コズミック・ハイウェイ</a></h2>
+          <div style="font-size:12px;color:var(--brand-gallery);font-weight:600;margin-bottom:10px;">by @astro_voyager</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:11.5px;color:var(--text-muted);margin-top:auto;">
+            <span data-ja="👁️ 12,680 閲覧" data-en="👁️ 12,680 views">👁️ 12,680 閲覧</span>
+            <button class="btn btn-secondary" style="padding:2px 8px;font-size:11px;" onclick="AppStore.toggleBookmark('art-px-9', 'コズミック・ハイウェイ')" data-ja="🔖 保存" data-en="🔖 Bookmark">🔖 保存</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Art 10 -->
+      <article class="gallery-card">
+        <a href="feature.html" class="art-thumbnail">
+          <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="1.5"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21V11l3-2 3 2v10"/></svg>
+          <span style="position:absolute;bottom:6px;right:6px;background:rgba(0,0,0,0.7);color:#fff;font-size:10px;padding:2px 5px;border-radius:2px;">Traditional</span>
+        </a>
+        <div class="art-meta">
+          <h2 style="font-size:14px;font-weight:700;margin-bottom:4px;"><a href="feature.html" data-ja="茜色の神社境内" data-en="Crimson Sunset Shrine">茜色の神社境内</a></h2>
+          <div style="font-size:12px;color:var(--brand-gallery);font-weight:600;margin-bottom:10px;">by @zen_brush</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:11.5px;color:var(--text-muted);margin-top:auto;">
+            <span data-ja="👁️ 8,950 閲覧" data-en="👁️ 8,950 views">👁️ 8,950 閲覧</span>
+            <button class="btn btn-secondary" style="padding:2px 8px;font-size:11px;" onclick="AppStore.toggleBookmark('art-px-10', '茜色の神社境内')" data-ja="🔖 保存" data-en="🔖 Bookmark">🔖 保存</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Art 11 -->
+      <article class="gallery-card">
+        <a href="feature.html" class="art-thumbnail">
+          <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="1.5"><polygon points="12 2 19 21 12 17 5 21 12 2"/></svg>
+          <span style="position:absolute;bottom:6px;right:6px;background:rgba(0,0,0,0.7);color:#fff;font-size:10px;padding:2px 5px;border-radius:2px;">Character</span>
+        </a>
+        <div class="art-meta">
+          <h2 style="font-size:14px;font-weight:700;margin-bottom:4px;"><a href="feature.html" data-ja="サイバー・サムライ2077" data-en="Cyber Samurai 2077">サイバー・サムライ2077</a></h2>
+          <div style="font-size:12px;color:var(--brand-gallery);font-weight:600;margin-bottom:10px;">by @blade_runner_jp</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:11.5px;color:var(--text-muted);margin-top:auto;">
+            <span data-ja="👁️ 18,200 閲覧" data-en="👁️ 18,200 views">👁️ 18,200 閲覧</span>
+            <button class="btn btn-secondary" style="padding:2px 8px;font-size:11px;" onclick="AppStore.toggleBookmark('art-px-11', 'サイバー・サムライ2077')" data-ja="🔖 保存" data-en="🔖 Bookmark">🔖 保存</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Art 12 -->
+      <article class="gallery-card">
+        <a href="feature.html" class="art-thumbnail">
+          <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="1.5"><rect x="4" y="4" width="16" height="16" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+          <span style="position:absolute;bottom:6px;right:6px;background:rgba(0,0,0,0.7);color:#fff;font-size:10px;padding:2px 5px;border-radius:2px;">AI Render</span>
+        </a>
+        <div class="art-meta">
+          <h2 style="font-size:14px;font-weight:700;margin-bottom:4px;"><a href="feature.html" data-ja="量子コンピュータの夢" data-en="Dreams of Quantum AI">量子コンピュータの夢</a></h2>
+          <div style="font-size:12px;color:var(--brand-gallery);font-weight:600;margin-bottom:10px;">by @neural_canvas</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:11.5px;color:var(--text-muted);margin-top:auto;">
+            <span data-ja="👁️ 14,310 閲覧" data-en="👁️ 14,310 views">👁️ 14,310 閲覧</span>
+            <button class="btn btn-secondary" style="padding:2px 8px;font-size:11px;" onclick="AppStore.toggleBookmark('art-px-12', '量子コンピュータの夢')" data-ja="🔖 保存" data-en="🔖 Bookmark">🔖 保存</button>
+          </div>
+        </div>
+      </article>
+    </div>
+  </main>
+
+  
+  <footer style="background:var(--bg-surface);border-top:1px solid var(--border);padding:24px 0;margin-top:64px;font-size:12px;color:var(--text-muted);">
+    <div class="container" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+      <div>
+        <strong>Google Partner Summit 2026</strong> · Built-in AI & WebMCP Workshop
+      </div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;">
+        <a href="../index.html" style="color:var(--text-secondary);" data-ja="ホーム" data-en="Home">ホーム</a>
+        <a href="../shopping/index.html" style="color:var(--text-secondary);" data-ja="ショッピング" data-en="Shopping">ショッピング</a>
+        <a href="../blog/index.html" style="color:var(--text-secondary);" data-ja="ブログ" data-en="Blogging">ブログ</a>
+        <a href="../gallery/index.html" style="color:var(--text-secondary);" data-ja="ギャラリー" data-en="Gallery">ギャラリー</a>
+        <a href="../crm/index.html" style="color:var(--text-secondary);" data-ja="CRM・サポート" data-en="CRM & Support">CRM・サポート</a>
+        <a href="../account/register.html" style="color:var(--text-secondary);" data-ja="アカウント" data-en="Account">アカウント</a>
+        </div>
+    </div>
+  </footer>
+
+  <div class="webmcp-toast"></div>
+  <script src="../shared/js/i18n.js?v=20260915"></script>
+  <script src="../shared/js/store.js?v=20260915"></script>
+  </body>
+</html>

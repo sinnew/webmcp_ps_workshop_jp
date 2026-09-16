@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>作り方・描き方講座 (Tutorials) | ギャラリー</title>
+  <link rel="stylesheet" href="../shared/css/base.css?v=20260915">
+  <link rel="stylesheet" href="../shared/css/components.css?v=20260915">
+  <style>
+    .gallery-nav-sub {
+      display: flex;
+      gap: 20px;
+      padding: 6px 0 14px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 13.5px;
+      font-weight: 600;
+      margin-bottom: 24px;
+      overflow-x: auto;
+    }
+    .gallery-nav-sub a {
+      color: var(--text-secondary);
+      transition: color 0.15s ease;
+      white-space: nowrap;
+    }
+    .gallery-nav-sub a:hover, .gallery-nav-sub a.active {
+      color: var(--brand-gallery);
+    }
+    .tutorial-hero {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 28px;
+    }
+    @media (max-width: 768px) {
+      .tutorial-hero { flex-direction: column; align-items: flex-start; }
+    }
+    .tutorial-filter-bar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+    .tutorial-filter-btn {
+      padding: 6px 14px;
+      font-size: 12.5px;
+      font-weight: 500;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: var(--bg-surface);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .tutorial-filter-btn:hover, .tutorial-filter-btn.active {
+      background: var(--brand-gallery);
+      color: #fff;
+      border-color: var(--brand-gallery);
+    }
+    .tutorial-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .tutorial-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    .tutorial-card:hover {
+      border-color: var(--border-hover);
+      box-shadow: var(--shadow-sm);
+    }
+    .tutorial-img-wrap {
+      aspect-ratio: 16/10;
+      background: #18181b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .step-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(0, 0, 0, 0.75);
+      color: #38bdf8;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: var(--radius-xs);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+    }
+    .diff-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 10.5px;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: var(--radius-xs);
+    }
+    .diff-beginner { background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; }
+    .diff-intermediate { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; }
+    .diff-advanced { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+
+    .tutorial-info {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .tutorial-title {
+      font-size: 14.5px;
+      font-weight: 700;
+      line-height: 1.4;
+      margin-bottom: 6px;
+      color: var(--text-main);
+    }
+    .tutorial-author {
+      font-size: 12px;
+      color: var(--brand-gallery);
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    .tutorial-desc {
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      line-height: 1.55;
+      margin-bottom: 14px;
+      flex: 1;
+    }
+    .tutorial-meta-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11.5px;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border-light);
+      padding-top: 12px;
+      margin-top: auto;
+    }
+    .step-box-modal {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+    .step-title-modal {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+  </style>
+</head>
+<body>
+  
+  <!-- Google Fonts (Partner Hub Aligned: Google Sans, Roboto, Google Sans Code, Noto Sans JP) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Code:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Speculation Rules API for instant multi-page navigation -->
+  <script type="speculationrules">
+  {
+    "prerender": [
+      {
+        "where": { "href_matches": "/*" },
+        "eagerness": "moderate"
+      }
+    ]
+  }
+  </script>
+
+  <header class="global-header">
+    <div class="container header-inner">
+      <div class="brand-group">
+        <a href="../../index.html" class="hub-back-pill" title="Return to Google Partner Summit Workshop Hub">
+          <span data-ja="&larr; パートナーハブ" data-en="&larr; Partner Hub">&larr; パートナーハブ</span>
+        </a>
+        <a href="../index.html" class="brand-link">
+          <span style="color:var(--google-blue);">Google</span>
+          <span style="color:var(--text-main);font-weight:500;" data-ja="デモ検証環境" data-en="Demo Testbed">デモ検証環境</span>
+        </a>
+      </div>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="../shopping/index.html" class="nav-link "><span data-ja="ショッピング" data-en="Shopping">ショッピング</span></a></li>
+          <li><a href="../blog/index.html" class="nav-link "><span data-ja="ブログ" data-en="Blogging">ブログ</span></a></li>
+          <li><a href="../gallery/index.html" class="nav-link active"><span data-ja="ギャラリー" data-en="Gallery">ギャラリー</span></a></li>
+          <li><a href="../crm/index.html" class="nav-link "><span data-ja="CRM・サポート" data-en="CRM & Support">CRM・サポート</span></a></li>
+          <li><a href="../account/register.html" class="nav-link "><span data-ja="アカウント" data-en="Account">アカウント</span></a></li>
+          </ul>
+      </nav>
+
+      <div class="header-actions">
+        <button id="lang-toggle-btn" class="lang-toggle-btn lang-switcher" aria-label="Toggle language" onclick="if(window.i18n) window.i18n.toggleLanguage();">
+          <span class="lang-active">JP</span><span class="lang-inactive">EN</span>
+        </button>
+        <a href="../shopping/cart.html" class="cart-indicator-btn" title="Shopping Cart">
+          <span data-ja="カート" data-en="Cart">カート</span>
+          <span class="cart-badge-count" style="display:none;">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+
+  <main class="container" style="margin-top: 20px;">
+    <!-- Sub-navigation -->
+    <div class="gallery-nav-sub">
+      <a href="index.html" data-ja="イラスト (Illustrations)" data-en="Illustrations">イラスト</a>
+      <a href="feature.html" data-ja="特集 (Features)" data-en="Features">特集</a>
+      <a href="tutorials.html" class="active" data-ja="作り方 (How-to)" data-en="Tutorials">作り方</a>
+      <a href="rankings.html" data-ja="ランキング (Rankings)" data-en="Rankings">ランキング</a>
+    </div>
+
+    <!-- Spotlight Masterclass Hero -->
+    <section class="tutorial-hero">
+      <div style="max-width:540px;">
+        <span class="badge" style="background:#eff6ff;color:var(--brand-gallery);border:1px solid #bfdbfe;margin-bottom:10px;" data-ja="注目公式講座 · 受講で +50 pt 獲得" data-en="Featured Masterclass · Earn +50 pts">注目公式講座 · 受講で +50 pt 獲得</span>
+        <h1 style="font-size:22px;font-weight:800;line-height:1.35;margin-bottom:8px;" data-ja="【プロ直伝】サイバーパンク都市のライティング＆遠近法マスタークラス" data-en="[Masterclass] Cyberpunk Lighting & Perspective">
+          【プロ直伝】サイバーパンク都市のライティング＆遠近法マスタークラス
+        </h1>
+        <div style="font-size:12.5px;color:var(--brand-gallery);font-weight:600;margin-bottom:10px;">
+          講師: Mikhail Spinei (Tech Lead & Concept Artist) · 使用ツール: Clip Studio / Photoshop
+        </div>
+        <p style="font-size:13px;color:var(--text-secondary);line-height:1.6;margin-bottom:18px;" data-ja="雨に濡れたアスファルトの反射テクスチャ、加算発光を活用したネオン看板の輝き、および3点透視グリッドの組み立て方をステップ・バイ・ステップで詳解。" data-en="A comprehensive guide to asphalt reflections, neon glow with blend modes, and 3-point perspective grid setup.">
+          雨に濡れたアスファルトの反射テクスチャ、加算発光を活用したネオン看板の輝き、および3点透視グリッドの組み立て方をステップ・バイ・ステップで詳解。
+        </p>
+        <button class="btn btn-primary-gallery" style="font-size:13px;padding:8px 18px;" onclick="openTutorialModal('tut-spotlight')" data-ja="この講座を受講する (無料) &rarr;" data-en="Start Masterclass (Free) &rarr;">
+          この講座を受講する (無料) &rarr;
+        </button>
+      </div>
+      <div style="width:220px;height:140px;background:#09090b;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;border:1px solid var(--border);">
+        <svg width="70" height="70" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="1.5"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+      </div>
+    </section>
+
+    <!-- Filter Buttons -->
+    <div class="tutorial-filter-bar">
+      <button class="tutorial-filter-btn active" onclick="filterTutorials('all', this)" data-ja="すべて (All)" data-en="All">すべて (All)</button>
+      <button class="tutorial-filter-btn" onclick="filterTutorials('lighting', this)" data-ja="ライティング・陰影" data-en="Lighting & Shadows">ライティング・陰影</button>
+      <button class="tutorial-filter-btn" onclick="filterTutorials('background', this)" data-ja="背景・パース" data-en="Backgrounds & Perspective">背景・パース</button>
+      <button class="tutorial-filter-btn" onclick="filterTutorials('character', this)" data-ja="人物・瞳・髪" data-en="Characters & Eyes">人物・瞳・髪</button>
+      <button class="tutorial-filter-btn" onclick="filterTutorials('mecha', this)" data-ja="メカ・質感" data-en="Mecha & Materials">メカ・質感</button>
+      <button class="tutorial-filter-btn" onclick="filterTutorials('ai', this)" data-ja="AI・ハイブリッド" data-en="AI Workflow">AI・ハイブリッド</button>
+    </div>
+
+    <!-- Tutorials Grid -->
+    <div class="tutorial-grid" id="tutorial-grid">
+      <!-- Tut 1 -->
+      <article class="tutorial-card" data-cat="lighting">
+        <div class="tutorial-img-wrap">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/></svg>
+          <span class="step-badge">5 STEP</span>
+          <span class="diff-badge diff-intermediate" data-ja="中級" data-en="Intermediate">中級</span>
+        </div>
+        <div class="tutorial-info">
+          <h2 class="tutorial-title" data-ja="ネオン看板と雨夜の反射表現テクニック" data-en="Neon Signs & Wet Night Reflections">ネオン看板と雨夜の反射表現テクニック</h2>
+          <div class="tutorial-author">by @mikhail_spinei</div>
+          <p class="tutorial-desc" data-ja="雨に濡れたアスファルトに美しく反射するネオンのブレンドモード（加算発光・覆い焼きカラー）の黄金律を解説。" data-en="Master blend modes (Add Glow, Color Dodge) for realistic reflections on wet asphalt surfaces.">
+            雨に濡れたアスファルトに美しく反射するネオンのブレンドモード（加算発光・覆い焼きカラー）の黄金律を解説。
+          </p>
+          <div class="tutorial-meta-row">
+            <span data-ja="👁️ 2,840 閲覧 · ★ 4.9" data-en="👁️ 2,840 views · ★ 4.9">👁️ 2,840 閲覧 · ★ 4.9</span>
+            <button class="btn btn-secondary" style="font-size:11px;padding:3px 8px;" onclick="openTutorialModal('tut-1')" data-ja="講座を読む" data-en="Read Tutorial">講座を読む</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Tut 2 -->
+      <article class="tutorial-card" data-cat="background">
+        <div class="tutorial-img-wrap">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="m3 9 18 0M9 21V9"/></svg>
+          <span class="step-badge">4 STEP</span>
+          <span class="diff-badge diff-beginner" data-ja="初級" data-en="Beginner">初級</span>
+        </div>
+        <div class="tutorial-info">
+          <h2 class="tutorial-title" data-ja="広大なパースを狂わせない！3点透視グリッドの引き方" data-en="3-Point Perspective Grid Essentials">広大なパースを狂わせない！3点透視グリッドの引き方</h2>
+          <div class="tutorial-author">by @sky_painter</div>
+          <p class="tutorial-desc" data-ja="超高層ビルを見上げる迫力のアングルを無理なく構築するパース定規の基本と消失点の配置手順。" data-en="Construct dynamic skyscraper views without distorted proportions using perspective grid guides.">
+            超高層ビルを見上げる迫力のアングルを無理なく構築するパース定規の基本と消失点の配置手順。
+          </p>
+          <div class="tutorial-meta-row">
+            <span data-ja="👁️ 3,410 閲覧 · ★ 4.8" data-en="👁️ 3,410 views · ★ 4.8">👁️ 3,410 閲覧 · ★ 4.8</span>
+            <button class="btn btn-secondary" style="font-size:11px;padding:3px 8px;" onclick="openTutorialModal('tut-2')" data-ja="講座を読む" data-en="Read Tutorial">講座を読む</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Tut 3 -->
+      <article class="tutorial-card" data-cat="character">
+        <div class="tutorial-img-wrap">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#ec4899" stroke-width="1.5"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><circle cx="14" cy="10" r="1" fill="#ec4899"/></svg>
+          <span class="step-badge">6 STEP</span>
+          <span class="diff-badge diff-beginner" data-ja="入門" data-en="Beginner">入門</span>
+        </div>
+        <div class="tutorial-info">
+          <h2 class="tutorial-title" data-ja="瞳の描き込みとハイライト：生命感を宿すレイヤー構築" data-en="Expressive Eye Highlights & Layers">瞳の描き込みとハイライト：生命感を宿すレイヤー構築</h2>
+          <div class="tutorial-author">by @sakura_illust</div>
+          <p class="tutorial-desc" data-ja="透明感のある瞳を描くための下塗り、乗算シャドウ、スクリーンハイライト、オーバーレイ反射光のレイヤー順序。" data-en="Layer order for radiant eyes: base coat, multiply shadow, screen highlight, and ambient bounce.">
+            透明感のある瞳を描くための下塗り、乗算シャドウ、スクリーンハイライト、オーバーレイ反射光のレイヤー順序。
+          </p>
+          <div class="tutorial-meta-row">
+            <span data-ja="👁️ 4,920 閲覧 · ★ 5.0" data-en="👁️ 4,920 views · ★ 5.0">👁️ 4,920 閲覧 · ★ 5.0</span>
+            <button class="btn btn-secondary" style="font-size:11px;padding:3px 8px;" onclick="openTutorialModal('tut-3')" data-ja="講座を読む" data-en="Read Tutorial">講座を読む</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Tut 4 -->
+      <article class="tutorial-card" data-cat="mecha">
+        <div class="tutorial-img-wrap">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#eab308" stroke-width="1.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          <span class="step-badge">7 STEP</span>
+          <span class="diff-badge diff-advanced" data-ja="上級" data-en="Advanced">上級</span>
+        </div>
+        <div class="tutorial-info">
+          <h2 class="tutorial-title" data-ja="メカの重厚感を出す金属質感とエッジハイライト" data-en="Mecha Hard-Surface & Weathering">メカの重厚感を出す金属質感とエッジハイライト</h2>
+          <div class="tutorial-author">by @mecha_craft</div>
+          <p class="tutorial-desc" data-ja="使い込まれた装甲板のウェザリング（傷・塗膜剥がれ）とハードサーフェスの面取りハイライト技法。" data-en="Weathering effects, chipped paint, and beveled specular edge highlights on futuristic armored mecha.">
+            使い込まれた装甲板のウェザリング（傷・塗膜剥がれ）とハードサーフェスの面取りハイライト技法。
+          </p>
+          <div class="tutorial-meta-row">
+            <span data-ja="👁️ 2,160 閲覧 · ★ 4.9" data-en="👁️ 2,160 views · ★ 4.9">👁️ 2,160 閲覧 · ★ 4.9</span>
+            <button class="btn btn-secondary" style="font-size:11px;padding:3px 8px;" onclick="openTutorialModal('tut-4')" data-ja="講座を読む" data-en="Read Tutorial">講座を読む</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Tut 5 -->
+      <article class="tutorial-card" data-cat="background">
+        <div class="tutorial-img-wrap">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="1.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          <span class="step-badge">4 STEP</span>
+          <span class="diff-badge diff-beginner" data-ja="初級" data-en="Beginner">初級</span>
+        </div>
+        <div class="tutorial-info">
+          <h2 class="tutorial-title" data-ja="空気遠近法で魅せる！遠景の霞みとデプス表現" data-en="Atmospheric Haze & Depth of Field">空気遠近法で魅せる！遠景の霞みとデプス表現</h2>
+          <div class="tutorial-author">by @aqua_blue</div>
+          <p class="tutorial-desc" data-ja="画面全体の奥行きを一瞬で深めるフォグレイヤーとグラデーションマップの活用テクニック。" data-en="Instantly enhance visual depth using atmospheric fog layers and gradient maps.">
+            画面全体の奥行きを一瞬で深めるフォグレイヤーとグラデーションマップの活用テクニック。
+          </p>
+          <div class="tutorial-meta-row">
+            <span data-ja="👁️ 1,890 閲覧 · ★ 4.7" data-en="👁️ 1,890 views · ★ 4.7">👁️ 1,890 閲覧 · ★ 4.7</span>
+            <button class="btn btn-secondary" style="font-size:11px;padding:3px 8px;" onclick="openTutorialModal('tut-5')" data-ja="講座を読む" data-en="Read Tutorial">講座を読む</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Tut 6 -->
+      <article class="tutorial-card" data-cat="character">
+        <div class="tutorial-img-wrap">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="1.5"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+          <span class="step-badge">5 STEP</span>
+          <span class="diff-badge diff-intermediate" data-ja="中級" data-en="Intermediate">中級</span>
+        </div>
+        <div class="tutorial-info">
+          <h2 class="tutorial-title" data-ja="髪の毛の立体感を出す束感ブラシと影の落とし方" data-en="Hair Strands & Volumetric Shading">髪の毛の立体感を出す束感ブラシと影の落とし方</h2>
+          <div class="tutorial-author">by @blade_runner_jp</div>
+          <p class="tutorial-desc" data-ja="大束・中束・細毛の3層シルエットで捉える自然で風になびくヘアスタイルの描画アプローチ。" data-en="Three-tier silhouette method (large clumps, medium locks, fine hairs) for dynamic hair.">
+            大束・中束・細毛の3層シルエットで捉える自然で風になびくヘアスタイルの描画アプローチ。
+          </p>
+          <div class="tutorial-meta-row">
+            <span data-ja="👁️ 3,120 閲覧 · ★ 4.8" data-en="👁️ 3,120 views · ★ 4.8">👁️ 3,120 閲覧 · ★ 4.8</span>
+            <button class="btn btn-secondary" style="font-size:11px;padding:3px 8px;" onclick="openTutorialModal('tut-6')" data-ja="講座を読む" data-en="Read Tutorial">講座を読む</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Tut 7 -->
+      <article class="tutorial-card" data-cat="lighting">
+        <div class="tutorial-img-wrap">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="1.5"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>
+          <span class="step-badge">5 STEP</span>
+          <span class="diff-badge diff-intermediate" data-ja="中級" data-en="Intermediate">中級</span>
+        </div>
+        <div class="tutorial-info">
+          <h2 class="tutorial-title" data-ja="ファンタジー光彩表現：魔法エフェクトとパーティクル" data-en="Fantasy Magic Glow & Particles">ファンタジー光彩表現：魔法エフェクトとパーティクル</h2>
+          <div class="tutorial-author">by @frost_glimmer</div>
+          <p class="tutorial-desc" data-ja="発光体から漏れ出すルミネセンスと浮遊するクリスタル粒子を幻想的に演出するカスタムブラシ設定。" data-en="Ethereal luminescence and floating crystal particles using custom particle brushes.">
+            発光体から漏れ出すルミネセンスと浮遊するクリスタル粒子を幻想的に演出するカスタムブラシ設定。
+          </p>
+          <div class="tutorial-meta-row">
+            <span data-ja="👁️ 2,540 閲覧 · ★ 4.9" data-en="👁️ 2,540 views · ★ 4.9">👁️ 2,540 閲覧 · ★ 4.9</span>
+            <button class="btn btn-secondary" style="font-size:11px;padding:3px 8px;" onclick="openTutorialModal('tut-7')" data-ja="講座を読む" data-en="Read Tutorial">講座を読む</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Tut 8 -->
+      <article class="tutorial-card" data-cat="ai">
+        <div class="tutorial-img-wrap">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="1.5"><rect x="4" y="4" width="16" height="16" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+          <span class="step-badge">6 STEP</span>
+          <span class="diff-badge diff-advanced" data-ja="上級" data-en="Advanced">上級</span>
+        </div>
+        <div class="tutorial-info">
+          <h2 class="tutorial-title" data-ja="AI画像生成と手描き加筆によるハイブリッド制作" data-en="AI & Digital Hand-Drawn Hybrid Art">AI画像生成と手描き加筆によるハイブリッド制作</h2>
+          <div class="tutorial-author">by @neural_canvas</div>
+          <p class="tutorial-desc" data-ja="プロンプト生成ラフからポーズ修正、指先・衣装のレタッチ、最終カラーグレーディングまでの統合パイプライン。" data-en="From prompt sketch to pose tuning, anatomical fixes, and film grading pipeline.">
+            プロンプト生成ラフからポーズ修正、指先・衣装のレタッチ、最終カラーグレーディングまでの統合パイプライン。
+          </p>
+          <div class="tutorial-meta-row">
+            <span data-ja="👁️ 3,890 閲覧 · ★ 4.6" data-en="👁️ 3,890 views · ★ 4.6">👁️ 3,890 閲覧 · ★ 4.6</span>
+            <button class="btn btn-secondary" style="font-size:11px;padding:3px 8px;" onclick="openTutorialModal('tut-8')" data-ja="講座を読む" data-en="Read Tutorial">講座を読む</button>
+          </div>
+        </div>
+      </article>
+    </div>
+  </main>
+
+  <!-- Interactive Tutorial Walkthrough Dialog -->
+  <dialog id="tutorial-modal" style="max-width:680px;width:90vw;padding:24px;border-radius:var(--radius-md);border:1px solid var(--border);box-shadow:var(--shadow-md);background:var(--bg-surface);">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;border-bottom:1px solid var(--border);padding-bottom:12px;">
+      <div>
+        <span class="badge" style="background:#eff6ff;color:var(--brand-gallery);margin-bottom:4px;">WebMCP Creator Masterclass</span>
+        <h3 id="modal-tut-title" style="font-size:17px;font-weight:700;" data-ja="サイバーパンク都市のライティング＆遠近法マスタークラス" data-en="Cyberpunk City Lighting & Perspective Masterclass">サイバーパンク都市のライティング＆遠近法マスタークラス</h3>
+      </div>
+      <button class="dialog-close-btn" onclick="document.getElementById('tutorial-modal').close()">✕</button>
+    </div>
+
+    <div style="max-height:60vh;overflow-y:auto;padding-right:6px;">
+      <div class="step-box-modal">
+        <div class="step-title-modal"><span class="badge badge-points">STEP 1</span> <span data-ja="構図とパースグリッドの作成" data-en="Composition & 3-Point Perspective Grid">構図とパースグリッドの作成</span></div>
+        <p style="font-size:12.5px;color:var(--text-secondary);line-height:1.6;" data-ja="アイレベル（水平線）を画面下部1/3に配置し、左右2点＋天頂の3点透視定規を作成します。ビル群の威圧感を強調するため、上方へのすぼまりを少し強めに設定するのがコツです。" data-en="Place the horizon line in the lower third and set up a 3-point perspective grid. Converge vertical lines slightly more aggressively toward the zenith to emphasize skyscraper scale.">アイレベル（水平線）を画面下部1/3に配置し、左右2点＋天頂の3点透視定規を作成します。ビル群の威圧感を強調するため、上方へのすぼまりを少し強めに設定するのがコツです。</p>
+      </div>
+      <div class="step-box-modal">
+        <div class="step-title-modal"><span class="badge badge-points">STEP 2</span> <span data-ja="下塗りと環境光の配置" data-en="Base Values & Ambient Occlusion">下塗りと環境光の配置</span></div>
+        <p style="font-size:12.5px;color:var(--text-secondary);line-height:1.6;" data-ja="夜空の深いインディゴブルーをベースに、街全体の環境光（アンビエントライト）を乗算レイヤーで薄く落とします。光る前の暗部をしっかり締めることでコントラストが際立ちます。" data-en="Block in a deep indigo base for the night sky and apply ambient shadow gradients using a Multiply layer. Darkening shadow cores first ensures neon highlights pop later.">夜空の深いインディゴブルーをベースに、街全体の環境光（アンビエントライト）を乗算レイヤーで薄く落とします。光る前の暗部をしっかり締めることでコントラストが際立ちます。</p>
+      </div>
+      <div class="step-box-modal">
+        <div class="step-title-modal"><span class="badge badge-points">STEP 3</span> <span data-ja="レイヤーブレンドによる発光演出" data-en="Additive Neon Glow & Bloom Layers">レイヤーブレンドによる発光演出</span></div>
+        <p style="font-size:12.5px;color:var(--text-secondary);line-height:1.6;" data-ja="「加算（発光）」レイヤーを2層重ねます。下層は不透明度40%で大きくエアブラシを吹いてブルーム（光の滲み）を作り、上層は不透明度100%で細いネオン管を描画します。" data-en="Stack two Add (Glow) layers: airbrush a broad 40% opacity bloom on the lower layer, then draw crisp 100% opacity neon tube cores on top.">「加算（発光）」レイヤーを2層重ねます。下層は不透明度40%で大きくエアブラシを吹いてブルーム（光の滲み）を作り、上層は不透明度100%で細いネオン管を描画します。</p>
+      </div>
+      <div class="step-box-modal">
+        <div class="step-title-modal"><span class="badge badge-points">STEP 4</span> <span data-ja="アスファルトの反射テクスチャ" data-en="Wet Asphalt Reflections & Color Dodge">アスファルトの反射テクスチャ</span></div>
+        <p style="font-size:12.5px;color:var(--text-secondary);line-height:1.6;" data-ja="路面の凹凸テクスチャに「覆い焼きカラー」ブレンドを適用し、ネオン看板の反射光を垂直方向に引き伸ばして水たまりの揺らぎを描き足します。" data-en="Apply Color Dodge over wet pavement textures, stretching neon reflections vertically and breaking them across puddles.">路面の凹凸テクスチャに「覆い焼きカラー」ブレンドを適用し、ネオン看板の反射光を垂直方向に引き伸ばして水たまりの揺らぎを描き足します。</p>
+      </div>
+      <div class="step-box-modal">
+        <div class="step-title-modal"><span class="badge badge-points">STEP 5</span> <span data-ja="仕上げ・グレア・大気フォグ" data-en="Atmospheric Fog & Final Color Grading">仕上げ・グレア・大気フォグ</span></div>
+        <p style="font-size:12.5px;color:var(--text-secondary);line-height:1.6;" data-ja="最前面に薄いシアンのグラデーションフォグをオーバーレイし、湿り気のある都市の大気感を演出して完成です。" data-en="Overlay a subtle cyan atmospheric haze across the foreground to unify depth and complete the rainy cyberpunk mood.">最前面に薄いシアンのグラデーションフォグをオーバーレイし、湿り気のある都市の大気感を演出して完成です。</p>
+      </div>
+    </div>
+
+    <div class="dialog-actions" style="margin-top:16px;">
+      <button class="btn btn-secondary" onclick="document.getElementById('tutorial-modal').close()" data-ja="閉じる" data-en="Close">閉じる</button>
+      <button class="btn btn-primary-gallery" onclick="completeTutorial()" data-ja="受講完了して50pt獲得" data-en="Complete (+50 pts)">受講完了して50pt獲得</button>
+    </div>
+  </dialog>
+
+  
+  <footer style="background:var(--bg-surface);border-top:1px solid var(--border);padding:24px 0;margin-top:64px;font-size:12px;color:var(--text-muted);">
+    <div class="container" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+      <div>
+        <strong>Google Partner Summit 2026</strong> · Built-in AI & WebMCP Workshop
+      </div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;">
+        <a href="../index.html" style="color:var(--text-secondary);" data-ja="ホーム" data-en="Home">ホーム</a>
+        <a href="../shopping/index.html" style="color:var(--text-secondary);" data-ja="ショッピング" data-en="Shopping">ショッピング</a>
+        <a href="../blog/index.html" style="color:var(--text-secondary);" data-ja="ブログ" data-en="Blogging">ブログ</a>
+        <a href="../gallery/index.html" style="color:var(--text-secondary);" data-ja="ギャラリー" data-en="Gallery">ギャラリー</a>
+        <a href="../crm/index.html" style="color:var(--text-secondary);" data-ja="CRM・サポート" data-en="CRM & Support">CRM・サポート</a>
+        <a href="../account/register.html" style="color:var(--text-secondary);" data-ja="アカウント" data-en="Account">アカウント</a>
+        </div>
+    </div>
+  </footer>
+
+  <div class="webmcp-toast"></div>
+  <script src="../shared/js/i18n.js?v=20260915"></script>
+  <script src="../shared/js/store.js?v=20260915"></script>
+  <script>
+    function filterTutorials(cat, btn) {
+      const cards = document.querySelectorAll('.tutorial-card');
+      document.querySelectorAll('.tutorial-filter-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+
+      cards.forEach(card => {
+        const c = card.getAttribute('data-cat');
+        if (cat === 'all' || c === cat) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    function openTutorialModal(tutId) {
+      const modal = document.getElementById('tutorial-modal');
+      if (modal) modal.showModal();
+    }
+
+    function completeTutorial() {
+      if (window.AppStore) {
+        window.AppStore.addPoints(50);
+        window.AppStore.showToast((window.i18n && window.i18n.getLang() === 'en') ? '🎉 Tutorial completed! Earned +50 pt' : '🎉 講座の受講を完了しました！+50 pt 獲得しました');
+      }
+      document.getElementById('tutorial-modal').close();
+    }
+  </script>
+</body>
+</html>
